@@ -4,18 +4,18 @@
   "name": "AEM Developer",
   "version": "0.1",
   "description": "Tools for AEM developers.",
-  "homepage_url": "https://github.com/nyolles/aem-developer-chrome",
+  "homepage_url": "https://github.com/nyolles/aem-developer-chrome/",
 
   "icons": {
-    "16" : "images/icon.png",
-    "48" : "images/48.png",
-    "128" : "images/128.png"
+    "16" : "images/icon16.png",
+    "48" : "images/icon48.png",
+    "128" : "images/icon128.png"
   },
 
   "browser_action": {
     "default_icon": {
-      "19": "icon19.png",
-      "38": "icon38.png"
+      "19": "images/icon19.png",
+      "38": "images/icon38.png"
     },
     "default_title": "AEM Developer",
     "default_popup": "popup.html"

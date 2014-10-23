@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="jquery.min.js"></script>
+        <script src="popup.js"></script>
+        <link rel="stylesheet" href="style/popup.css" />
+    </head>
+    <body>
+        <div style="width:200px">
+            <p><a id="lnk_siteAdminToggle" href="#">siteadmin page toggle</a></p>
+            <p><a id="lnk_digitalPulseDebugger" href="#">Open DigitalPulse Debugger</a></p>
+            <p><a class="querystring" href="#" data-querystring-key="wcmmode">edit mode</a></p>
+            <p><a class="querystring" href="#" data-querystring-key="wcmmode" data-querystring-value="disabled">disabled mode</a></p>
+            <p><a class="querystring" href="#" data-querystring-key="wcmmode" data-querystring-value="preview">preview mode</a></p>
+            <p><a class="querystring" href="#" data-querystring-key="wcmmode" data-querystring-value="design">design mode</a></p>
+            <p><a class="querystring" href="#" data-querystring-key="debugClientLibs" data-querystring-value="true">debug client libs on</a></p>
+            <p><a class="querystring" href="#" data-querystring-key="debugClientLibs">debug client libs off</a></p>
+            <p><a class="redirect" href="#" data-link="/libs/cq/core/content/welcome.html">Welcome</a></p> 
+            <p><a class="redirect" href="#" data-link="/crx/packmgr/">Package Manager</a></p>
+            <p><a class="redirect" href="#" data-link="/siteadmin">Websites</a></p>
+            <p><a class="redirect" href="#" data-link="/miscadmin">Tools</a></p>
+            <p><a class="redirect" href="#" data-link="/mcmadmin">Campaigns</a></p>
+            <p><a class="redirect" href="#" data-link="/crx/de">CRXDE Lite</a></p>
+            <p><a class="redirect" href="#" data-link="/damadmin">Digital Assets</a></p>
+            <p><a class="redirect" href="#" data-link="/system/console/bundles">Felix Console Bundles</a></p>
+            <p><a class="redirect" href="#" data-link="/system/console/components">Felix console Components</a></p>
+            <p><a class="redirect" href="#" data-link="/crx/explorer">CRX Explorer</a></p>
+            <p><a id="lnk_clearClientLibs" href="#">Clear ClientLibs</a></p>
+            <p><a id="lnk_clearCompiledJSPs" href="#">Clear Compiled JSPs</a></p>
+            <p>Version: <span id="version"></span> <span id="update-container" class="hidden"><a href="http://www.google.com" target="_blank">Get updated Version</a></span></p>
+        </div>
+    </body>
+</html>
