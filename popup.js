@@ -35,22 +35,20 @@ window.addEventListener('load', function(evt) {
 
     $('#lnk_clearClientLibs').click(function(e){
       e.preventDefault();
-      //cachedEventPage.clearClientLibs();
-      cachedEventPage.executeScript('AemDeveloper.clearClientLibs()');
-      window.close();
+      cachedEventPage.executeScript('AemDeveloper.clearClientLibs()', function(a){ $('#version').text(JSON.stringify(a));});
+      //window.close();
     });
 
     $('#lnk_clearCompiledJSPs').click(function(e){
       e.preventDefault();
-      //cachedEventPage.clearCompiledJSPs();
-      cachedEventPage.executeScript('AemDeveloper.clearCompiledJSPs()');
-      window.close();
+      cachedEventPage.executeScript('AemDeveloper.clearCompiledJSPs()', function(a){ $('#version').text(JSON.stringify(a));});
+      //window.close();
     });
 
     $('#lnk_digitalPulseDebugger').click(function(e){
       e.preventDefault();
-      cachedEventPage.openDigitalPulseDebugger();
-      window.close();
+      cachedEventPage.executeScript('AemDeveloper.openDigitalPulseDebugger()', function(a){ $('#version').text(JSON.stringify(a));});
+      //window.close();
     });
 
     $('#lnk_siteAdminToggle').click(function(e){
