@@ -51,6 +51,11 @@ window.addEventListener('load', function(evt) {
       //window.close();
     });
 
+    $('#lnk_clientContextWindow').click(function(e){
+      e.preventDefault();
+      cachedEventPage.executeScript('AemDeveloper.openClientContextWindow()', function(a){ $('#version').text(JSON.stringify(a));});
+    });
+
     $('#lnk_siteAdminToggle').click(function(e){
       e.preventDefault();
 

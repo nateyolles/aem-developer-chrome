@@ -25,6 +25,10 @@
     "scripts": ["background.js"],
     "persistent": false
   },
+
+  "externally_connectable": {
+    "matches": ["http://*/*", "https://*/*"]
+  },
   
-  "permissions": ["tabs", "http://*/*", "https://*/*"]
+  "permissions": ["tabs", "notifications", "http://*/*", "https://*/*"]
 }

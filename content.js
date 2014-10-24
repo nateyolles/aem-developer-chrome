@@ -15,6 +15,16 @@ var AemDeveloper = (function(window, $, undefined) {
     chrome.runtime.sendMessage({status: 'dpd good'});
   }
 
+  /* doesn't work! */
+  function openClientContextWindow() {
+    if (typeof CQ_Analytics !== 'undefined' && CQ_Analytics.ClientContextUI) {
+      CQ_Analytics.ClientContextUI.show();
+      chrome.runtime.sendMessage({status: 'clientcontext good'});
+    } else {
+      chrome.runtime.sendMessage({status: 'no CQ_Analytics'});
+    }
+  }
+
   function deleteQueryResults(query, message) {
     $.ajax({
       type: 'GET',
@@ -60,6 +70,7 @@ var AemDeveloper = (function(window, $, undefined) {
   return {
     openDigitalPulseDebugger : openDigitalPulseDebugger,
     clearClientLibs : clearClientLibs,
-    clearCompiledJSPs : clearCompiledJSPs
+    clearCompiledJSPs : clearCompiledJSPs,
+    openClientContextWindow : openClientContextWindow
   };
 })(window, $);
