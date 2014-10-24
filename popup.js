@@ -35,13 +35,15 @@ window.addEventListener('load', function(evt) {
 
     $('#lnk_clearClientLibs').click(function(e){
       e.preventDefault();
-      cachedEventPage.clearClientLibs();
+      //cachedEventPage.clearClientLibs();
+      cachedEventPage.executeScript('AemDeveloper.clearClientLibs()');
       window.close();
     });
 
     $('#lnk_clearCompiledJSPs').click(function(e){
       e.preventDefault();
-      cachedEventPage.clearCompiledJSPs();
+      //cachedEventPage.clearCompiledJSPs();
+      cachedEventPage.executeScript('AemDeveloper.clearCompiledJSPs()');
       window.close();
     });
 
