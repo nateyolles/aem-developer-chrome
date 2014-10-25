@@ -6,20 +6,21 @@
         <script src="angular.min.js"></script>
         <script src="ngStorage.min.js"></script>
         <script src="options.js"></script>
+        <link rel="stylesheet" href="style/angular-csp.css" />
         <link rel="stylesheet" href="style/popup.css" />
     </head>
     <body>
-        <form ng-controller="OptionsController">
-            <div ng-repeat="server in options.servers">
-                <input placeholder="name" ng-model="server.name">
-                <input placeholder="url" ng-model="server.url">
-                <button ng-click="remove($index)">remove </button>
+        <form data-ng-controller="OptionsController">
+            <div data-ng-repeat="server in options.servers">
+                <input placeholder="name" data-ng-model="server.name">
+                <input placeholder="url" data-ng-model="server.url">
+                <button data-ng-click="remove($index)">remove </button>
                 <hr>
             </div>
             <form name="addUserForm">
-                <input placeholder="name" ng-model="newServer.name" required>
-                <input placeholder="url" ng-model="newServer.url" required>
-                <button ng-click="add()"> add </button>
+                <input placeholder="name" data-ng-model="newServer.name" required>
+                <input placeholder="url" data-ng-model="newServer.url" required>
+                <button data-ng-click="add()"> add </button>
                 <hr>
             </form>
         </form>

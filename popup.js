@@ -7,11 +7,35 @@ window.getQueryParameters = function(str) {
   return (str || document.location.search).replace(/(^\?)/,'').split("&").map(function(n){return n=n.split("="),this[n[0]]=n[1],this;}.bind({}))[0];
 };
 
+var app = angular.module('PopupApp', ['ngStorage']);
+
+app.controller('PopupController', function($scope, $localStorage, $http){
+
+  $scope.servers = $localStorage.$default({
+    servers: [
+      {name: 'Local Author', url: 'http://localhost:4502/'},
+      {name: 'Local Publish', url: 'http://localhost:4503/'}
+    ]
+  });
+
+  $scope.test = false;
+
+  $scope.version = {
+    current: chrome.app.getDetails().version,
+    latest: 0
+  };
+
+  var responsePromise = $http.get('https://raw.githubusercontent.com/nyolles/aem-developer-chrome/master/manifest.json');
+
+  responsePromise.success(function(data, status, headers, config) {
+      $scope.version.latest = data.version;
+  });
+});
+
 // This callback function is called when the content script has been 
 // injected and returned its results
 var cachedEventPage,
-    pageDetails,
-    extensionVersion = chrome.app.getDetails().version;
+    pageDetails;
 
 // When the popup HTML has loaded
 window.addEventListener('load', function(evt) {
@@ -35,25 +59,25 @@ window.addEventListener('load', function(evt) {
 
     $('#lnk_clearClientLibs').click(function(e){
       e.preventDefault();
-      cachedEventPage.executeScript('AemDeveloper.clearClientLibs()', function(a){ $('#version').text(JSON.stringify(a));});
+      cachedEventPage.executeScript('AemDeveloper.clearClientLibs()', function(a){ $('#status').text(JSON.stringify(a));});
       //window.close();
     });
 
     $('#lnk_clearCompiledJSPs').click(function(e){
       e.preventDefault();
-      cachedEventPage.executeScript('AemDeveloper.clearCompiledJSPs()', function(a){ $('#version').text(JSON.stringify(a));});
+      cachedEventPage.executeScript('AemDeveloper.clearCompiledJSPs()', function(a){ $('#status').text(JSON.stringify(a));});
       //window.close();
     });
 
     $('#lnk_digitalPulseDebugger').click(function(e){
       e.preventDefault();
-      cachedEventPage.executeScript('AemDeveloper.openDigitalPulseDebugger()', function(a){ $('#version').text(JSON.stringify(a));});
+      cachedEventPage.executeScript('AemDeveloper.openDigitalPulseDebugger()', function(a){ $('#status').text(JSON.stringify(a));});
       //window.close();
     });
 
     $('#lnk_clientContextWindow').click(function(e){
       e.preventDefault();
-      cachedEventPage.executeScript('AemDeveloper.openClientContextWindow()', function(a){ $('#version').text(JSON.stringify(a));});
+      cachedEventPage.executeScript('AemDeveloper.openClientContextWindow()', function(a){ $('#status').text(JSON.stringify(a));});
     });
 
     $('#lnk_siteAdminToggle').click(function(e){
@@ -174,23 +198,7 @@ window.addEventListener('load', function(evt) {
       }
 
       return origin + pathname + updatedSearchString + hash;
-    }
-
-    $('#version').text(extensionVersion);
-
-    // check if version is up to date
-    $.ajax({
-      type: 'GET',
-      dataType: 'json',
-      cache: false,
-      url: 'https://raw.githubusercontent.com/nyolles/aem-developer-chrome/master/manifest.json',
-      success: function(data, status, jqXHR){
-        if (data && data.version && data.version > extensionVersion) {
-          $('#update-container').show();
-        }
-      }
-    });
-
+    }    
 });
 
 function setTabLocation(url) {

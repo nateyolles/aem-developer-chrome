@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html data-ng-app="PopupApp" data-ng-csp>
     <head>
         <script src="jquery.min.js"></script>
+        <script src="angular.min.js"></script>
+        <script src="ngStorage.min.js"></script>
         <script src="popup.js"></script>
+        <link rel="stylesheet" href="style/angular-csp.css" />
         <link rel="stylesheet" href="style/popup.css" />
     </head>
-    <body>
+    <body data-ng-controller="PopupController">
         <div style="width:200px">
             <p><a href="options.html">options</a></p>
             <p><a id="lnk_siteAdminToggle" href="#">siteadmin page toggle</a></p>
@@ -29,7 +32,10 @@
             <p><a class="redirect" href="#" data-link="/crx/explorer">CRX Explorer</a></p>
             <p><a id="lnk_clearClientLibs" href="#">Clear ClientLibs</a></p>
             <p><a id="lnk_clearCompiledJSPs" href="#">Clear Compiled JSPs</a></p>
-            <p>Version: <span id="version"></span> <span id="update-container" class="hidden"><a href="http://www.google.com" target="_blank">Get updated Version</a></span></p>
+            <p>Version: <span data-ng-bind="version.current"></span> <span data-ng-show="version.current < version.latest"><a href="#" target="_blank">Get updated Version</a></span></p>
+
+            <p id="status">temp</p>
+
         </div>
     </body>
 </html>
