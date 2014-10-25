@@ -11,19 +11,29 @@ var app = angular.module('PopupApp', ['ngStorage']);
 
 app.controller('PopupController', function($scope, $localStorage, $http){
 
-  $scope.servers = $localStorage.$default({
+  $scope.options = $localStorage.$default({
     servers: [
-      {name: 'Local Author', url: 'http://localhost:4502/'},
-      {name: 'Local Publish', url: 'http://localhost:4503/'}
+      {name: 'Local Author', url: 'http://localhost:4502'},
+      {name: 'Local Publish', url: 'http://localhost:4503'}
     ]
   });
 
-  $scope.test = false;
+  $scope.redirectToEnvironment = function(index){
+    var newOrigin = $scope.options.servers[index].url;
+
+    /** Remove trailing slash */
+    if (newOrigin[newOrigin.length - 1] === '/') {
+      newOrigin = newOrigin.substr(0, newOrigin.length - 1);
+    }
+
+    setTabLocation(newOrigin + pageDetails.location.pathname + pageDetails.location.search + pageDetails.location.hash);
+  };
 
   $scope.version = {
     current: chrome.app.getDetails().version,
     latest: 0
   };
+
 
   var responsePromise = $http.get('https://raw.githubusercontent.com/nyolles/aem-developer-chrome/master/manifest.json');
 

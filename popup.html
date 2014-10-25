@@ -11,6 +11,11 @@
     <body data-ng-controller="PopupController">
         <div style="width:200px">
             <p><a href="options.html">options</a></p>
+            <hr>
+            <div>
+                <p data-ng-repeat="server in options.servers"><a href="#" class="outside-redirect" ng-click="redirectToEnvironment($index)" data-link="{{server.url}}" data-ng-bind="server.name"></a><p>
+            </div>
+            <hr>
             <p><a id="lnk_siteAdminToggle" href="#">siteadmin page toggle</a></p>
             <p><a id="lnk_clientContextWindow" href="#">Open Client Context Window</a></p>
             <p><a id="lnk_digitalPulseDebugger" href="#">Open DigitalPulse Debugger</a></p>
