@@ -2,7 +2,7 @@ var globalCallback;
 
 chrome.runtime.onMessage.addListener(function(message) {
   globalCallback(message);
-}); 
+});
 
 // This function is called onload in the popup code
 function getPageDetails(callback) {

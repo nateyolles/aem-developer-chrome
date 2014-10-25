@@ -26,9 +26,12 @@
     "persistent": false
   },
 
-  "externally_connectable": {
-    "matches": ["http://*/*", "https://*/*"]
-  },
+  // must be 2nd level domain at least :(
+  // "externally_connectable": {
+  //   "matches": ["http://*/*", "https://*/*"]
+  // },
+
+  "options_page": "options.html",
   
   "permissions": ["tabs", "notifications", "http://*/*", "https://*/*"]
 }

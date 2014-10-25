@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html data-ng-app="OptionsApp" data-ng-csp>
+    <head>
+        <title>AEM Developer Options</title>
+        <script src="jquery.min.js"></script>
+        <script src="angular.min.js"></script>
+        <script src="ngStorage.min.js"></script>
+        <script src="options.js"></script>
+        <link rel="stylesheet" href="style/popup.css" />
+    </head>
+    <body>
+        <form ng-controller="OptionsController">
+            <div ng-repeat="server in options.servers">
+                <input placeholder="name" ng-model="server.name">
+                <input placeholder="url" ng-model="server.url">
+                <button ng-click="remove($index)">remove </button>
+                <hr>
+            </div>
+            <form name="addUserForm">
+                <input placeholder="name" ng-model="newServer.name" required>
+                <input placeholder="url" ng-model="newServer.url" required>
+                <button ng-click="add()"> add </button>
+                <hr>
+            </form>
+        </form>
+    </body>
+</html>
