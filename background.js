@@ -8,7 +8,7 @@ chrome.runtime.onMessage.addListener(function(message) {
 function getPageDetails(callback) {
   globalCallback = callback;
   // Inject the content script into the current page 
-  chrome.tabs.executeScript(null, { file: 'js/jquery.min.js' });
+  chrome.tabs.executeScript(null, { file: 'jquery.min.js' });
   chrome.tabs.executeScript(null, { file: 'content.js' });
 }
 

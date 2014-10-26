@@ -1,4 +1,4 @@
-var app = angular.module('PopupApp', ['ngStorage', 'ui.bootstrap']),
+var app = angular.module('PopupApp', ['ngStorage']),
     MANIFEST_URL = 'https://raw.githubusercontent.com/nateyolles/aem-developer-chrome/master/manifest.json',
     cachedEventPage,
     pageDetails;
