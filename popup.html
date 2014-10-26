@@ -9,39 +9,169 @@
         <script src="popup.js"></script>
         <link rel="stylesheet" href="css/angular-csp.css" />
         <link rel="stylesheet" href="css/popup.css" />
+        <link rel="stylesheet" href="css/icons.css" />
     </head>
     <body data-ng-controller="PopupController">
-        <div style="width:200px">
-            <p><a href="options.html">options</a></p>
-            <hr>
-            <div>
-                <p data-ng-repeat="server in options.servers"><a href="#" class="outside-redirect" ng-click="redirectToEnvironment($index)" data-link="{{server.url}}" data-ng-bind="server.name"></a><p>
-            </div>
-            <hr>
+        <div class="body">
+            <section>
+                <ul>
+                    <li class="clearfix">
+                        <h3>WCM Mode</h3>
+                        <div class="content btn-group">
+                            <button class="querystring" data-querystring-key="wcmmode" data-querystring-value="design">Design</button>
+                            <button class="querystring" data-querystring-key="wcmmode" data-querystring-value="disabled">Disabled</button>
+                            <button class="querystring" data-querystring-key="wcmmode">Edit</button>
+                            <button class="querystring" data-querystring-key="wcmmode" data-querystring-value="preview">Preview</button>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <ul>
+                    <li class="clearfix">
+                        <h3>Debug Clientlibs</h3>
+                        <div class="content btn-group">
+                            <button class="querystring" data-querystring-key="debugClientLibs" data-querystring-value="true">On</button>
+                            <button class="querystring" data-querystring-key="debugClientLibs">Off</button>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <ul>
+                    <li class="clearfix">
+                        <h3>Toggle UI</h3>
+                        <div class="content btn-group">
+                            <button>Classic</button>
+                            <button>Touch</button>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <ul data-ng-click="collapseA = !collapseA">
+                    <li class="accordion clearfix">
+                        <h3>Open page in</h3>
+                        <i ng-class="{'icon-arrow-down': collapseA, 'icon-arrow-right': !collapseA}"></i>
+                    </li>
+                </ul>
+                <ul class="sublist" data-ng-show="collapseA">
+                    <li data-ng-repeat="server in options.servers" data-ng-show="editMode">
+                        <input placeholder="name" data-ng-model="server.name">
+                        <input placeholder="url" data-ng-model="server.url">
+                        <i data-ng-click="remove($index)" class="icon-minus"></i>
+                    </li>
+                    <li  data-ng-show="editMode">
+                        <input placeholder="name" data-ng-model="newServer.name" required>
+                        <input placeholder="url" data-ng-model="newServer.url" required>
+                        <i data-ng-click="add()" class="icon-plus"></i>
+                    </li>
+                    <li data-ng-repeat="server in options.servers" data-ng-show="!editMode"><a href="#" class="outside-redirect" ng-click="redirectToEnvironment($index)" data-link="{{server.url}}" data-ng-bind="server.name"></a></li>
+                    <li class="edit" data-ng-click="changeEditMode()" data-ng-bind="editMode ? 'Done' : 'Edit'">Edit</li>
+                </ul>
+            </section>
+
+            <section>
+                <ul data-ng-click="collapseB = !collapseB">
+                    <li class="accordion clearfix">
+                        <h3>Clear Caches</h3>
+                        <i ng-class="{'icon-arrow-down': collapseB, 'icon-arrow-right': !collapseB}"></i>
+                    </li>
+                </ul>
+                <ul class="sublist" data-ng-show="collapseB">
+                    <li><a id="lnk_clearClientLibs" href="#">Delete cached clientlibs</a></li>
+                    <li><a id="lnk_clearCompiledJSPs" href="#">Clear compiled JSPs</a></li>
+                </ul>
+            </section>
+
+            <section>
+                <ul data-ng-click="collapseC = !collapseC">
+                    <li class="accordion clearfix">
+                        <h3>Web Console</h3>
+                        <i ng-class="{'icon-arrow-down': collapseC, 'icon-arrow-right': !collapseC}"></i>
+                    </li>
+                </ul>
+                <ul class="sublist" data-ng-show="collapseC">
+                    <li><a class="redirect" href="#" data-link="/system/console/bundles">Bundles</a></li>
+                    <li><a class="redirect" href="#" data-link="/system/console/components">Components</a></li>
+                    <li><a class="redirect" href="#" data-link="/system/console/configMgr">Configuration</a></li>
+                    <li><a class="redirect" href="#" data-link="/system/console/status-slinglogs">Log Files</a></li>
+                    <li><a class="redirect" href="#" data-link="/system/console/requests">Recent Requests</a></li>
+                </ul>
+            </section>
+
+            <section>
+                <ul data-ng-click="collapseD = !collapseD">
+                    <li class="accordion clearfix">
+                        <h3>AEM Common Pages</h3>
+                        <i ng-class="{'icon-arrow-down': collapseD, 'icon-arrow-right': !collapseD}"></i>
+                    </li>
+                </ul>
+                <ul class="sublist" data-ng-show="collapseD">
+                    <li><a class="redirect" href="#" data-link="/mcmadmin">Campaigns</a></li>
+                    <li><a class="redirect" href="#" data-link="/crx/de">CRXDE Lite</a></li>
+                    <li><a class="redirect" href="#" data-link="/crx/explorer">CRX Explorer</a></li>
+                    <li><a class="redirect" href="#" data-link="/damadmin">Digital Assets</a></li>
+                    <li><a class="redirect" href="#" data-link="/crx/packmgr/">Package Manager</a></li>
+                    <li><a class="redirect" href="#" data-link="/miscadmin">Tools</a></li>
+                    <li><a class="redirect" href="#" data-link="/siteadmin">Websites</a></li>
+                    <li><a class="redirect" href="#" data-link="/libs/cq/core/content/welcome.html">Welcome</a></li>
+                </ul>
+            </section>
+
+            <section data-ng-show="version.current < version.latest">
+                <ul>
+                    <li class="clearfix">
+                        <h3>This extension is out of date</h3>
+                        <div class="content btn-group">
+                            <button>Update</button>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="outer-section">
+                <div class="clearfix">
+                    <a href="#" data-ng-click="collapseE = !collapseE" class="light pull-right">About <i data-ng-class="{'icon-info': !collapseE, 'icon-cross2': collapseE}"></i></a>
+                </div>
+                <div class="inner-section" data-ng-show="collapseE">
+                    <img class="pull-right" src="/images/icon48.png">
+                    <h3>AEM Developer</h3>
+                    <p>This is a simple Chrome Extension written with AngularJS. It provides common links
+                    that the AEM developer uses on a daily basis, does a little string manipulation to
+                    alter the browser's location, and makes a few AJAX calls to the JCR.</p>
+
+                    <p>I'm a Senior AEM Engineer at Adobe. This is a little side project of mine and is not
+                    an Adobe project.</p>
+
+                    <p>I'd love to hear feedback and suggestions.</p>
+                    
+                    <ul class="contact">
+                        <li><strong>Nate Yolles</strong></li>
+                        <li><i class="icon-twitter"></i> <a href="https://twitter.com/nateyolles" target="_blank">@nateyolles</a></li>
+                        <li><i class="icon-mail"></i> <a href="mailto:yolles@adobe.com" target="_blank">yolles@adobe.com</a></li>
+                        <li><i class="icon-github"></i> <a href="https://github.com/nateyolles" target="_blank">github.com/nateyolles/</a></li>
+                        <li><i class="icon-linkedin"></i> <a href="http://www.linkedin.com/in/nateyolles/" target="_blank">linkedin.com/in/nateyolles</a></li>
+                    </ul>
+                </div>
+            </section>
+
+
+<!-- 
             <p><a id="lnk_siteAdminToggle" href="#">siteadmin page toggle</a></p>
             <p><a id="lnk_clientContextWindow" href="#">Open Client Context Window</a></p>
             <p><a id="lnk_digitalPulseDebugger" href="#">Open DigitalPulse Debugger</a></p>
-            <p><a class="querystring" href="#" data-querystring-key="wcmmode">edit mode</a></p>
-            <p><a class="querystring" href="#" data-querystring-key="wcmmode" data-querystring-value="disabled">disabled mode</a></p>
-            <p><a class="querystring" href="#" data-querystring-key="wcmmode" data-querystring-value="preview">preview mode</a></p>
-            <p><a class="querystring" href="#" data-querystring-key="wcmmode" data-querystring-value="design">design mode</a></p>
-            <p><a class="querystring" href="#" data-querystring-key="debugClientLibs" data-querystring-value="true">debug client libs on</a></p>
-            <p><a class="querystring" href="#" data-querystring-key="debugClientLibs">debug client libs off</a></p>
-            <p><a class="redirect" href="#" data-link="/libs/cq/core/content/welcome.html">Welcome</a></p> 
-            <p><a class="redirect" href="#" data-link="/crx/packmgr/">Package Manager</a></p>
-            <p><a class="redirect" href="#" data-link="/siteadmin">Websites</a></p>
-            <p><a class="redirect" href="#" data-link="/miscadmin">Tools</a></p>
-            <p><a class="redirect" href="#" data-link="/mcmadmin">Campaigns</a></p>
-            <p><a class="redirect" href="#" data-link="/crx/de">CRXDE Lite</a></p>
-            <p><a class="redirect" href="#" data-link="/damadmin">Digital Assets</a></p>
-            <p><a class="redirect" href="#" data-link="/system/console/bundles">Felix Console Bundles</a></p>
-            <p><a class="redirect" href="#" data-link="/system/console/components">Felix console Components</a></p>
-            <p><a class="redirect" href="#" data-link="/crx/explorer">CRX Explorer</a></p>
-            <p><a id="lnk_clearClientLibs" href="#">Clear ClientLibs</a></p>
-            <p><a id="lnk_clearCompiledJSPs" href="#">Clear Compiled JSPs</a></p>
-            <p>Version: <span data-ng-bind="version.current"></span> <span data-ng-show="version.current < version.latest"><a href="#" target="_blank">Get updated Version</a></span></p>
+            
+            
+            
+            
+            
 
-            <p id="status">temp</p>
+
+            <p id="status">temp</p> -->
 
         </div>
     </body>

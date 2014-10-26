@@ -1,1 +1,167 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 13px;
+}
+
+
+
+a {
+  color: #5e5e5e;
+  text-decoration: none;
+}
+
+a.light {
+  color: #c8c8c8;
+}
+
+.pull-right {
+  float: right;
+}
+
+.body {
+  background: #7e7e7e;
+  padding: 0;
+  width: 450px;
+  padding-top: 2px;
+}
+
+section {
+  background: #f5f5f5;
+  border: solid 1px #5e5e5e;
+  color: #5e5e5e;
+  margin: 8px;
+}
+
+section.outer-section {
+  background: transparent;
+  border: 0;
+  margin-bottom: 0;
+  padding-bottom: 8px;
+}
+
+.inner-section {
+  background: #f5f5f5;
+  border: solid 1px #5e5e5e;
+  color: #5e5e5e;
+  margin: 0;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.inner-section li {
+  border: 0;
+  padding: 0 0 5px;
+}
+
+.inner-section h3 {
+  font-weight: bold;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+li {
+  border-bottom: solid 1px #c8c8c8;
+  padding: 10px;
+}
+
+li.accordion {
+  cursor: pointer;
+}
+
+li.accordion i {
+  float: right;
+  margin-top: 8px;
+}
+
+li.edit {
+  font-size: 11px;
+  text-align: right;
+}
+
+li:last-child {
+  border: none;
+}
+
+ul.sublist {
+  border-top: solid 1px #c8c8c8;
+}
+
+button {
+  border: solid 1px #5e5e5e;
+  background: #d9d9d9;
+  outline: none;
+  font-size: 12px;
+  color: #5e5e5e;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+button.active {
+  background: #b5b5b5;
+}
+
+button:hover {
+  background: #b5b5b5;
+}
+
+button:active {
+  box-shadow: inset 0px 2px 4px 0px rgba(0,0,0,0.25);
+}
+
+h3 {
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  font-weight: normal;
+  display: inline;
+  line-height: 29px;
+}
+
+.content {
+  float: right;
+  margin: 0;
+  padding: 0;
+  display: inline;
+}
+
+.btn-group {
+  font-size: 0;
+}
+
+.btn-group button {
+ margin: 0;
+ border-left-width: 0;
+ font-size: 12px;
+}
+
+.btn-group button:first-child {
+  border-left-width: 1px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.btn-group button:last-child {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.clearfix:after {
+   visibility: hidden;
+   display: block;
+   font-size: 0;
+   content: '';
+   clear: both;
+   height: 0;
+}
+
+.contact i {
+  font-size: 15px;
+}
+
 .hidden { display: none; }

@@ -4,7 +4,7 @@
   "name": "AEM Developer",
   "version": "0.1",
   "description": "Tools for AEM developers.",
-  "homepage_url": "https://github.com/nyolles/aem-developer-chrome/",
+  "homepage_url": "https://github.com/nateyolles/aem-developer-chrome/",
 
   "icons": {
     "16" : "images/icon16.png",
@@ -26,12 +26,5 @@
     "persistent": false
   },
 
-  // must be 2nd level domain at least :(
-  // "externally_connectable": {
-  //   "matches": ["http://*/*", "https://*/*"]
-  // },
-
-  "options_page": "options.html",
-  
   "permissions": ["tabs", "notifications", "http://*/*", "https://*/*"]
 }
