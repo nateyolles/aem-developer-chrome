@@ -54,7 +54,7 @@
             <section>
                 <ul data-ng-click="collapseA = !collapseA">
                     <li class="accordion clearfix">
-                        <h3>Open page in</h3>
+                        <h3>Open Page in...</h3>
                         <i ng-class="{'icon-arrow-down': collapseA, 'icon-arrow-right': !collapseA}"></i>
                     </li>
                 </ul>
@@ -70,7 +70,8 @@
                         <i data-ng-click="add()" class="icon-plus"></i>
                     </li>
                     <li data-ng-repeat="server in options.servers" data-ng-show="!editMode"><a href="#" class="outside-redirect" ng-click="redirectToEnvironment($index)" data-link="{{server.url}}" data-ng-bind="server.name"></a></li>
-                    <li class="edit" data-ng-click="changeEditMode()" data-ng-bind="editMode ? 'Done' : 'Edit'">Edit</li>
+                    <li class="edit" data-ng-click="changeEditMode()" data-ng-show="!editMode">Edit <i class="icon-pencil"></i></li>
+                    <li class="edit" data-ng-click="changeEditMode()" data-ng-show="editMode">Done <i class="icon-disk"></i></li>
                 </ul>
             </section>
 
@@ -95,7 +96,7 @@
                     </li>
                 </ul>
                 <ul class="sublist" data-ng-show="collapseC">
-                    <li><a class="redirect" href="#" data-link="/system/console/bundles">Bundles</a></li>
+                    <li><a class="redirect" href="#" data-link="/system/console/bundles">Bundles</a><i class="pull-right icon-help"></i></li>
                     <li><a class="redirect" href="#" data-link="/system/console/components">Components</a></li>
                     <li><a class="redirect" href="#" data-link="/system/console/configMgr">Configuration</a></li>
                     <li><a class="redirect" href="#" data-link="/system/console/status-slinglogs">Log Files</a></li>
@@ -164,12 +165,6 @@
             <p><a id="lnk_siteAdminToggle" href="#">siteadmin page toggle</a></p>
             <p><a id="lnk_clientContextWindow" href="#">Open Client Context Window</a></p>
             <p><a id="lnk_digitalPulseDebugger" href="#">Open DigitalPulse Debugger</a></p>
-            
-            
-            
-            
-            
-
 
             <p id="status">temp</p> -->
 

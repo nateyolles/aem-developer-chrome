@@ -8,7 +8,7 @@ html, body {
 
 
 a {
-  color: #5e5e5e;
+  color: #0051FF;
   text-decoration: none;
 }
 
@@ -79,9 +79,14 @@ li.accordion i {
   margin-top: 8px;
 }
 
-li.edit {
+ul.sublist li.edit {
   font-size: 11px;
   text-align: right;
+  padding: 5px;
+}
+
+li.edit i {
+  font-size: 15px;
 }
 
 li:last-child {
@@ -90,6 +95,10 @@ li:last-child {
 
 ul.sublist {
   border-top: solid 1px #c8c8c8;
+}
+
+ul.sublist li {
+  padding: 18px 10px;
 }
 
 button {
