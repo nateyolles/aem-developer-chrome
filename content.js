@@ -38,22 +38,22 @@ var AemDeveloper = (function(window, $, undefined) {
               url: data.results[i].path,
               done: function(data, status, jqXHR){
                 //alert('Success: ' + message + ' cache cleared.');
-                chrome.runtime.sendMessage({status: message + ' cache cleared.'});
+                chrome.runtime.sendMessage({status: 'success'});
               },
               fail: function(jqXHR, status, error) {
                 //alert('Error: ' + message + ' cached failed to clear.');
-                chrome.runtime.sendMessage({status: message + ' cached failed to clear.'});
+                chrome.runtime.sendMessage({status: 'fail'});
               }
             });
           }
         } else {
           //alert('No ' + message + ' cache to be cleared.');
-          chrome.runtime.sendMessage({status: 'No ' + message + ' cache to be cleared.'});
+          chrome.runtime.sendMessage({status: 'noaction'});
         }
       },
       error: function(jqXHR, status, error) {
         //alert('Error: ' + message + ' cached failed to clear.');
-        chrome.runtime.sendMessage({status: status});
+        chrome.runtime.sendMessage({status: 'fail'});
       }
     });
   }

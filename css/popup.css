@@ -5,7 +5,14 @@ html, body {
   font-size: 13px;
 }
 
+input, button {
+  font-family: Helvetica,Arial,sans-serif;
+}
 
+input {
+  width: 180px;
+  height: 14px;
+}
 
 a {
   color: #0051FF;
@@ -187,11 +194,44 @@ h3 {
 }
 
 ul.sublist li:hover i.icon-new-window {
--webkit-animation: myfirst .5s;
+  -webkit-animation: slideIn .5s;
   -webkit-animation-fill-mode: forwards;
 }
 
-@-webkit-keyframes myfirst {
-    0% {margin-right: -25px;}
-    100% {margin-right: 0px;}
+@-webkit-keyframes slideIn {
+  0% {margin-right: -25px;}
+  100% {margin-right: 0px;}
+}
+
+.success {
+  -webkit-animation: fadeSuccess 3s;
+  -webkit-animation-fill-mode: forwards;
+}
+
+.fail {
+  -webkit-animation: fadeFail 3s;
+  -webkit-animation-fill-mode: forwards;
+}
+
+.noaction {
+  -webkit-animation: fadeNoAction 3s;
+  -webkit-animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes fadeSuccess {
+  0% {background-color: #f5f5f5;}
+  10% {background-color: #3c763d;}
+  100% {background-color: #f5f5f5;}
+}
+
+@-webkit-keyframes fadeFail {
+  0% {background-color: #f5f5f5;}
+  10% {background-color: #a94442;}
+  100% {background-color: #f5f5f5;}
+}
+
+@-webkit-keyframes fadeNoAction {
+  0% {background-color: #f5f5f5;}
+  10% {background-color: #cccc00;}
+  100% {background-color: #f5f5f5;}
 }

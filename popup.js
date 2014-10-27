@@ -88,14 +88,20 @@ window.addEventListener('load', function(evt) {
 
   $('#lnk_clearClientLibs').click(function(e){
     e.preventDefault();
-    cachedEventPage.executeScript('AemDeveloper.clearClientLibs()', function(a){ $('#status').text(JSON.stringify(a));});
-    //window.close();
+    var target = e.target;
+
+    cachedEventPage.executeScript('AemDeveloper.clearClientLibs()', function(status){
+      showStatus(target, status);
+    });
   });
 
   $('#lnk_clearCompiledJSPs').click(function(e){
     e.preventDefault();
-    cachedEventPage.executeScript('AemDeveloper.clearCompiledJSPs()', function(a){ $('#status').text(JSON.stringify(a));});
-    //window.close();
+    var target = e.target;
+
+    cachedEventPage.executeScript('AemDeveloper.clearCompiledJSPs()', function(status){
+      showStatus(target, status);
+    });
   });
 
   $('#lnk_digitalPulseDebugger').click(function(e){
@@ -243,6 +249,16 @@ function getUrlWithUpdatedQueryString(location, key, value) {
   }
 
   return origin + pathname + updatedSearchString + hash;
+}
+
+function showStatus(target, response) {
+  var color,
+      $container = $(target).parents('li');
+
+  $container.addClass(response.status);
+  setTimeout(function(){
+    $container.removeClass(response.status);
+  },1500);
 }
 
 /**
