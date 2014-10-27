@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'aem-developer';
-	src:url('fonts/aem-developer.eot?-xg8w48');
-	src:url('fonts/aem-developer.eot?#iefix-xg8w48') format('embedded-opentype'),
-		url('fonts/aem-developer.woff?-xg8w48') format('woff'),
-		url('fonts/aem-developer.ttf?-xg8w48') format('truetype'),
-		url('fonts/aem-developer.svg?-xg8w48#aem-developer') format('svg');
+	src:url('fonts/aem-developer.eot?n434f5');
+	src:url('fonts/aem-developer.eot?#iefixn434f5') format('embedded-opentype'),
+		url('fonts/aem-developer.woff?n434f5') format('woff'),
+		url('fonts/aem-developer.ttf?n434f5') format('truetype'),
+		url('fonts/aem-developer.svg?n434f5#aem-developer') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -23,6 +23,9 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icon-link-external:before {
+	content: "\f07f";
+}
 .icon-mail:before {
 	content: "\e60a";
 }

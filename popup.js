@@ -1,5 +1,6 @@
 var app = angular.module('PopupApp', ['ngStorage']),
     MANIFEST_URL = 'https://raw.githubusercontent.com/nateyolles/aem-developer-chrome/master/manifest.json',
+    EXTENSION_URL = 'http://www.google.com',
     cachedEventPage,
     pageDetails;
 
@@ -33,15 +34,23 @@ app.controller('PopupController', function($scope, $localStorage, $http){
     $scope.newServer.url = '';
   };
 
-  $scope.redirectToEnvironment = function(index){
-    var newOrigin = $scope.options.servers[index].url;
+  $scope.redirectToEnvironment = function(index, isNewWindow){
+    var newOrigin = $scope.options.servers[index].url,
+        newUrl;
 
     /** Remove trailing slash */
     if (newOrigin[newOrigin.length - 1] === '/') {
       newOrigin = newOrigin.substr(0, newOrigin.length - 1);
     }
 
-    setTabLocation(newOrigin + pageDetails.location.pathname + pageDetails.location.search + pageDetails.location.hash);
+    newUrl = newOrigin + pageDetails.location.pathname + pageDetails.location.search + pageDetails.location.hash;
+
+    if (isNewWindow) {
+      openNewTab(newUrl);
+    } else {
+      setTabLocation(newUrl);
+    }
+    window.close();
   };
 
   var responsePromise = $http.get(MANIFEST_URL);
@@ -98,6 +107,21 @@ window.addEventListener('load', function(evt) {
   $('#lnk_clientContextWindow').click(function(e){
     e.preventDefault();
     cachedEventPage.executeScript('AemDeveloper.openClientContextWindow()', function(a){ $('#status').text(JSON.stringify(a));});
+  });
+
+  $('.icon-new-window').click(function(e){
+    e.preventDefault();
+
+    var $this = $(e.target),
+        $a = $this.prev(),
+        url = $a.attr('data-link');
+
+    openNewTab(pageDetails.location.origin + url);
+  });
+
+  $('#update').click(function(e){
+    e.preventDefault();
+    openNewTab(EXTENSION_URL);
   });
 
   $('#lnk_siteAdminToggle').click(function(e){
@@ -228,4 +252,13 @@ function getUrlWithUpdatedQueryString(location, key, value) {
  */
 function setTabLocation(url) {
   chrome.tabs.update(null, {url: url});
+}
+
+/**
+ * Open a new browser tab.
+ *
+ * @param {string} url - The location the browser should navigate to in the new tab.
+ */
+function openNewTab(url) {
+  chrome.tabs.create({url: url});
 }

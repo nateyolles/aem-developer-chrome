@@ -99,6 +99,7 @@ ul.sublist {
 
 ul.sublist li {
   padding: 18px 10px;
+  overflow: hidden;
 }
 
 button {
@@ -173,4 +174,24 @@ h3 {
   font-size: 15px;
 }
 
-.hidden { display: none; }
+.icon-warning {
+  font-size: 16px;
+  color: #cc0000;
+}
+
+.icon-new-window {
+  float: right;
+  margin-right: -25px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+ul.sublist li:hover i.icon-new-window {
+-webkit-animation: myfirst .5s;
+  -webkit-animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes myfirst {
+    0% {margin-right: -25px;}
+    100% {margin-right: 0px;}
+}
