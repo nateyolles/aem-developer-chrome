@@ -3,6 +3,7 @@ html, body {
   padding: 0;
   font-family: Helvetica,Arial,sans-serif;
   font-size: 13px;
+  width: 450px;
 }
 
 input, button {
@@ -155,6 +156,18 @@ h3 {
  margin: 0;
  border-left-width: 0;
  font-size: 12px;
+}
+
+.btn-group button.end {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  margin-right: 10px;
+}
+
+.btn-group button.start {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border-left-width: 1px;
 }
 
 .btn-group button:first-child {
