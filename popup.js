@@ -20,7 +20,11 @@ app.controller('PopupController', function($scope, $localStorage, $http){
 
   $scope.editMode = false;
 
-  $scope.changeEditMode = function() {
+  $scope.changeEditMode = function(isSave) {
+    if (isSave && !$scope.newServer.name.isEmpty() && !$scope.newServer.url.isEmpty()) {
+      $scope.add();
+    }
+
     $scope.editMode = !$scope.editMode;
   }
 
@@ -278,3 +282,7 @@ function setTabLocation(url) {
 function openNewTab(url) {
   chrome.tabs.create({url: url});
 }
+
+String.prototype.isEmpty = function() {
+  return (this.length === 0 || !this.trim());
+};
