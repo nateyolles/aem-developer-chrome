@@ -53,6 +53,17 @@
             </section>
 
             <section>
+                <ul>
+                    <li class="clearfix">
+                        <h3>Marketing Cloud Debugger</h3>
+                        <div class="content btn-group">
+                            <button id="lnk_digitalPulseDebugger">Open</button>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
                 <ul data-ng-click="collapseA = !collapseA">
                     <li class="accordion clearfix">
                         <h3>Open Page in...</h3>
@@ -71,8 +82,8 @@
                         <i data-ng-click="add()" class="icon-plus"></i>
                     </li>
                     <li data-ng-repeat="server in options.servers" data-ng-show="!editMode"><a href="#" class="outside-redirect" ng-click="redirectToEnvironment($index, false)" data-link="{{server.url}}" data-ng-bind="server.name"></a><i class="icon-new-window icon-link-external" ng-click="redirectToEnvironment($index, true)"></i></li>
-                    <li class="edit" data-ng-click="changeEditMode()" data-ng-show="!editMode">Edit <i class="icon-pencil"></i></li>
-                    <li class="edit" data-ng-click="changeEditMode()" data-ng-show="editMode">Done <i class="icon-disk"></i></li>
+                    <li class="edit" data-ng-show="!editMode"><a href="#" data-ng-click="changeEditMode()">Edit <i class="icon-pencil"></i></a></li>
+                    <li class="edit" data-ng-show="editMode"><a href="#" data-ng-click="changeEditMode()">Done <i class="icon-disk"></i></a></li>
                 </ul>
             </section>
 
@@ -85,7 +96,7 @@
                 </ul>
                 <ul class="sublist" data-ng-show="collapseB">
                     <li><a id="lnk_clearClientLibs" href="#">Delete cached clientlibs</a></li>
-                    <li><a id="lnk_clearCompiledJSPs" href="#">Clear compiled JSPs</a></li>
+                    <li><a id="lnk_clearCompiledJSPs" href="#">Delete compiled JSPs</a></li>
                 </ul>
             </section>
 
@@ -153,7 +164,6 @@
                         <li><strong>Nate Yolles</strong></li>
                         <li><i class="icon-twitter"></i> <a href="https://twitter.com/nateyolles" target="_blank">@nateyolles</a></li>
                         <li><i class="icon-mail"></i> <a href="mailto:yolles@adobe.com" target="_blank">yolles@adobe.com</a></li>
-                        <li><i class="icon-github"></i> <a href="https://github.com/nateyolles" target="_blank">github.com/nateyolles/</a></li>
                         <li><i class="icon-linkedin"></i> <a href="http://www.linkedin.com/in/nateyolles/" target="_blank">linkedin.com/in/nateyolles</a></li>
                     </ul>
                 </div>
@@ -161,11 +171,8 @@
 
 
 <!-- 
-            <p><a id="lnk_siteAdminToggle" href="#">siteadmin page toggle</a></p>
-            <p><a id="lnk_clientContextWindow" href="#">Open Client Context Window</a></p>
-            <p><a id="lnk_digitalPulseDebugger" href="#">Open DigitalPulse Debugger</a></p>
+            <p><a id="lnk_clientContextWindow" href="#">Open Client Context Window</a></p>-->
 
-            <p id="status">temp</p> -->
 
         </div>
     </body>
