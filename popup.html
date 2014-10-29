@@ -82,8 +82,8 @@
                         <i data-ng-click="add()" class="icon-plus"></i>
                     </li>
                     <li data-ng-repeat="server in options.servers" data-ng-show="!editMode"><a href="#" class="outside-redirect" ng-click="redirectToEnvironment($index, false)" data-link="{{server.url}}" data-ng-bind="server.name"></a><i class="icon-new-window icon-link-external" ng-click="redirectToEnvironment($index, true)"></i></li>
-                    <li class="edit" data-ng-show="!editMode"><a href="#" data-ng-click="changeEditMode()">Edit <i class="icon-pencil"></i></a></li>
-                    <li class="edit" data-ng-show="editMode"><a href="#" data-ng-click="changeEditMode(true)">Done <i class="icon-disk"></i></a></li>
+                    <li class="edit" data-ng-show="!editMode"><a data-ng-click="changeEditMode()">Edit <i class="icon-pencil"></i></a></li>
+                    <li class="edit" data-ng-show="editMode"><a data-ng-click="changeEditMode()">Done <i class="icon-disk"></i></a></li>
                 </ul>
             </section>
 

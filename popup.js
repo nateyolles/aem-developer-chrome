@@ -13,6 +13,11 @@ app.controller('PopupController', function($scope, $localStorage, $http){
     ]
   });
 
+  $scope.newServer = {
+    name : '',
+    url: ''
+  }
+
   $scope.version = {
     current: chrome.app.getDetails().version,
     latest: 0
@@ -20,8 +25,8 @@ app.controller('PopupController', function($scope, $localStorage, $http){
 
   $scope.editMode = false;
 
-  $scope.changeEditMode = function(isSave) {
-    if (isSave && !$scope.newServer.name.isEmpty() && !$scope.newServer.url.isEmpty()) {
+  $scope.changeEditMode = function() {
+    if (!$scope.newServer.name.isEmpty() && !$scope.newServer.url.isEmpty()) {
       $scope.add();
     }
 

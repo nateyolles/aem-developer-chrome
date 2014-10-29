@@ -18,6 +18,7 @@ input {
 a {
   color: #0051FF;
   text-decoration: none;
+  cursor: pointer;
 }
 
 a.light {
@@ -106,7 +107,7 @@ ul.sublist {
 }
 
 ul.sublist li {
-  padding: 18px 10px;
+  padding: 8px 10px 6px;
   overflow: hidden;
 }
 
