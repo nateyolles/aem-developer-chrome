@@ -246,6 +246,6 @@ ul.sublist li:hover i.icon-new-window {
 
 @-webkit-keyframes fadeNoAction {
   0% {background-color: #f5f5f5;}
-  10% {background-color: #cccc00;}
+  10% {background-color: #ffff66;}
   100% {background-color: #f5f5f5;}
 }

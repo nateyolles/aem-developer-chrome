@@ -2,11 +2,6 @@
 <html data-ng-app="PopupApp" data-ng-csp>
     <head>
         <title>AEM Developer</title>
-        <script src="jquery.min.js"></script>
-        <script src="getqueryparameters.js"></script>
-        <script src="angular.min.js"></script>
-        <script src="ngStorage.min.js"></script>
-        <script src="popup.js"></script>
         <link rel="stylesheet" href="css/angular-csp.css" />
         <link rel="stylesheet" href="css/popup.css" />
         <link rel="stylesheet" href="css/icons.css" />
@@ -32,6 +27,8 @@
                     <li class="clearfix">
                         <h3>Debug Clientlibs</h3>
                         <div class="content btn-group">
+                            <button class="redirect" data-link="/libs/cq/ui/content/dumplibs.html">Welcome</button>
+                        
                             <button class="querystring" data-querystring-key="debugClientLibs" data-querystring-value="true">On</button>
                             <button class="querystring" data-querystring-key="debugClientLibs">Off</button>
                         </div>
@@ -112,7 +109,9 @@
                     <li><a class="redirect" href="#" data-link="/system/console/components">Components</a><i class="icon-new-window icon-link-external"></i></li>
                     <li><a class="redirect" href="#" data-link="/system/console/configMgr">Configuration</a><i class="icon-new-window icon-link-external"></i></li>
                     <li><a class="redirect" href="#" data-link="/system/console/status-slinglogs">Log Files</a><i class="icon-new-window icon-link-external"></i></li>
+                    <li><a class="redirect" href="#" data-link="/system/console/depfinder">Packages</a><i class="icon-new-window icon-link-external"></i></li>
                     <li><a class="redirect" href="#" data-link="/system/console/requests">Recent Requests</a><i class="icon-new-window icon-link-external"></i></li>
+                    <li><a class="redirect" href="#" data-link="/system/console/adapters">Sling Adapters</a><i class="icon-new-window icon-link-external"></i></li>
                 </ul>
             </section>
 
@@ -129,20 +128,10 @@
                     <li><a class="redirect" href="#" data-link="/crx/explorer">CRX Explorer</a><i class="icon-new-window icon-link-external"></i></li>
                     <li><a class="redirect" href="#" data-link="/damadmin">Digital Assets</a><i class="icon-new-window icon-link-external"></i></li>
                     <li><a class="redirect" href="#" data-link="/crx/packmgr/">Package Manager</a><i class="icon-new-window icon-link-external"></i></li>
+                    <li><a class="redirect" href="#" data-link="/libs/cq/search/content/querydebug.html">Query Builder Debugger</a><i class="icon-new-window icon-link-external"></i></li>
                     <li><a class="redirect" href="#" data-link="/miscadmin">Tools</a><i class="icon-new-window icon-link-external"></i></li>
                     <li><a class="redirect" href="#" data-link="/siteadmin">Websites</a><i class="icon-new-window icon-link-external"></i></li>
                     <li><a class="redirect" href="#" data-link="/libs/cq/core/content/welcome.html">Welcome</a><i class="icon-new-window icon-link-external"></i></li>
-                </ul>
-            </section>
-
-            <section data-ng-show="version.current < version.latest">
-                <ul>
-                    <li class="clearfix">
-                        <i class="icon-warning"></i> <h3>A newer version of this extension is available.</h3>
-                        <div class="content btn-group">
-                            <button id="update">Update</button>
-                        </div>
-                    </li>
                 </ul>
             </section>
 
@@ -175,5 +164,22 @@
 
 
         </div>
+
+        <script src="jquery.min.js"></script>
+        <script src="getqueryparameters.js"></script>
+        <script src="angular.min.js"></script>
+        <script src="ngStorage.min.js"></script>
+        <script src="popup.js"></script>
+
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://ssl.google-analytics.com/ga.js','ga');
+
+          ga('create', 'UA-56261124-1', 'auto');
+          ga('send', 'pageview');
+
+        </script>
     </body>
 </html>

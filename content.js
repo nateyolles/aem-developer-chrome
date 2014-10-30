@@ -15,32 +15,42 @@ var AemDeveloper = (function(window, $, undefined) {
     chrome.runtime.sendMessage({status: 'dpd good'});
   }
 
-  /* doesn't work! */
-  function openClientContextWindow() {
-    if (typeof CQ_Analytics !== 'undefined' && CQ_Analytics.ClientContextUI) {
-      CQ_Analytics.ClientContextUI.show();
-      chrome.runtime.sendMessage({status: 'clientcontext good'});
-    } else {
-      chrome.runtime.sendMessage({status: 'no CQ_Analytics'});
-    }
-  }
+  // /* doesn't work! */
+  // function openClientContextWindow() {
+  //   if (typeof CQ_Analytics !== 'undefined' && CQ_Analytics.ClientContextUI) {
+  //     CQ_Analytics.ClientContextUI.show();
+  //     chrome.runtime.sendMessage({status: 'clientcontext good'});
+  //   } else {
+  //     chrome.runtime.sendMessage({status: 'no CQ_Analytics'});
+  //   }
+  // }
 
   function deleteQueryResults(query, message) {
+    var succesLength = 0;
+
     $.ajax({
       type: 'GET',
       cache: false,
       url: query,
       success: function(data, status, jqXHR){
-        if (data.results.length > 0) {
-          for (var i = 0; i < data.results.length; i++) {
+        var resultLength = data.results.length;
+
+        if (resultLength > 0) {
+          for (var i = 0; i < resultLength; i++) {
+
             $.ajax({
               type: 'DELETE',
               url: data.results[i].path,
-              done: function(data, status, jqXHR){
+              success: function(data, status, jqXHR){
                 //alert('Success: ' + message + ' cache cleared.');
-                chrome.runtime.sendMessage({status: 'success'});
+                //chrome.runtime.sendMessage({status: 'success'});
+                succesLength++;
+
+                if (resultLength === succesLength) {
+                  chrome.runtime.sendMessage({status: 'success'});
+                }
               },
-              fail: function(jqXHR, status, error) {
+              error: function(jqXHR, status, error) {
                 //alert('Error: ' + message + ' cached failed to clear.');
                 chrome.runtime.sendMessage({status: 'fail'});
               }
@@ -70,7 +80,7 @@ var AemDeveloper = (function(window, $, undefined) {
   return {
     openDigitalPulseDebugger : openDigitalPulseDebugger,
     clearClientLibs : clearClientLibs,
-    clearCompiledJSPs : clearCompiledJSPs,
-    openClientContextWindow : openClientContextWindow
+    clearCompiledJSPs : clearCompiledJSPs
+    // openClientContextWindow : openClientContextWindow
   };
 })(window, $);

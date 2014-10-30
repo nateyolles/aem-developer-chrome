@@ -1,6 +1,6 @@
 var app = angular.module('PopupApp', ['ngStorage']),
     MANIFEST_URL = 'https://raw.githubusercontent.com/nateyolles/aem-developer-chrome/master/manifest.json',
-    EXTENSION_URL = 'http://www.google.com',
+    EXTENSION_URL = 'https://chrome.google.com/webstore/detail/aem-developer/hgjhcngmldfpgpakbnffnbnmcmohfmfc',
     cachedEventPage,
     pageDetails;
 
@@ -17,11 +17,6 @@ app.controller('PopupController', function($scope, $localStorage, $http){
     name : '',
     url: ''
   }
-
-  $scope.version = {
-    current: chrome.app.getDetails().version,
-    latest: 0
-  };
 
   $scope.editMode = false;
 
@@ -61,12 +56,6 @@ app.controller('PopupController', function($scope, $localStorage, $http){
     }
     window.close();
   };
-
-  var responsePromise = $http.get(MANIFEST_URL);
-
-  responsePromise.success(function(data, status, headers, config) {
-      $scope.version.latest = data.version;
-  });
 });
 
 window.addEventListener('load', function(evt) {
@@ -89,7 +78,7 @@ window.addEventListener('load', function(evt) {
     $(this).addClass('active');
   });
 
-  $('a.redirect').click(function(e){
+  $('.redirect').click(function(e){
     e.preventDefault();
     setTabLocation(pageDetails.location.origin + $(this).attr('data-link'));
     window.close();
@@ -132,11 +121,6 @@ window.addEventListener('load', function(evt) {
         url = $a.attr('data-link');
 
     openNewTab(pageDetails.location.origin + url);
-  });
-
-  $('#update').click(function(e){
-    e.preventDefault();
-    openNewTab(EXTENSION_URL);
   });
 
   $('#lnk_siteAdminToggle').click(function(e){
