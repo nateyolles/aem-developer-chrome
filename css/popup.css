@@ -140,6 +140,7 @@ h3 {
   font-weight: normal;
   display: inline;
   line-height: 29px;
+  float: left;
 }
 
 .content {
@@ -183,12 +184,12 @@ h3 {
 }
 
 .clearfix:after {
-   visibility: hidden;
-   display: block;
-   font-size: 0;
-   content: '';
-   clear: both;
-   height: 0;
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: '';
+  clear: both;
+  height: 0;
 }
 
 .contact i {
