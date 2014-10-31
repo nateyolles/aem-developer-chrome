@@ -1,3 +1,14 @@
+/*
+TODO: comment code
+TODO: organize code
+TODO: change jquery to angular
+TODO: make links full size to list item
+TODO: hover over on those links
+TODO: touch/classic ui
+TODO: organize debugger tools, query and clientlibs
+TODO: redo show status timeout
+*/
+
 var app = angular.module('PopupApp', ['ngStorage']),
     MANIFEST_URL = 'https://raw.githubusercontent.com/nateyolles/aem-developer-chrome/master/manifest.json',
     EXTENSION_URL = 'https://chrome.google.com/webstore/detail/aem-developer/hgjhcngmldfpgpakbnffnbnmcmohfmfc',
@@ -63,7 +74,7 @@ window.addEventListener('load', function(evt) {
     // Call the getPageInfo function in the event page, passing in 
     // our onPageDetailsReceived function as the callback. This injects 
     // content.js into the current tab's HTML
-    eventPage.getPageDetails(function(tab){
+    eventPage.AemBackgroundScripts.getPageDetails(function(tab){
       tab.location = normalizeLocation(tab.location);
       pageDetails = tab;
     });
@@ -88,7 +99,7 @@ window.addEventListener('load', function(evt) {
     e.preventDefault();
     var target = e.target;
 
-    cachedEventPage.executeScript('AemDeveloper.clearClientLibs()', function(status){
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.clearClientLibs()', function(status){
       showStatus(target, status);
     });
   });
@@ -97,20 +108,20 @@ window.addEventListener('load', function(evt) {
     e.preventDefault();
     var target = e.target;
 
-    cachedEventPage.executeScript('AemDeveloper.clearCompiledJSPs()', function(status){
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.clearCompiledJSPs()', function(status){
       showStatus(target, status);
     });
   });
 
   $('#lnk_digitalPulseDebugger').click(function(e){
     e.preventDefault();
-    cachedEventPage.executeScript('AemDeveloper.openDigitalPulseDebugger()', function(a){ $('#status').text(JSON.stringify(a));});
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.openDigitalPulseDebugger()', function(a){ $('#status').text(JSON.stringify(a));});
     //window.close();
   });
 
   $('#lnk_clientContextWindow').click(function(e){
     e.preventDefault();
-    cachedEventPage.executeScript('AemDeveloper.openClientContextWindow()', function(a){ $('#status').text(JSON.stringify(a));});
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.openClientContextWindow()', function(a){ $('#status').text(JSON.stringify(a));});
   });
 
   $('.icon-new-window').click(function(e){
@@ -244,6 +255,12 @@ function getUrlWithUpdatedQueryString(location, key, value) {
   return origin + pathname + updatedSearchString + hash;
 }
 
+/**
+ * Add status css class to target.
+ *
+ * @param {Object} Link that was clicked
+ * @Param {Object} Response message
+ */
 function showStatus(target, response) {
   var color,
       $container = $(target).parents('li');
@@ -272,6 +289,11 @@ function openNewTab(url) {
   chrome.tabs.create({url: url});
 }
 
+/**
+ * isEmpty added to global String object.
+ *
+ * @returns {boolean} If String object is not "" or " ".
+ */
 String.prototype.isEmpty = function() {
   return (this.length === 0 || !this.trim());
 };
