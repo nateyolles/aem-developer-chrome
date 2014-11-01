@@ -31,6 +31,19 @@ app.controller('PopupController', function($scope, $localStorage, $http){
 
   $scope.editMode = false;
 
+  // pageDetails doesn't exist yet
+  $scope.isLinkCurrentPage = function(index){
+    var curr = $scope.options.servers[index].url;
+
+    /** Remove trailing slash */
+    if (curr[curr.length - 1] === '/') {
+      curr = curr.substr(0, curr.length - 1);
+    }
+
+    console.dir(pageDetails);
+    return curr === pageDetails.location.origin;
+  }
+
   $scope.changeEditMode = function() {
     if (!$scope.newServer.name.isEmpty() && !$scope.newServer.url.isEmpty()) {
       $scope.add();
@@ -75,7 +88,7 @@ window.addEventListener('load', function(evt) {
     // our onPageDetailsReceived function as the callback. This injects 
     // content.js into the current tab's HTML
     eventPage.AemBackgroundScripts.getPageDetails(function(tab){
-      tab.location = normalizeLocation(tab.location);
+      //tab.location = normalizeLocation(tab.location);
       pageDetails = tab;
     });
     cachedEventPage = eventPage;
@@ -166,38 +179,38 @@ window.addEventListener('load', function(evt) {
  * @param {location} location - the location object to read from.
  * @returns {Object} A psudo location object.
  */
-function normalizeLocation(location) {
-  var origin = location.origin,
-      search,
-      pathname,
-      hash,
-      tempLocation;
+// function normalizeLocation(location) {
+//   var origin = location.origin,
+//       search,
+//       pathname,
+//       hash,
+//       tempLocation;
 
-  if (location.href.indexOf('/cf#/') === -1) {
-    pathname = location.pathname;
-    hash = location.hash;
-    search = location.search;
-  } else {
-    tempLocation = document.createElement('a');
-    tempLocation.href = location.href.split('/cf#').join('');
+//   if (location.href.indexOf('/cf#/') === -1) {
+//     pathname = location.pathname;
+//     hash = location.hash;
+//     search = location.search;
+//   } else {
+//     tempLocation = document.createElement('a');
+//     tempLocation.href = location.href.split('/cf#').join('');
 
-    pathname = '/cf#' + tempLocation.pathname;
-    hash = tempLocation.hash;
-    search = tempLocation.search;
-  }
+//     pathname = '/cf#' + tempLocation.pathname;
+//     hash = tempLocation.hash;
+//     search = tempLocation.search;
+//   }
 
-  return {
-    href : origin + pathname + search + hash,
-    origin : origin,
-    search : search,
-    pathname : pathname,
-    hash : hash,
-    port: location.port,
-    host: location.host,
-    hostname: location.hostname,
-    protocol: location.protocol
-  }
-}
+//   return {
+//     href : origin + pathname + search + hash,
+//     origin : origin,
+//     search : search,
+//     pathname : pathname,
+//     hash : hash,
+//     port: location.port,
+//     host: location.host,
+//     hostname: location.hostname,
+//     protocol: location.protocol
+//   }
+// }
 
 /**
  * Update the query string of a URL while maintaining other params and the hash.

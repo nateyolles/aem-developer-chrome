@@ -44,6 +44,20 @@
             <section>
                 <ul>
                     <li class="clearfix">
+                        <h3>Debug Layout</h3>
+                        <div class="content">
+                            <div class="btn-group">
+                                <button class="querystring" data-querystring-key="debug" data-querystring-value="layout">On</button>
+                                <button class="querystring" data-querystring-key="debug">Off</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <ul>
+                    <li class="clearfix">
                         <h3>Toggle UI</h3>
                         <div class="content">
                             <div class="btn-group">
@@ -84,12 +98,16 @@
                         <input placeholder="url" data-ng-model="server.url">
                         <i data-ng-click="remove($index)" class="icon-minus"></i>
                     </li>
-                    <li  data-ng-show="editMode">
+                    <li data-ng-show="editMode">
                         <input placeholder="name" data-ng-model="newServer.name" required>
                         <input placeholder="url" data-ng-model="newServer.url" required>
                         <i data-ng-click="add()" class="icon-plus"></i>
                     </li>
-                    <li data-ng-repeat="server in options.servers" data-ng-show="!editMode"><a href="#" class="outside-redirect" ng-click="redirectToEnvironment($index, false)" data-link="{{server.url}}" data-ng-bind="server.name"></a><i class="icon-new-window icon-link-external" ng-click="redirectToEnvironment($index, true)"></i></li>
+                    <li data-ng-repeat="server in options.servers" data-ng-show="!editMode">
+                        <!-- <strong data-ng-show="isLinkCurrentPage($index)">hi</strong> -->
+                        <a href="#" class="outside-redirect" ng-click="redirectToEnvironment($index, false)" data-link="{{server.url}}" data-ng-bind="server.name"></a>
+                        <i class="icon-new-window icon-link-external" ng-click="redirectToEnvironment($index, true)"></i>
+                    </li>
                     <li class="edit" data-ng-show="!editMode"><a data-ng-click="changeEditMode()">Edit <i class="icon-pencil"></i></a></li>
                     <li class="edit" data-ng-show="editMode"><a data-ng-click="changeEditMode()">Done <i class="icon-disk"></i></a></li>
                 </ul>

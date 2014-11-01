@@ -107,8 +107,14 @@ ul.sublist {
 }
 
 ul.sublist li {
-  padding: 8px 10px 6px;
+  /*padding: 8px 10px 6px;*/
+  padding: 0;
   overflow: hidden;
+}
+
+ul.sublist li a {
+  padding: 8px 10px 6px;
+  display: block;
 }
 
 button {
