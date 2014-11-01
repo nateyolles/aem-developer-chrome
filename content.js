@@ -1,31 +1,37 @@
+/**
+ * On page load send information about the tab to the content script.
+ */
 chrome.runtime.sendMessage({
   'title': document.title,
   'location': window.location
 });
 
+/**
+ * AemDeveloper namespace.
+ * @namespace
+ */
 var AemDeveloper = (function(window, $, undefined) {
-  /** private members */
+  /**
+   * @private
+   * @global
+   */
   var CLIENTLIB_QUERY =    '/crx/de/query.jsp?type=xpath&stmt=/jcr:root/var/clientlibs/*&showResults=true',
       COMPILED_JSP_QUERY = '/crx/de/query.jsp?type=xpath&stmt=/jcr:root/var/classes//jsp&showResults=true';
 
-  /** private methods */
-
+  /**
+   * Open the marketing cloud debugger window.
+   */
   function openDigitalPulseDebugger() {
     window.open("","dp_debugger","width=700,height=1000,location=0,menubar=0,status=1,toolbar=0,resizable=1,scrollbars=1").document.write("<script language=\"JavaScript\" id=dbg src=\"https://www.adobetag.com/d1/digitalpulsedebugger/live/DPD.js\"></"+"script>");
-    chrome.runtime.sendMessage({status: 'dpd good'});
+    chrome.runtime.sendMessage({status: 'success'});
   }
 
-  // /* doesn't work! */
-  // function openClientContextWindow() {
-  //   if (typeof CQ_Analytics !== 'undefined' && CQ_Analytics.ClientContextUI) {
-  //     CQ_Analytics.ClientContextUI.show();
-  //     chrome.runtime.sendMessage({status: 'clientcontext good'});
-  //   } else {
-  //     chrome.runtime.sendMessage({status: 'no CQ_Analytics'});
-  //   }
-  // }
-
-  function deleteQueryResults(query, message) {
+  /**
+   * Delete the results of the query and post a message with status.
+   *
+   * @param {String} query the URL with query to the JCR.
+   */
+  function deleteQueryResults(query) {
     var succesLength = 0;
 
     $.ajax({
@@ -42,8 +48,6 @@ var AemDeveloper = (function(window, $, undefined) {
               type: 'DELETE',
               url: data.results[i].path,
               success: function(data, status, jqXHR){
-                //alert('Success: ' + message + ' cache cleared.');
-                //chrome.runtime.sendMessage({status: 'success'});
                 succesLength++;
 
                 if (resultLength === succesLength) {
@@ -51,36 +55,40 @@ var AemDeveloper = (function(window, $, undefined) {
                 }
               },
               error: function(jqXHR, status, error) {
-                //alert('Error: ' + message + ' cached failed to clear.');
                 chrome.runtime.sendMessage({status: 'fail'});
               }
             });
           }
         } else {
-          //alert('No ' + message + ' cache to be cleared.');
           chrome.runtime.sendMessage({status: 'noaction'});
         }
       },
       error: function(jqXHR, status, error) {
-        //alert('Error: ' + message + ' cached failed to clear.');
         chrome.runtime.sendMessage({status: 'fail'});
       }
     });
   }
 
-  function clearClientLibs(callback) {
-    deleteQueryResults(CLIENTLIB_QUERY, 'ClientLibs');
+  /**
+   * Delete cached client libs.
+   */
+  function clearClientLibs() {
+    deleteQueryResults(CLIENTLIB_QUERY);
   }
 
-  function clearCompiledJSPs(callback) {
-    deleteQueryResults(COMPILED_JSP_QUERY, 'Compiled JSP');
+   /**
+   * Delete compiled JSP files.
+   */
+  function clearCompiledJSPs() {
+    deleteQueryResults(COMPILED_JSP_QUERY);
   }
 
-  /** public */
+  /**
+   * @public
+   */
   return {
     openDigitalPulseDebugger : openDigitalPulseDebugger,
     clearClientLibs : clearClientLibs,
     clearCompiledJSPs : clearCompiledJSPs
-    // openClientContextWindow : openClientContextWindow
   };
 })(window, $);
