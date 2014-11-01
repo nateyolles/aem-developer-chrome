@@ -112,10 +112,13 @@ ul.sublist {
 }
 
 ul.sublist li {
-  /*padding: 8px 10px 6px;*/
   padding: 0;
   overflow: hidden;
   position: relative;
+}
+
+ul.sublist li:hover {
+  box-shadow: inset 0px 1px 4px 0px rgba(0,0,0,0.14);
 }
 
 ul.sublist li a {
