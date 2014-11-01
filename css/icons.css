@@ -23,7 +23,7 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.icon-link-external:before {
+.link-new-window:before {
 	content: "\f07f";
 }
 .icon-mail:before {

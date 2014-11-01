@@ -88,7 +88,6 @@ window.addEventListener('load', function(evt) {
     // our onPageDetailsReceived function as the callback. This injects 
     // content.js into the current tab's HTML
     eventPage.AemBackgroundScripts.getPageDetails(function(tab){
-      //tab.location = normalizeLocation(tab.location);
       pageDetails = tab;
     });
     cachedEventPage = eventPage;
@@ -137,7 +136,7 @@ window.addEventListener('load', function(evt) {
     cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.openClientContextWindow()', function(a){ $('#status').text(JSON.stringify(a));});
   });
 
-  $('.icon-new-window').click(function(e){
+  $('.js-new-window').click(function(e){
     e.preventDefault();
 
     var $this = $(e.target),
@@ -171,46 +170,6 @@ window.addEventListener('load', function(evt) {
     window.close();
   });   
 });
-
-/**
- * Create a psudo location object fixing browser problems when the Location object
- * contains '/cf#/'.
- *
- * @param {location} location - the location object to read from.
- * @returns {Object} A psudo location object.
- */
-// function normalizeLocation(location) {
-//   var origin = location.origin,
-//       search,
-//       pathname,
-//       hash,
-//       tempLocation;
-
-//   if (location.href.indexOf('/cf#/') === -1) {
-//     pathname = location.pathname;
-//     hash = location.hash;
-//     search = location.search;
-//   } else {
-//     tempLocation = document.createElement('a');
-//     tempLocation.href = location.href.split('/cf#').join('');
-
-//     pathname = '/cf#' + tempLocation.pathname;
-//     hash = tempLocation.hash;
-//     search = tempLocation.search;
-//   }
-
-//   return {
-//     href : origin + pathname + search + hash,
-//     origin : origin,
-//     search : search,
-//     pathname : pathname,
-//     hash : hash,
-//     port: location.port,
-//     host: location.host,
-//     hostname: location.hostname,
-//     protocol: location.protocol
-//   }
-// }
 
 /**
  * Update the query string of a URL while maintaining other params and the hash.

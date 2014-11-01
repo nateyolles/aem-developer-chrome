@@ -79,6 +79,11 @@ li {
   padding: 10px;
 }
 
+li:hover {
+  background: #ededed;
+  box-shadow: inset 0px 2px 4px 0px rgba(0,0,0,0.3);
+}
+
 li.accordion {
   cursor: pointer;
 }
@@ -110,11 +115,13 @@ ul.sublist li {
   /*padding: 8px 10px 6px;*/
   padding: 0;
   overflow: hidden;
+  position: relative;
 }
 
 ul.sublist li a {
   padding: 8px 10px 6px;
   display: block;
+  z-index: 1;
 }
 
 button {
@@ -200,21 +207,32 @@ li h3 {
   color: #cc0000;
 }
 
-.icon-new-window {
-  float: right;
-  margin-right: -25px;
+.link-new-window {
   cursor: pointer;
   font-size: 20px;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  z-index: 100;
+  padding: 3px 8px 0;
+  right: -35px;
+  color: #f5f5f5;
+  background: #5e5e5e;
+  box-shadow: inset 2px 0px 5px 0px rgba(0,0,0,0.5);
 }
 
-ul.sublist li:hover i.icon-new-window {
+.link-new-window:hover {
+  color: #0051FF;
+}
+
+ul.sublist li:hover i.link-new-window {
   -webkit-animation: slideIn .5s;
   -webkit-animation-fill-mode: forwards;
 }
 
 @-webkit-keyframes slideIn {
-  0% {margin-right: -25px;}
-  100% {margin-right: 0px;}
+  0% {right: -35px;}
+  100% {right: 0px;}
 }
 
 .success {
