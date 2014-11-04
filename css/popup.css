@@ -96,7 +96,6 @@ li.accordion i {
 ul.sublist li.edit {
   font-size: 11px;
   text-align: right;
-  padding: 5px;
 }
 
 li.edit i {
@@ -105,6 +104,10 @@ li.edit i {
 
 li:last-child {
   border: none;
+}
+
+ul.sublist li.input-container {
+  padding: 5px 10px;
 }
 
 ul.sublist {

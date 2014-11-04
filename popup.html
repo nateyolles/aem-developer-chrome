@@ -93,12 +93,12 @@
                     </li>
                 </ul>
                 <ul class="sublist" data-ng-show="collapseA">
-                    <li data-ng-repeat="server in options.servers" data-ng-show="editMode">
+                    <li data-ng-repeat="server in options.servers" data-ng-show="editMode" class="input-container">
                         <input placeholder="name" data-ng-model="server.name">
                         <input placeholder="url" data-ng-model="server.url">
                         <i data-ng-click="remove($index)" class="icon-minus"></i>
                     </li>
-                    <li data-ng-show="editMode">
+                    <li data-ng-show="editMode" class="input-container">
                         <input placeholder="name" data-ng-model="newServer.name" required>
                         <input placeholder="url" data-ng-model="newServer.url" required>
                         <i data-ng-click="add()" class="icon-plus"></i>
@@ -175,8 +175,7 @@
                     that the AEM developer uses on a daily basis, does some basic string manipulation to
                     alter the browser's location, and makes a few AJAX calls to the JCR.</p>
 
-                    <p>I'm currently a Senior AEM Engineer at Adobe. This is a little side project of mine and is not
-                    an Adobe product. It's a work in progress. I'd love to hear feedback and suggestions.</p>
+                    <p>I'm currently the lead AEM Engineer at Adobe on the Acrobat marketing website. I created this tool to speed up my workflow. It's a work in progress. I'd love to hear feedback and suggestions.</p>
                     
                     <ul class="contact">
                         <li><strong>Nate Yolles</strong></li>
