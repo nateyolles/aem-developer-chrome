@@ -16,7 +16,11 @@ var AemDeveloper = (function(window, $, undefined) {
    * @global
    */
   var CLIENTLIB_QUERY =    '/crx/de/query.jsp?type=xpath&stmt=/jcr:root/var/clientlibs/*&showResults=true',
-      COMPILED_JSP_QUERY = '/crx/de/query.jsp?type=xpath&stmt=/jcr:root/var/classes//jsp&showResults=true';
+      COMPILED_JSP_QUERY = '/crx/de/query.jsp?type=xpath&stmt=/jcr:root/var/classes//jsp&showResults=true',
+      USER_INFO = '/libs/granite/security/currentuser.json'
+      PRODUCT_INFO = '/libs/cq/core/productinfo.json',
+      SLING_INFO = '/system/console/status-slingsettings.json',
+      SYSTEM_INFO = '/system/console/status-System%20Properties.json';
 
   /**
    * Open the marketing cloud debugger window.
@@ -76,11 +80,79 @@ var AemDeveloper = (function(window, $, undefined) {
     deleteQueryResults(CLIENTLIB_QUERY);
   }
 
-   /**
+  /**
    * Delete compiled JSP files.
    */
   function clearCompiledJSPs() {
     deleteQueryResults(COMPILED_JSP_QUERY);
+  }
+
+  /**
+   * Get user info.
+   */
+  function getUserInfo() {
+    $.ajax({
+      type: 'GET',
+      cache: false,
+      url: USER_INFO,
+      success: function(data, status, jqXHR){
+        chrome.runtime.sendMessage(data);
+      },
+      error: function(jqXHR, status, error) {
+        chrome.runtime.sendMessage({status: 'fail'});
+      }
+    });
+  }
+
+    /**
+   * Get user info.
+   */
+  function getProductInfo() {
+    $.ajax({
+      type: 'GET',
+      cache: false,
+      url: PRODUCT_INFO,
+      success: function(data, status, jqXHR){
+        chrome.runtime.sendMessage(data);
+      },
+      error: function(jqXHR, status, error) {
+        chrome.runtime.sendMessage({status: 'fail'});
+      }
+    });
+  }
+
+    /**
+   * Get user info.
+   */
+  function getSlingInfo() {
+    $.ajax({
+      type: 'GET',
+      cache: false,
+      url: SLING_INFO,
+      success: function(data, status, jqXHR){
+        chrome.runtime.sendMessage(data);
+      },
+      error: function(jqXHR, status, error) {
+        chrome.runtime.sendMessage({status: 'fail'});
+      }
+    });
+  }
+
+    /**
+   * Get user info.
+   */
+  function getSystemInfo() {
+    $.ajax({
+      type: 'GET',
+      cache: false,
+      url: SYSTEM_INFO,
+      success: function(data, status, jqXHR){
+        chrome.runtime.sendMessage(data);
+      },
+      error: function(jqXHR, status, error) {
+        chrome.runtime.sendMessage({status: 'fail'});
+      }
+    });
   }
 
   /**
@@ -89,6 +161,10 @@ var AemDeveloper = (function(window, $, undefined) {
   return {
     openDigitalPulseDebugger : openDigitalPulseDebugger,
     clearClientLibs : clearClientLibs,
-    clearCompiledJSPs : clearCompiledJSPs
+    clearCompiledJSPs : clearCompiledJSPs,
+    getUserInfo : getUserInfo,
+    getProductInfo : getProductInfo,
+    getSlingInfo : getSlingInfo,
+    getSystemInfo : getSystemInfo
   };
 })(window, $);

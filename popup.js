@@ -7,6 +7,8 @@ TODO: hover over on those links
 TODO: touch/classic ui
 TODO: organize debugger tools, query and clientlibs
 TODO: redo show status timeout
+TODO: common links needs to read current touch/classic mode and stay in it
+TODO: GA code and clicks(?)
 */
 
 var app = angular.module('PopupApp', ['ngStorage']),
@@ -113,6 +115,53 @@ window.addEventListener('load', function(evt) {
 
     cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.clearClientLibs()', function(status){
       showStatus(target, status);
+    });
+  });
+
+  $('#lnk_getUserInfo').click(function(e){
+    e.preventDefault();
+    var target = e.target;
+
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.getUserInfo()', function(user){
+      console.dir(user.name_xss);
+      console.dir(user.authorizableId_xss);
+      console.dir(user.isImpersonated);
+    });
+  });
+
+  $('#lnk_getProductInfo').click(function(e){
+    e.preventDefault();
+    var target = e.target;
+
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.getProductInfo()', function(product){
+      console.dir(product.version);
+      
+    });
+  });
+
+  $('#lnk_getSlingInfo').click(function(e){
+    e.preventDefault();
+    var target = e.target;
+
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.getSlingInfo()', function(info){
+      console.log(convertSlingArrayToObject(info)['Run Modes']);
+    });
+  });
+
+  $('#lnk_getSystemInfo').click(function(e){
+    e.preventDefault();
+    var target = e.target;
+
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.getSystemInfo()', function(info){
+      var systemInfo = convertSlingArrayToObject(info);
+
+      console.log(systemInfo['java.runtime.version']);
+      console.log(systemInfo['java.runtime.name']);
+      console.log(systemInfo['java.vm.name']);
+      console.log(systemInfo['os.version']);
+      console.log(systemInfo['os.name']);
+      console.log(systemInfo['os.arch']);
+      console.log(systemInfo['user.dir']);
     });
   });
 
@@ -270,6 +319,19 @@ String.prototype.isEmpty = function() {
   return (this.length === 0 || !this.trim());
 };
 
+function convertSlingArrayToObject(slingArray) {
+  var slingObject = {},
+      tmp,
+      x;
+
+  for (x = 0; x < slingArray.length; x++) {
+    tmp = slingArray[x].split(' = ');
+    slingObject[tmp[0]] = tmp[1];
+  }
+
+  return slingObject;
+}
+
      // (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
           // (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
           // m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -287,3 +349,50 @@ _gaq.push(['_trackPageview']);
   ga.src = 'https://ssl.google-analytics.com/ga.js';
   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
+
+
+
+function toggleUIs(location) {
+  var uiMap = [
+    {'classic' : '/siteadmin#', 'touch' : '/sites.html'},
+    {'classic' : '/publishingadmin#', 'touch' : '/publications.html'},
+    {'classic' : '/damadmin#', 'touch' : '/assets.html'},
+    {'classic' : '', 'touch' : '/editor.html'},
+    {'classic' : '/libs/cq/core/content/welcome.html', 'touch' : '/projects.html'}
+  ];
+
+  for (var x = 0; x < uiMap.length; x++) {
+    if (location.pathname.indexOf(uiMap[x].classic) === 1) {
+      // classic found
+    } else if (location.pathname.indexOf(uiMap[x].touch) === 1) {
+      // touch found
+    }
+  }
+
+
+}
+
+/*
+Projects    /projects.html      = /libs/cq/core/content/welcome.html
+      http://localhost:4502/projects/details.html/content/projects/20141016/outdoors
+
+Sites   /sites.html/content   = /siteadmin
+      http://localhost:4502/sites.html/content/geometrixx-outdoors
+      http://localhost:4502/siteadmin#/content/geometrixx-outdoors
+
+publications
+      http://localhost:4502/aem/publications.html/content/publications
+      http://localhost:4502/publishingadmin#/content/publications
+
+DAM
+      http://localhost:4502/assets.html/content/dam/geometrixx
+      http://localhost:4502/damadmin#/content/dam/geometrixx
+
+
+view page in touch ui
+  /editor.html/content/blah 
+
+view page in classic
+  /content/blah
+
+  */
