@@ -20,10 +20,10 @@ var AemDeveloper = (function(window, $, undefined) {
    */
   var CLIENTLIB_QUERY =    '/crx/de/query.jsp?type=xpath&stmt=/jcr:root/var/clientlibs/*&showResults=true',
       COMPILED_JSP_QUERY = '/crx/de/query.jsp?type=xpath&stmt=/jcr:root/var/classes//jsp&showResults=true',
-      USER_INFO = '/libs/granite/security/currentuser.json'
-      PRODUCT_INFO = '/libs/cq/core/productinfo.json',
-      SLING_INFO = '/system/console/status-slingsettings.json',
-      SYSTEM_INFO = '/system/console/status-System%20Properties.json';
+      USER_INFO =          '/libs/granite/security/currentuser.json'
+      PRODUCT_INFO =       '/libs/cq/core/productinfo.json',
+      SLING_INFO =         '/system/console/status-slingsettings.json',
+      SYSTEM_INFO =        '/system/console/status-System%20Properties.json';
 
   /**
    * Open the marketing cloud debugger window.
@@ -105,100 +105,60 @@ var AemDeveloper = (function(window, $, undefined) {
     deleteQueryResults('compiled_jsps', COMPILED_JSP_QUERY);
   }
 
+
+  /**
+   * Get info and send a Chrome message.
+   *
+   * @param {String} Type of message to send.
+   * @param {String} URL to query the JCR.
+   */
+  function getInfo(type, url) {
+    $.ajax({
+      type: 'GET',
+      cache: false,
+      url: url,
+      success: function(data, status, jqXHR){
+        chrome.runtime.sendMessage({
+          type: type,
+          status: 'success',
+          data: data
+        });
+      },
+      error: function(jqXHR, status, error) {
+        chrome.runtime.sendMessage({
+          type: type,
+          status: 'fail'
+        });
+      }
+    });
+  }
+
   /**
    * Get user info.
    */
   function getUserInfo() {
-    $.ajax({
-      type: 'GET',
-      cache: false,
-      url: USER_INFO,
-      success: function(data, status, jqXHR){
-        chrome.runtime.sendMessage({
-          type: 'user',
-          status: 'success',
-          data: data
-        });
-      },
-      error: function(jqXHR, status, error) {
-        chrome.runtime.sendMessage({
-          type: 'user',
-          status: 'fail'
-        });
-      }
-    });
+    getInfo('user', USER_INFO);
   }
 
-    /**
-   * Get user info.
+  /**
+   * Get product info.
    */
   function getProductInfo() {
-    $.ajax({
-      type: 'GET',
-      cache: false,
-      url: PRODUCT_INFO,
-      success: function(data, status, jqXHR){
-        chrome.runtime.sendMessage({
-          type: 'product',
-          status: 'success',
-          data: data
-        });
-      },
-      error: function(jqXHR, status, error) {
-        chrome.runtime.sendMessage({
-          type: 'product',
-          status: 'fail'
-        });
-      }
-    });
+    getInfo('product', PRODUCT_INFO);
   }
 
-    /**
-   * Get user info.
+  /**
+   * Get Sling info.
    */
   function getSlingInfo() {
-    $.ajax({
-      type: 'GET',
-      cache: false,
-      url: SLING_INFO,
-      success: function(data, status, jqXHR){
-        chrome.runtime.sendMessage({
-          type: 'sling',
-          status: 'success',
-          data: data
-        });
-      },
-      error: function(jqXHR, status, error) {
-        chrome.runtime.sendMessage({
-          type: 'sling',
-          status: 'fail'
-        });
-      }
-    });
+    getInfo('sling', SLING_INFO);
   }
 
-    /**
-   * Get user info.
+  /**
+   * Get System info.
    */
   function getSystemInfo() {
-    $.ajax({
-      type: 'GET',
-      cache: false,
-      url: SYSTEM_INFO,
-      success: function(data, status, jqXHR){
-        chrome.runtime.sendMessage({
-          type: 'system',
-          status: 'success',
-          data: data
-        });
-      },
-      error: function(jqXHR, status, error) {
-        chrome.runtime.sendMessage({
-          type: 'system',
-          status: 'fail'
-        });
-      }
-    });
+    getInfo('system', SYSTEM_INFO);
   }
 
   /**
@@ -215,6 +175,9 @@ var AemDeveloper = (function(window, $, undefined) {
   };
 })(window, $);
 
+/*
+ * Get the information and send it to popup.js.
+ */
 AemDeveloper.getUserInfo();
 AemDeveloper.getProductInfo();
 AemDeveloper.getSlingInfo();

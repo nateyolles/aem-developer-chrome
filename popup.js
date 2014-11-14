@@ -113,49 +113,61 @@ app.controller('PopupController', function($scope, $localStorage, $http){
 
   chrome.runtime.getBackgroundPage(function(eventPage) {
 
-    //cachedEventPage = eventPage;
+    cachedEventPage = eventPage;
 
     eventPage.AemBackgroundScripts.getPageDetails(function(tab){
-      switch(tab.type){
-        case 'window':
-          console.log(tab.data);
-          pageDetails = tab.data;
-          break;
-        case 'user':
-          $scope.$apply(function(){
-            $scope.user.name = tab.data.name_xss;
-            $scope.user.authorizableId = tab.data.authorizableId_xss;
-            $scope.user.isImpersonated = tab.data.isImpersonated;  
-          });
-          break;
-        case 'product':
-          $scope.$apply(function(){
-            $scope.product.version = tab.data.version;
-          });
-          break;
-        case 'sling':
-          $scope.$apply(function(){
-            var slingInfo = convertSlingArrayToObject(tab.data);
-            $scope.sling.runModes = slingInfo['Run Modes'];
-          });
-          break;
-        case 'system':
-          $scope.$apply(function(){
-            var systemInfo = convertSlingArrayToObject(tab.data);
+      if (tab && tab.type) {
+        switch(tab.type){
+          case 'window':
+            if (tab.data) {
+              pageDetails = tab.data;
+            }
+            break;
+          case 'user':
+            if (tab.data) {
+              $scope.$apply(function(){
+                $scope.user.name = tab.data.name_xss;
+                $scope.user.authorizableId = tab.data.authorizableId_xss;
+                $scope.user.isImpersonated = tab.data.isImpersonated;  
+              });
+            }
+            break;
+          case 'product':
+            if (tab.data) {
+              $scope.$apply(function(){
+                $scope.product.version = tab.data.version;
+              });
+            }
+            break;
+          case 'sling':
+            if (tab.data) {
+              $scope.$apply(function(){
+                var slingInfo = convertSlingArrayToObject(tab.data);
+                $scope.sling.runModes = slingInfo['Run Modes'];
+              });
+            }
+            break;
+          case 'system':
+            if (tab.data) {
+              $scope.$apply(function(){
+                var systemInfo = convertSlingArrayToObject(tab.data);
 
-            $scope.system.java.version = systemInfo['java.runtime.version'];
-            $scope.system.java.runtime = systemInfo['java.runtime.name'];
-            $scope.system.java.vm = systemInfo['java.vm.name'];
-            $scope.system.os.version = systemInfo['os.version'];
-            $scope.system.os.name = systemInfo['os.name'];
-            $scope.system.os.arch = systemInfo['os.arch'];
-            $scope.system.os.dir = systemInfo['user.dir'];
-          });
-          break;
-        case 'dp_debugger':
-        case 'clientlibs':
-        case 'compiled_jsps':
-          break;
+                $scope.system.java.version = systemInfo['java.runtime.version'];
+                $scope.system.java.runtime = systemInfo['java.runtime.name'];
+                $scope.system.java.vm = systemInfo['java.vm.name'];
+                $scope.system.os.version = systemInfo['os.version'];
+                $scope.system.os.name = systemInfo['os.name'];
+                $scope.system.os.arch = systemInfo['os.arch'];
+                $scope.system.os.dir = systemInfo['user.dir'];
+              });
+            }
+            break;
+          case 'dp_debugger':
+          case 'clientlibs':
+          case 'compiled_jsps':
+            showStatus($('#lnk_clearCompiledJSPs'), tab.status);
+            break;
+        }
       }
     });
     
@@ -186,17 +198,6 @@ window.addEventListener('load', function(evt) {
 
     cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.clearClientLibs()', function(status){
       showStatus(target, status);
-    });
-  });
-
-  $('#lnk_getUserInfo').click(function(e){
-    e.preventDefault();
-    var target = e.target;
-
-    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.getUserInfo()', function(user){
-      console.dir(user.name_xss);
-      console.dir(user.authorizableId_xss);
-      console.dir(user.isImpersonated);
     });
   });
 
@@ -321,9 +322,9 @@ function showStatus(target, response) {
   var color,
       $container = $(target).parents('li');
 
-  $container.addClass(response.status);
+  $container.addClass(response);
   setTimeout(function(){
-    $container.removeClass(response.status);
+    $container.removeClass(response);
   },1500);
 }
 

@@ -31,7 +31,7 @@ var AemBackgroundScripts = (function(window, chrome, undefined) {
    * @param {function} Callback function
    */
   function executeScript(script, callback) {
-    globalCallback = callback;
+    //globalCallback = callback;
     chrome.tabs.getSelected(null, function(tab){
       chrome.tabs.executeScript(tab.id, {code: script}, function(response) {});
     });
