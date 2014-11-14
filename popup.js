@@ -34,7 +34,8 @@ app.controller('PopupController', function($scope, $localStorage, $http){
   $scope.user = {
     name : '',
     authorizableId : '',
-    isImpersonated : false
+    isImpersonated : false,
+    home : ''
   };
 
   $scope.product = {
@@ -128,7 +129,8 @@ app.controller('PopupController', function($scope, $localStorage, $http){
               $scope.$apply(function(){
                 $scope.user.name = tab.data.name_xss;
                 $scope.user.authorizableId = tab.data.authorizableId_xss;
-                $scope.user.isImpersonated = tab.data.isImpersonated;  
+                $scope.user.isImpersonated = tab.data.isImpersonated;
+                $scope.user.home = tab.data.home;
               });
             }
             break;
