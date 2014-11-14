@@ -13,7 +13,7 @@ chrome.runtime.sendMessage({
  * AemDeveloper namespace.
  * @namespace
  */
-var AemDeveloper = (function(window, $, undefined) {
+var AemDeveloper = (function(window, undefined) {
   /**
    * @private
    * @global
@@ -44,51 +44,61 @@ var AemDeveloper = (function(window, $, undefined) {
   function deleteQueryResults(type, query) {
     var succesLength = 0;
 
-    $.ajax({
-      type: 'GET',
-      cache: false,
-      url: query,
-      success: function(data, status, jqXHR){
-        var resultLength = data.results.length;
+    var xmlhttp = new XMLHttpRequest();
 
-        if (resultLength > 0) {
-          for (var i = 0; i < resultLength; i++) {
+    xmlhttp.onreadystatechange = function() {
+      if (xmlhttp.readyState === 4) {
+        if (xmlhttp.status === 200) {
+          var data = JSON.parse(xmlhttp.responseText),
+              resultLength = data.results.length;
 
-            $.ajax({
-              type: 'DELETE',
-              url: data.results[i].path,
-              success: function(data, status, jqXHR){
-                succesLength++;
+          if (resultLength > 0) {
+            for (var i = 0; i < resultLength; i++) {
 
-                if (resultLength === succesLength) {
-                  chrome.runtime.sendMessage({
-                    type: type,
-                    status: 'success'
-                  });
-                }
-              },
-              error: function(jqXHR, status, error) {
-                chrome.runtime.sendMessage({
-                  type: type,
-                  status: 'fail'
-                });
-              }
+              (function(){
+                var xmlhttpInner = new XMLHttpRequest();
+
+                xmlhttpInner.onreadystatechange = function() {
+                  if (xmlhttpInner.readyState === 4) {
+                    if (xmlhttpInner.status === 200 || xmlhttpInner.status === 204) {
+                      succesLength++;
+
+                      if (resultLength === succesLength) {
+                        chrome.runtime.sendMessage({
+                          type: type,
+                          status: 'success'
+                        });
+                      } //end if success
+                    } else {
+                      chrome.runtime.sendMessage({
+                        type: type,
+                        status: 'fail'
+                      });
+                    } // end if/else status
+                  } //end ready state
+                };
+
+                xmlhttpInner.open('DELETE', data.results[i].path, true);
+                xmlhttpInner.send();
+              })();
+            }
+          } else {
+            chrome.runtime.sendMessage({
+              type: type,
+              status: 'noaction'
             });
           }
         } else {
           chrome.runtime.sendMessage({
             type: type,
-            status: 'noaction'
+            status: 'fail'
           });
-        }
-      },
-      error: function(jqXHR, status, error) {
-        chrome.runtime.sendMessage({
-          type: type,
-          status: 'fail'
-        });
-      }
-    });
+        } //end if/else status code
+      } //end readystate
+    };
+
+    xmlhttp.open('GET', query + '&_=' + Date.now(), true);
+    xmlhttp.send();
   }
 
   /**
@@ -130,7 +140,7 @@ var AemDeveloper = (function(window, $, undefined) {
           });
         }
       }
-    }
+    };
 
     xmlhttp.open('GET', url + '?_=' + Date.now(), true);
     xmlhttp.send();
@@ -176,7 +186,7 @@ var AemDeveloper = (function(window, $, undefined) {
     getSlingInfo : getSlingInfo,
     getSystemInfo : getSystemInfo
   };
-})(window, $);
+})(window);
 
 /*
  * Get the information and send it to popup.js.

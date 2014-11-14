@@ -14,7 +14,6 @@ var AemBackgroundScripts = (function(window, chrome, undefined) {
       callback(message);
     });
 
-    chrome.tabs.executeScript(null, { file: 'jquery.min.js' });
     chrome.tabs.executeScript(null, { file: 'content.js' });
   };
 
