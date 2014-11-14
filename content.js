@@ -113,24 +113,27 @@ var AemDeveloper = (function(window, $, undefined) {
    * @param {String} URL to query the JCR.
    */
   function getInfo(type, url) {
-    $.ajax({
-      type: 'GET',
-      cache: false,
-      url: url,
-      success: function(data, status, jqXHR){
-        chrome.runtime.sendMessage({
-          type: type,
-          status: 'success',
-          data: data
-        });
-      },
-      error: function(jqXHR, status, error) {
-        chrome.runtime.sendMessage({
-          type: type,
-          status: 'fail'
-        });
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function() {
+      if (xmlhttp.readyState === 4) {
+        if (xmlhttp.status === 200) {
+          chrome.runtime.sendMessage({
+            type: type,
+            status: 'success',
+            data: JSON.parse(xmlhttp.responseText)
+          });
+        } else {
+          chrome.runtime.sendMessage({
+            type: type,
+            status: 'fail'
+          });
+        }
       }
-    });
+    }
+
+    xmlhttp.open('GET', url + '?_=' + Date.now(), true);
+    xmlhttp.send();
   }
 
   /**
