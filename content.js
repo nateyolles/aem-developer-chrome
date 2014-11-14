@@ -2,8 +2,11 @@
  * On page load send information about the tab to the content script.
  */
 chrome.runtime.sendMessage({
-  'title': document.title,
-  'location': window.location
+  type : 'window',
+  data : {
+    'title': document.title,
+    'location': window.location
+  }
 });
 
 /**
@@ -27,7 +30,10 @@ var AemDeveloper = (function(window, $, undefined) {
    */
   function openDigitalPulseDebugger() {
     window.open("","dp_debugger","width=700,height=1000,location=0,menubar=0,status=1,toolbar=0,resizable=1,scrollbars=1").document.write("<script language=\"JavaScript\" id=dbg src=\"https://www.adobetag.com/d1/digitalpulsedebugger/live/DPD.js\"></"+"script>");
-    chrome.runtime.sendMessage({status: 'success'});
+    chrome.runtime.sendMessage({
+      type: 'dp_debugger',
+      status: 'success'
+    });
   }
 
   /**
@@ -35,7 +41,7 @@ var AemDeveloper = (function(window, $, undefined) {
    *
    * @param {String} query the URL with query to the JCR.
    */
-  function deleteQueryResults(query) {
+  function deleteQueryResults(type, query) {
     var succesLength = 0;
 
     $.ajax({
@@ -55,20 +61,32 @@ var AemDeveloper = (function(window, $, undefined) {
                 succesLength++;
 
                 if (resultLength === succesLength) {
-                  chrome.runtime.sendMessage({status: 'success'});
+                  chrome.runtime.sendMessage({
+                    type: type,
+                    status: 'success'
+                  });
                 }
               },
               error: function(jqXHR, status, error) {
-                chrome.runtime.sendMessage({status: 'fail'});
+                chrome.runtime.sendMessage({
+                  type: type,
+                  status: 'fail'
+                });
               }
             });
           }
         } else {
-          chrome.runtime.sendMessage({status: 'noaction'});
+          chrome.runtime.sendMessage({
+            type: type,
+            status: 'noaction'
+          });
         }
       },
       error: function(jqXHR, status, error) {
-        chrome.runtime.sendMessage({status: 'fail'});
+        chrome.runtime.sendMessage({
+          type: type,
+          status: 'fail'
+        });
       }
     });
   }
@@ -77,14 +95,14 @@ var AemDeveloper = (function(window, $, undefined) {
    * Delete cached client libs.
    */
   function clearClientLibs() {
-    deleteQueryResults(CLIENTLIB_QUERY);
+    deleteQueryResults('clientlibs', CLIENTLIB_QUERY);
   }
 
   /**
    * Delete compiled JSP files.
    */
   function clearCompiledJSPs() {
-    deleteQueryResults(COMPILED_JSP_QUERY);
+    deleteQueryResults('compiled_jsps', COMPILED_JSP_QUERY);
   }
 
   /**
@@ -96,10 +114,17 @@ var AemDeveloper = (function(window, $, undefined) {
       cache: false,
       url: USER_INFO,
       success: function(data, status, jqXHR){
-        chrome.runtime.sendMessage(data);
+        chrome.runtime.sendMessage({
+          type: 'user',
+          status: 'success',
+          data: data
+        });
       },
       error: function(jqXHR, status, error) {
-        chrome.runtime.sendMessage({status: 'fail'});
+        chrome.runtime.sendMessage({
+          type: 'user',
+          status: 'fail'
+        });
       }
     });
   }
@@ -113,10 +138,17 @@ var AemDeveloper = (function(window, $, undefined) {
       cache: false,
       url: PRODUCT_INFO,
       success: function(data, status, jqXHR){
-        chrome.runtime.sendMessage(data);
+        chrome.runtime.sendMessage({
+          type: 'product',
+          status: 'success',
+          data: data
+        });
       },
       error: function(jqXHR, status, error) {
-        chrome.runtime.sendMessage({status: 'fail'});
+        chrome.runtime.sendMessage({
+          type: 'product',
+          status: 'fail'
+        });
       }
     });
   }
@@ -130,10 +162,17 @@ var AemDeveloper = (function(window, $, undefined) {
       cache: false,
       url: SLING_INFO,
       success: function(data, status, jqXHR){
-        chrome.runtime.sendMessage(data);
+        chrome.runtime.sendMessage({
+          type: 'sling',
+          status: 'success',
+          data: data
+        });
       },
       error: function(jqXHR, status, error) {
-        chrome.runtime.sendMessage({status: 'fail'});
+        chrome.runtime.sendMessage({
+          type: 'sling',
+          status: 'fail'
+        });
       }
     });
   }
@@ -147,10 +186,17 @@ var AemDeveloper = (function(window, $, undefined) {
       cache: false,
       url: SYSTEM_INFO,
       success: function(data, status, jqXHR){
-        chrome.runtime.sendMessage(data);
+        chrome.runtime.sendMessage({
+          type: 'system',
+          status: 'success',
+          data: data
+        });
       },
       error: function(jqXHR, status, error) {
-        chrome.runtime.sendMessage({status: 'fail'});
+        chrome.runtime.sendMessage({
+          type: 'system',
+          status: 'fail'
+        });
       }
     });
   }
@@ -168,3 +214,8 @@ var AemDeveloper = (function(window, $, undefined) {
     getSystemInfo : getSystemInfo
   };
 })(window, $);
+
+AemDeveloper.getUserInfo();
+AemDeveloper.getProductInfo();
+AemDeveloper.getSlingInfo();
+AemDeveloper.getSystemInfo();

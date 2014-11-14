@@ -31,6 +31,34 @@ app.controller('PopupController', function($scope, $localStorage, $http){
     url: ''
   }
 
+  $scope.user = {
+    name : '',
+    authorizableId : '',
+    isImpersonated : false
+  };
+
+  $scope.product = {
+    version : ''
+  };
+
+  $scope.sling = {
+    runModes : ''
+  };
+
+  $scope.system = {
+    java : {
+      version : '',
+      runtime : '',
+      vm : ''
+    },
+    os : {
+      version : '',
+      name : '',
+      arch : '',
+      dir : ''
+    }
+  };
+
   $scope.editMode = false;
 
   // pageDetails doesn't exist yet
@@ -82,18 +110,61 @@ app.controller('PopupController', function($scope, $localStorage, $http){
     }
     window.close();
   };
+
+  chrome.runtime.getBackgroundPage(function(eventPage) {
+
+    //cachedEventPage = eventPage;
+
+    eventPage.AemBackgroundScripts.getPageDetails(function(tab){
+      switch(tab.type){
+        case 'window':
+          console.log(tab.data);
+          pageDetails = tab.data;
+          break;
+        case 'user':
+          $scope.$apply(function(){
+            $scope.user.name = tab.data.name_xss;
+            $scope.user.authorizableId = tab.data.authorizableId_xss;
+            $scope.user.isImpersonated = tab.data.isImpersonated;  
+          });
+          break;
+        case 'product':
+          $scope.$apply(function(){
+            $scope.product.version = tab.data.version;
+          });
+          break;
+        case 'sling':
+          $scope.$apply(function(){
+            var slingInfo = convertSlingArrayToObject(tab.data);
+            $scope.sling.runModes = slingInfo['Run Modes'];
+          });
+          break;
+        case 'system':
+          $scope.$apply(function(){
+            var systemInfo = convertSlingArrayToObject(tab.data);
+
+            $scope.system.java.version = systemInfo['java.runtime.version'];
+            $scope.system.java.runtime = systemInfo['java.runtime.name'];
+            $scope.system.java.vm = systemInfo['java.vm.name'];
+            $scope.system.os.version = systemInfo['os.version'];
+            $scope.system.os.name = systemInfo['os.name'];
+            $scope.system.os.arch = systemInfo['os.arch'];
+            $scope.system.os.dir = systemInfo['user.dir'];
+          });
+          break;
+        case 'dp_debugger':
+        case 'clientlibs':
+        case 'compiled_jsps':
+          break;
+      }
+    });
+    
+  });
+
 });
 
 window.addEventListener('load', function(evt) {
-  chrome.runtime.getBackgroundPage(function(eventPage) {
-    // Call the getPageInfo function in the event page, passing in 
-    // our onPageDetailsReceived function as the callback. This injects 
-    // content.js into the current tab's HTML
-    eventPage.AemBackgroundScripts.getPageDetails(function(tab){
-      pageDetails = tab;
-    });
-    cachedEventPage = eventPage;
-  });
+  
 
   $('button').click(function(e){
     var $this = $(this),
@@ -126,42 +197,6 @@ window.addEventListener('load', function(evt) {
       console.dir(user.name_xss);
       console.dir(user.authorizableId_xss);
       console.dir(user.isImpersonated);
-    });
-  });
-
-  $('#lnk_getProductInfo').click(function(e){
-    e.preventDefault();
-    var target = e.target;
-
-    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.getProductInfo()', function(product){
-      console.dir(product.version);
-      
-    });
-  });
-
-  $('#lnk_getSlingInfo').click(function(e){
-    e.preventDefault();
-    var target = e.target;
-
-    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.getSlingInfo()', function(info){
-      console.log(convertSlingArrayToObject(info)['Run Modes']);
-    });
-  });
-
-  $('#lnk_getSystemInfo').click(function(e){
-    e.preventDefault();
-    var target = e.target;
-
-    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.getSystemInfo()', function(info){
-      var systemInfo = convertSlingArrayToObject(info);
-
-      console.log(systemInfo['java.runtime.version']);
-      console.log(systemInfo['java.runtime.name']);
-      console.log(systemInfo['java.vm.name']);
-      console.log(systemInfo['os.version']);
-      console.log(systemInfo['os.name']);
-      console.log(systemInfo['os.arch']);
-      console.log(systemInfo['user.dir']);
     });
   });
 

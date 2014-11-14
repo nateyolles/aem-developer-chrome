@@ -8,6 +8,23 @@
     </head>
     <body data-ng-controller="PopupController">
         <div class="body">
+            <p data-ng-bind="user.name"></p>
+            <p data-ng-bind="user.authorizableId"></p>
+            <p data-ng-bind="user.isImpersonated"></p>
+            <p data-ng-bind="product.version"></p>
+            <p data-ng-bind="sling.runModes"></p>
+            <p data-ng-bind="system.java.version"></p>
+            <p data-ng-bind="system.java.runtime"></p>
+            <p data-ng-bind="system.java.vm"></p>
+            <p data-ng-bind="system.os.version"></p>
+            <p data-ng-bind="system.os.name"></p>
+            <p data-ng-bind="system.os.arch"></p>
+            <p data-ng-bind="system.os.dir"></p>
+
+
+
+
+
             <section>
                 <ul>
                     <li class="clearfix">
@@ -123,10 +140,6 @@
                 <ul class="sublist" data-ng-show="collapseB">
                     <li><a id="lnk_clearClientLibs" href="#">Delete cached clientlibs</a></li>
                     <li><a id="lnk_clearCompiledJSPs" href="#">Delete compiled JSPs</a></li>
-                    <li><a id="lnk_getUserInfo" href="#">Get User Info</a></li>
-                    <li><a id="lnk_getProductInfo" href="#">Get Product Info</a></li>
-                    <li><a id="lnk_getSlingInfo" href="#">Get Sling Info</a></li>
-                    <li><a id="lnk_getSystemInfo" href="#">Get System Info</a></li>
                 </ul>
             </section>
 
