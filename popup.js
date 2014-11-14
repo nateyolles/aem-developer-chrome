@@ -162,8 +162,9 @@ app.controller('PopupController', function($scope, $localStorage, $http){
               });
             }
             break;
-          case 'dp_debugger':
           case 'clientlibs':
+            showStatus($('#lnk_clearClientLibs'), tab.status);
+            break;
           case 'compiled_jsps':
             showStatus($('#lnk_clearCompiledJSPs'), tab.status);
             break;
@@ -196,29 +197,20 @@ window.addEventListener('load', function(evt) {
     e.preventDefault();
     var target = e.target;
 
-    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.clearClientLibs()', function(status){
-      showStatus(target, status);
-    });
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.clearClientLibs()');
   });
 
   $('#lnk_clearCompiledJSPs').click(function(e){
     e.preventDefault();
     var target = e.target;
 
-    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.clearCompiledJSPs()', function(status){
-      showStatus(target, status);
-    });
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.clearCompiledJSPs()');
   });
 
   $('#lnk_digitalPulseDebugger').click(function(e){
     e.preventDefault();
-    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.openDigitalPulseDebugger()', function(a){ $('#status').text(JSON.stringify(a));});
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.openDigitalPulseDebugger()');
     //window.close();
-  });
-
-  $('#lnk_clientContextWindow').click(function(e){
-    e.preventDefault();
-    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.openClientContextWindow()', function(a){ $('#status').text(JSON.stringify(a));});
   });
 
   $('.js-new-window').click(function(e){
