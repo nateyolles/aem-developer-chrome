@@ -23,7 +23,8 @@ var AemDeveloper = (function(window, undefined) {
       USER_INFO =          '/libs/granite/security/currentuser.json'
       PRODUCT_INFO =       '/libs/cq/core/productinfo.json',
       SLING_INFO =         '/system/console/status-slingsettings.json',
-      SYSTEM_INFO =        '/system/console/status-System%20Properties.json';
+      SYSTEM_INFO =        '/system/console/status-System%20Properties.json',
+      SUDOABLE_INFO =      '.sudoables.json';
 
   /**
    * Open the marketing cloud debugger window.
@@ -122,17 +123,24 @@ var AemDeveloper = (function(window, undefined) {
    * @param {String} Type of message to send.
    * @param {String} URL to query the JCR.
    */
-  function getInfo(type, url) {
+  function getInfo(type, url, callback) {
     var xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function() {
+      var data;
+
       if (xmlhttp.readyState === 4) {
         if (xmlhttp.status === 200) {
+          data = JSON.parse(xmlhttp.responseText);
           chrome.runtime.sendMessage({
             type: type,
             status: 'success',
-            data: JSON.parse(xmlhttp.responseText)
+            data: data
           });
+
+          if (callback) {
+            callback(data)
+          }
         } else {
           chrome.runtime.sendMessage({
             type: type,
@@ -146,12 +154,20 @@ var AemDeveloper = (function(window, undefined) {
     xmlhttp.send();
   }
 
+  function getSudoables(home) {
+    getInfo('sudoables', home + SUDOABLE_INFO);
+  }
+
   /**
    * Get user info.
    */
   function getUserInfo() {
-    getInfo('user', USER_INFO);
+    getInfo('user', USER_INFO, function(data){
+      getSudoables(data.home);
+    });
   }
+
+
 
   /**
    * Get product info.

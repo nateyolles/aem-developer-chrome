@@ -62,6 +62,21 @@ app.controller('PopupController', function($scope, $localStorage, $http){
 
   $scope.editMode = false;
 
+
+  $scope.sudoables = ['', '-------'];  
+
+  $scope.$watch('user.authorizableId', function(newValue, oldValue) {
+    $scope.sudoables[0] = $scope.user.authorizableId;
+  });
+  
+
+  // var data = {"authorizables":[{"id":"aaron.mcdonald@mailinator.com","name":"Aaron McDonald","name_xss":"Aaron McDonald"},{"id":"andrew.schaeffer@trashymail.com","name":"Andrew Schaeffer","name_xss":"Andrew Schaeffer"},{"id":"anonymous","name":"anonymous","name_xss":"anonymous"},{"id":"aparker@geometrixx.info","name":"Alison Parker","name_xss":"Alison Parker"},{"id":"ashley.thompson@spambob.com","name":"Ashley Thompson","name_xss":"Ashley Thompson"},{"id":"author","name":"author","name_xss":"author"},{"id":"boyd.larsen@dodgit.com","name":"Boyd Larsen","name_xss":"Boyd Larsen"},{"id":"carl.eastham@geometrixx-media.com","name":"Carl Eastham","name_xss":"Carl Eastham"},{"id":"carlene.j.avery@mailinator.com","name":"Carlene Avery","name_xss":"Carlene Avery"},{"id":"charles.s.johnson@trashymail.com","name":"Charles Johnson","name_xss":"Charles Johnson"},{"id":"charlotte.capp@geometrixx-media.com","name":"Charlotte Capp","name_xss":"Charlotte Capp"},{"id":"donna.billups@pookmail.com","name":"Donna Billups","name_xss":"Donna Billups"},{"id":"dtm-deploy-hook-user","name":"dtm-deploy-hook-user","name_xss":"dtm-deploy-hook-user"},{"id":"emily.andrews@mailinator.com","name":"Emily Andrews","name_xss":"Emily Andrews"},{"id":"felicia.carter@trashymail.com","name":"Felicia Carter","name_xss":"Felicia Carter"},{"id":"formsadmin","name":"formsadmin","name_xss":"formsadmin"},{"id":"fpadmin","name":"fpadmin","name_xss":"fpadmin"},{"id":"harold.w.gavin@spambob.com","name":"Harold Gavin","name_xss":"Harold Gavin"},{"id":"iris.r.mccoy@mailinator.com","name":"Iris Mccoy","name_xss":"Iris Mccoy"},{"id":"ivan.l.parrino@mailinator.com","name":"Ivan Parrino","name_xss":"Ivan Parrino"},{"id":"james.devore@spambob.com","name":"James Devore","name_xss":"James Devore"},{"id":"jason.werner@dodgit.com","name":"Jason Werner","name_xss":"Jason Werner"},{"id":"jdoe@geometrixx.info","name":"John Doe","name_xss":"John Doe"},{"id":"joel.czuba@geometrixx-media.com","name":"Joel Czuba","name_xss":"Joel Czuba"},{"id":"josh.bradley@pookmail.com","name":"Josh Bradley","name_xss":"Josh Bradley"},{"id":"keith.m.mabry@spambob.com","name":"Keith Mabry","name_xss":"Keith Mabry"},{"id":"kelly.creative@geometrixx.info","name":"Kelly Creative","name_xss":"Kelly Creative"},{"id":"kerri.g.saner@dodgit.com","name":"Kerri Saner","name_xss":"Kerri Saner"},{"id":"larry.a.spiller@pookmail.com","name":"Larry Spiller","name_xss":"Larry Spiller"},{"id":"laura.j.richardson@pookmail.com","name":"Laura Richardson","name_xss":"Laura Richardson"},{"id":"leonard.a.duncan@mailinator.com","name":"Leonard Duncan","name_xss":"Leonard Duncan"},{"id":"leslie.d.dufault@trashymail.com","name":"Leslie Dufault","name_xss":"Leslie Dufault"},{"id":"luz.a.smith@dodgit.com","name":"Luz Smith","name_xss":"Luz Smith"},{"id":"marcy.aja@geometrixx-media.com","name":"Marcy Aja","name_xss":"Marcy Aja"},{"id":"mathew.echavez@geometrixx-media.com","name":"Mathew Echavez","name_xss":"Mathew Echavez"},{"id":"matt.monroe@mailinator.com","name":"Matt Monroe","name_xss":"Matt Monroe"},{"id":"oauthservice","name":"oauthservice","name_xss":"oauthservice"},{"id":"ocs-lifecycle","name":"ocs-lifecycle","name_xss":"ocs-lifecycle"},{"id":"olive.d.pixley@spambob.com","name":"Olive Pixley","name_xss":"Olive Pixley"},{"id":"omar.b.kamp@dodgit.com","name":"Omar Kamp","name_xss":"Omar Kamp"},{"id":"perry.eastman@geometrixx-media.com","name":"Perry Eastman","name_xss":"Perry Eastman"},{"id":"ralph.e.johnson@mailinator.com","name":"Ralph Johnson","name_xss":"Ralph Johnson"},{"id":"rebekah.larsen@trashymail.com","name":"Rebekah Larsen","name_xss":"Rebekah Larsen"},{"id":"replication-receiver","name":"replication-receiver","name_xss":"replication-receiver"},{"id":"ryan.palmer@spambob.com","name":"Ryan Palmer","name_xss":"Ryan Palmer"},{"id":"scott.b.reynolds@dodgit.com","name":"Scott Reynolds","name_xss":"Scott Reynolds"},{"id":"sean.smith@geometrixxoutdoors.com","name":"Sean Smith","name_xss":"Sean Smith"},{"id":"shantel.j.jones@pookmail.com","name":"Shantel Jones","name_xss":"Shantel Jones"},{"id":"suggestionservice","name":"suggestionservice","name_xss":"suggestionservice"},{"id":"trina.dombrowski@geometrixx-media.com","name":"Trina Dombrowski","name_xss":"Trina Dombrowski"},{"id":"virginia.l.armstrong@spambob.com","name":"Virginia Armstrong","name_xss":"Virginia Armstrong"},{"id":"wallace.escott@geometrixx-media.com","name":"Wallace Escott","name_xss":"Wallace Escott"},{"id":"weston.mccall@dodgit.com","name":"Weston McCall","name_xss":"Weston McCall"},{"id":"willard.ebbing@geometrixx-media.com","name":"Willard Ebbing","name_xss":"Willard Ebbing"},{"id":"william.a.plunkett@mailinator.com","name":"William Plunkett","name_xss":"William Plunkett"},{"id":"willie.a.melton@dodgit.com","name":"Willie Melton","name_xss":"Willie Melton"},{"id":"yolanda.s.huggins@trashymail.com","name":"Yolanda Huggins","name_xss":"Yolanda Huggins"},{"id":"yolles","name":"yolles","name_xss":"yolles"},{"id":"zachary.w.mitchell@spambob.com","name":"Zachary Mitchell","name_xss":"Zachary Mitchell"}],"total":59};
+
+  // for (var x = 0; x < data.authorizables.length; x++) {
+  //   $scope.sudoables.push(data.authorizables[x].id);
+  // }
+
+
   // pageDetails doesn't exist yet
   $scope.isLinkCurrentPage = function(index){
     var curr = $scope.options.servers[index].url;
@@ -170,6 +185,13 @@ app.controller('PopupController', function($scope, $localStorage, $http){
           case 'compiled_jsps':
             showStatus($('#lnk_clearCompiledJSPs'), tab.status);
             break;
+          case 'sudoables':
+            $scope.$apply(function(){
+              for (var x = 0; x < tab.data.authorizables.length; x++) {
+                $scope.sudoables.push(tab.data.authorizables[x].id);
+              }  
+            });
+            break;
         }
       }
     });
@@ -247,7 +269,21 @@ window.addEventListener('load', function(evt) {
     setTabLocation(getUrlWithUpdatedQueryString(pageDetails.location, key, value));
 
     window.close();
-  });   
+  });
+
+  $('#users').change(function(){
+    var location = getUrlWithUpdatedQueryString(pageDetails.location, 'sling.auth.redirect', pageDetails.location.pathname, true);
+    location = getUrlWithUpdatedQueryString(location, 'sudo', this.value);
+
+    setTabLocation(location);
+  });
+
+  $('#lnk_revertToSelf').click(function(){
+    var location = getUrlWithUpdatedQueryString(pageDetails.location, 'sling.auth.redirect', pageDetails.location.pathname, true);
+    location = getUrlWithUpdatedQueryString(location, 'sudo', '-');
+
+    setTabLocation(location);
+  });
 });
 
 /**
@@ -260,9 +296,10 @@ window.addEventListener('load', function(evt) {
  * @param {location} location - The location
  * @param {string} key - The query string parameter to update.
  * @param {string} value - the query string parameter's value to update.
+ * @param {boolean} returnLocationObject - return location pseudo-object instead of a string.
  * @returns {string} New URL with updated query string parameters.
  */
-function getUrlWithUpdatedQueryString(location, key, value) {
+function getUrlWithUpdatedQueryString(location, key, value, returnLocationObject) {
   var origin = location.origin,
       hash = location.hash,                 // starts with #
       search = location.search,             // starts with ?
@@ -303,7 +340,17 @@ function getUrlWithUpdatedQueryString(location, key, value) {
     }
   }
 
-  return origin + pathname + updatedSearchString + hash;
+  if (returnLocationObject) {
+    return {
+      origin : origin,
+      hash : hash,
+      search : updatedSearchString,
+      pathname : pathname,
+      href : origin + pathname + updatedSearchString + hash
+    };
+  } else {
+    return origin + pathname + updatedSearchString + hash;
+  }
 }
 
 /**

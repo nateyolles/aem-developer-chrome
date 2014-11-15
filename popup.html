@@ -23,7 +23,10 @@
             <p data-ng-bind="system.os.dir"></p>
 
 
-
+            <select id="users">
+                <option data-ng-repeat="sudoable in sudoables" value="{{sudoable}}" data-ng-bind="sudoable"></option>
+            </select>
+            <a href="#" id="lnk_revertToSelf">revert to self</a>
 
 
             <section>
