@@ -185,6 +185,9 @@ app.controller('PopupController', function($scope, $localStorage, $http){
           case 'compiled_jsps':
             showStatus($('#lnk_clearCompiledJSPs'), tab.status);
             break;
+          case 'garbage_collector':
+            showStatus($('#lnk_runGarbageCollector'), tab.status);
+            break;
           case 'sudoables':
             $scope.$apply(function(){
               for (var x = 0; x < tab.data.authorizables.length; x++) {
@@ -229,6 +232,13 @@ window.addEventListener('load', function(evt) {
     var target = e.target;
 
     cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.clearCompiledJSPs()');
+  });
+
+  $('#lnk_runGarbageCollector').click(function(e){
+    e.preventDefault();
+    var target = e.target;
+
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.runGarbageCollector()');
   });
 
   $('#lnk_digitalPulseDebugger').click(function(e){

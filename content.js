@@ -24,7 +24,9 @@ var AemDeveloper = (function(window, undefined) {
       PRODUCT_INFO =       '/libs/cq/core/productinfo.json',
       SLING_INFO =         '/system/console/status-slingsettings.json',
       SYSTEM_INFO =        '/system/console/status-System%20Properties.json',
-      SUDOABLE_INFO =      '.sudoables.json';
+      SUDOABLE_INFO =      '.sudoables.json',
+      MEMORY_USAGE =       '/system/console/memoryusage',
+      GARBAGE_COLLECTOR =  'command=gc';
 
   /**
    * Open the marketing cloud debugger window.
@@ -116,7 +118,6 @@ var AemDeveloper = (function(window, undefined) {
     deleteQueryResults('compiled_jsps', COMPILED_JSP_QUERY);
   }
 
-
   /**
    * Get info and send a Chrome message.
    *
@@ -167,8 +168,6 @@ var AemDeveloper = (function(window, undefined) {
     });
   }
 
-
-
   /**
    * Get product info.
    */
@@ -191,6 +190,32 @@ var AemDeveloper = (function(window, undefined) {
   }
 
   /**
+   * Run garbage collector
+   */
+  function runGarbageCollector(){
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.open('POST', MEMORY_USAGE, true);
+    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xmlhttp.onreadystatechange = function(){
+      if (xmlhttp.readyState === 4) {
+        if (xmlhttp.status === 200) {
+          chrome.runtime.sendMessage({
+            type: 'garbage_collector',
+            status: 'success'
+          });
+        } else {
+          chrome.runtime.sendMessage({
+            type: 'garbage_collector',
+            status: 'fail'
+          });
+        }
+      }
+    };
+    xmlhttp.send(GARBAGE_COLLECTOR);
+  }
+
+  /**
    * @public
    */
   return {
@@ -200,7 +225,8 @@ var AemDeveloper = (function(window, undefined) {
     getUserInfo : getUserInfo,
     getProductInfo : getProductInfo,
     getSlingInfo : getSlingInfo,
-    getSystemInfo : getSystemInfo
+    getSystemInfo : getSystemInfo,
+    runGarbageCollector : runGarbageCollector
   };
 })(window);
 

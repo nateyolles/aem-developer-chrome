@@ -169,13 +169,14 @@
             <section>
                 <ul data-ng-click="collapseB = !collapseB">
                     <li class="accordion clearfix">
-                        <h3>Clear Caches</h3>
+                        <h3>Clear Caches &amp; Memory</h3>
                         <i ng-class="{'icon-arrow-down': collapseB, 'icon-arrow-right': !collapseB}"></i>
                     </li>
                 </ul>
                 <ul class="sublist" data-ng-show="collapseB">
                     <li><a id="lnk_clearClientLibs" href="#">Delete cached clientlibs</a></li>
                     <li><a id="lnk_clearCompiledJSPs" href="#">Delete compiled JSPs</a></li>
+                    <li><a id="lnk_runGarbageCollector" href="#">Run Garbage Collector</a></li>
                 </ul>
             </section>
 
