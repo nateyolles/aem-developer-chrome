@@ -271,11 +271,12 @@ window.addEventListener('load', function(evt) {
     window.close();
   });
 
-  $('#users').change(function(){
+  $('#sudoables').change(function(){
     var location = getUrlWithUpdatedQueryString(pageDetails.location, 'sling.auth.redirect', pageDetails.location.pathname, true);
     location = getUrlWithUpdatedQueryString(location, 'sudo', this.value);
 
     setTabLocation(location);
+    window.close();
   });
 
   $('#lnk_revertToSelf').click(function(){
@@ -283,6 +284,7 @@ window.addEventListener('load', function(evt) {
     location = getUrlWithUpdatedQueryString(location, 'sudo', '-');
 
     setTabLocation(location);
+    window.close();
   });
 });
 
@@ -409,13 +411,6 @@ function convertSlingArrayToObject(slingArray) {
   return slingObject;
 }
 
-     // (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          // (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          // m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          // })(window,document,'script','https://ssl.google-analytics.com/ga.js','ga');
-
-          // ga('create', 'UA-56261124-1', 'auto');
-          // ga('send', 'pageview');
 
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-56261124-1']);
@@ -427,7 +422,7 @@ _gaq.push(['_trackPageview']);
   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
 
-
+//_gaq.push(['_trackEvent', 'Click', 'redirect to environment', isNewWindow ? 'new window' : 'current window']);
 
 function toggleUIs(location) {
   var uiMap = [

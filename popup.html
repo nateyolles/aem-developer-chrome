@@ -8,26 +8,59 @@
     </head>
     <body data-ng-controller="PopupController">
         <div class="body">
-            <p data-ng-bind="user.name"></p>
-            <p data-ng-bind="user.authorizableId"></p>
-            <p data-ng-bind="user.isImpersonated"></p>
-            <p data-ng-bind="user.home"></p>
-            <p data-ng-bind="product.version"></p>
-            <p data-ng-bind="sling.runModes"></p>
-            <p data-ng-bind="system.java.version"></p>
-            <p data-ng-bind="system.java.runtime"></p>
-            <p data-ng-bind="system.java.vm"></p>
-            <p data-ng-bind="system.os.version"></p>
-            <p data-ng-bind="system.os.name"></p>
-            <p data-ng-bind="system.os.arch"></p>
-            <p data-ng-bind="system.os.dir"></p>
-
-
-            <select id="users">
-                <option data-ng-repeat="sudoable in sudoables" value="{{sudoable}}" data-ng-bind="sudoable"></option>
-            </select>
-            <a href="#" id="lnk_revertToSelf">revert to self</a>
-
+            <section>
+                <ul data-ng-click="collapseZ = !collapseZ">
+                    <li class="accordion clearfix">
+                        <h3>Info</h3>
+                        <i ng-class="{'icon-arrow-down': collapseZ, 'icon-arrow-right': !collapseZ}"></i>
+                    </li>
+                </ul>
+                <ul class="sublist info-list" data-ng-show="collapseZ">
+                    <li>
+                        User
+                        <span>
+                            <span data-ng-show="user.authorizableId" data-ng-bind="'(' + user.authorizableId + ')'"></span>
+                            <span data-ng-bind="user.name"></span>
+                        </span>
+                    </li>
+                    <li>
+                        AEM version
+                        <span data-ng-bind="product.version"></span>
+                    </li>
+                    <li>
+                        Sling run modes
+                        <span data-ng-bind="sling.runModes"></span>
+                    </li>
+                    <li>
+                        Java version
+                        <span data-ng-bind="system.java.version"></span>
+                    </li>
+                    <li>
+                        Java runtime
+                        <span data-ng-bind="system.java.runtime"></span>
+                    </li>
+                    <li>
+                        Java VM
+                        <span data-ng-bind="system.java.vm"></span>
+                    </li>
+                    <li>
+                        OS
+                        <span data-ng-bind="system.os.name"></span>
+                    </li>
+                    <li>
+                        OS version
+                        <span data-ng-bind="system.os.version"></span>
+                    </li>
+                    <li>
+                        OS architecture
+                        <span data-ng-bind="system.os.arch"></span>
+                    </li>
+                    <li>
+                        OS directory
+                        <span data-ng-bind="system.os.dir"></span>
+                    </li>
+                </ul>
+            </section>
 
             <section>
                 <ul>
@@ -143,6 +176,23 @@
                 <ul class="sublist" data-ng-show="collapseB">
                     <li><a id="lnk_clearClientLibs" href="#">Delete cached clientlibs</a></li>
                     <li><a id="lnk_clearCompiledJSPs" href="#">Delete compiled JSPs</a></li>
+                </ul>
+            </section>
+
+            <section>
+                <ul>
+                    <li class="clearfix">
+                        <h3>Impersonate</h3>
+                        <div class="content">
+                            <div class="btn-group">
+                                <button data-ng-show="user.isImpersonated" id="lnk_revertToSelf">Revert to self</button>
+                            </div>
+                            <select id="sudoables">
+                                <option data-ng-repeat="sudoable in sudoables" value="{{sudoable}}" data-ng-bind="sudoable"></option>
+                            </select>
+                            
+                        </div>
+                    </li>
                 </ul>
             </section>
 

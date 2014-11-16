@@ -208,6 +208,11 @@ li h3 {
   font-size: 15px;
 }
 
+ul.contact li:hover {
+  background: transparent;
+  box-shadow: none;
+}
+
 .icon-warning {
   font-size: 16px;
   color: #cc0000;
@@ -272,4 +277,19 @@ ul.sublist li:hover i.link-new-window {
   0% {background-color: #f5f5f5;}
   10% {background-color: #ffff66;}
   100% {background-color: #f5f5f5;}
+}
+
+ul.info-list li {
+  padding: 2px 4px;
+}
+
+.info-list span {
+  float: right;
+  word-break: break-word;
+}
+
+#sudoables {
+  width: 190px;
+  margin-top: 5px;
+  margin-left: 5px;
 }
