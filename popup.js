@@ -137,6 +137,7 @@ app.controller('PopupController', function($scope, $localStorage, $http){
           case 'window':
             if (tab.data) {
               pageDetails = tab.data;
+              pageDetails.location = normalizeLocation(pageDetails.location);
             }
             break;
           case 'user':
@@ -321,11 +322,13 @@ function getUrlWithUpdatedQueryString(location, key, value, returnLocationObject
       isFirstParam = true;
 
   if (search) {
-    queryParams = getQueryParameters(search);     // returns object
+    // returns object
+    queryParams = getQueryParameters(search);
   }
 
   if (value !== null) {
-    queryParams[key] = value;               // overwrite or add key/value
+    // overwrite or add key/value
+    queryParams[key] = value;
   } else {
     delete queryParams[key];
   }
@@ -432,7 +435,56 @@ _gaq.push(['_trackPageview']);
   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
 
-//_gaq.push(['_trackEvent', 'Click', 'redirect to environment', isNewWindow ? 'new window' : 'current window']);
+
+/**
+ * Create a pseudo location object fixing problems when the Location object
+ * contains an AEM URL with '/cf#/', '/siteadmin#/', etc...
+ *
+ * @param {location} location - the location object to read from.
+ * @returns {Object} A pseudo location object.
+ */
+function normalizeLocation(location) {
+  var hashedUrls = ['cf', 'siteadmin', 'useradmin', 'publishingadmin', 'damadmin', 'miscadmin', 'mcmadmin'],
+      containsHash = false,
+      origin = location.origin,
+      search,
+      pathname,
+      hash,
+      tempLocation,
+      x;
+
+  for (x = 0; x < hashedUrls.length; x++) {
+    if (location.href.indexOf('/' + hashedUrls[x] + '#/') !== -1) {
+      containsHash = true;
+      break;
+    }
+  }
+
+  if (containsHash) {
+    tempLocation = document.createElement('a');
+    tempLocation.href = location.href.split('/cf#').join('');
+
+    pathname = '/cf#' + tempLocation.pathname;
+    hash = tempLocation.hash;
+    search = tempLocation.search;
+  } else {
+    pathname = location.pathname;
+    hash = location.hash;
+    search = location.search;
+  }
+
+  return {
+    href : origin + pathname + search + hash,
+    origin : origin,
+    search : search,
+    pathname : pathname,
+    hash : hash,
+    port: location.port,
+    host: location.host,
+    hostname: location.hostname,
+    protocol: location.protocol
+  }
+}
 
 function toggleUIs(location) {
   var uiMap = [
