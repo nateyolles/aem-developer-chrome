@@ -40,12 +40,12 @@ Impersonate users without having to go to the User Admin page. In addition, impe
 
 ![Impersonate screenshot](images/screenshot_impersonate.png)
 
-Clear Cache & Memory
+Clear Cache and Memory
 --------------------
 
 Delete compiled clientlibs under the /var/clientlibs directory. Delete compiled JSP files under the /var/classes directory. Run the Garbage Collector without going to the Felix console.
 
-![Browser screenshot](images/screenshot_clearcache.png)
+![Clear cache and memory screenshot](images/screenshot_clearcache.png)
 
 
 Todo:
