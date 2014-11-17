@@ -17,6 +17,22 @@ var app = angular.module('PopupApp', ['ngStorage']),
     cachedEventPage,
     pageDetails;
 
+var uiMap = [
+  {
+    'classic' : '/siteadmin#',
+    'touch'   : '/sites.html'
+  }, {
+    'classic' : '/publishingadmin#',
+    'touch'   : '/publications.html'
+  }, {
+    'classic' : '/damadmin#',
+    'touch'   : '/assets.html'
+  }, {
+    'classic' : '',
+     'touch'  : '/editor.html'
+   }
+];
+
 app.controller('PopupController', function($scope, $localStorage, $http){
 
   $scope.options = $localStorage.$default({
@@ -62,20 +78,11 @@ app.controller('PopupController', function($scope, $localStorage, $http){
 
   $scope.editMode = false;
 
-
   $scope.sudoables = ['', '-------'];  
 
   $scope.$watch('user.authorizableId', function(newValue, oldValue) {
     $scope.sudoables[0] = $scope.user.authorizableId;
   });
-  
-
-  // var data = {"authorizables":[{"id":"aaron.mcdonald@mailinator.com","name":"Aaron McDonald","name_xss":"Aaron McDonald"},{"id":"andrew.schaeffer@trashymail.com","name":"Andrew Schaeffer","name_xss":"Andrew Schaeffer"},{"id":"anonymous","name":"anonymous","name_xss":"anonymous"},{"id":"aparker@geometrixx.info","name":"Alison Parker","name_xss":"Alison Parker"},{"id":"ashley.thompson@spambob.com","name":"Ashley Thompson","name_xss":"Ashley Thompson"},{"id":"author","name":"author","name_xss":"author"},{"id":"boyd.larsen@dodgit.com","name":"Boyd Larsen","name_xss":"Boyd Larsen"},{"id":"carl.eastham@geometrixx-media.com","name":"Carl Eastham","name_xss":"Carl Eastham"},{"id":"carlene.j.avery@mailinator.com","name":"Carlene Avery","name_xss":"Carlene Avery"},{"id":"charles.s.johnson@trashymail.com","name":"Charles Johnson","name_xss":"Charles Johnson"},{"id":"charlotte.capp@geometrixx-media.com","name":"Charlotte Capp","name_xss":"Charlotte Capp"},{"id":"donna.billups@pookmail.com","name":"Donna Billups","name_xss":"Donna Billups"},{"id":"dtm-deploy-hook-user","name":"dtm-deploy-hook-user","name_xss":"dtm-deploy-hook-user"},{"id":"emily.andrews@mailinator.com","name":"Emily Andrews","name_xss":"Emily Andrews"},{"id":"felicia.carter@trashymail.com","name":"Felicia Carter","name_xss":"Felicia Carter"},{"id":"formsadmin","name":"formsadmin","name_xss":"formsadmin"},{"id":"fpadmin","name":"fpadmin","name_xss":"fpadmin"},{"id":"harold.w.gavin@spambob.com","name":"Harold Gavin","name_xss":"Harold Gavin"},{"id":"iris.r.mccoy@mailinator.com","name":"Iris Mccoy","name_xss":"Iris Mccoy"},{"id":"ivan.l.parrino@mailinator.com","name":"Ivan Parrino","name_xss":"Ivan Parrino"},{"id":"james.devore@spambob.com","name":"James Devore","name_xss":"James Devore"},{"id":"jason.werner@dodgit.com","name":"Jason Werner","name_xss":"Jason Werner"},{"id":"jdoe@geometrixx.info","name":"John Doe","name_xss":"John Doe"},{"id":"joel.czuba@geometrixx-media.com","name":"Joel Czuba","name_xss":"Joel Czuba"},{"id":"josh.bradley@pookmail.com","name":"Josh Bradley","name_xss":"Josh Bradley"},{"id":"keith.m.mabry@spambob.com","name":"Keith Mabry","name_xss":"Keith Mabry"},{"id":"kelly.creative@geometrixx.info","name":"Kelly Creative","name_xss":"Kelly Creative"},{"id":"kerri.g.saner@dodgit.com","name":"Kerri Saner","name_xss":"Kerri Saner"},{"id":"larry.a.spiller@pookmail.com","name":"Larry Spiller","name_xss":"Larry Spiller"},{"id":"laura.j.richardson@pookmail.com","name":"Laura Richardson","name_xss":"Laura Richardson"},{"id":"leonard.a.duncan@mailinator.com","name":"Leonard Duncan","name_xss":"Leonard Duncan"},{"id":"leslie.d.dufault@trashymail.com","name":"Leslie Dufault","name_xss":"Leslie Dufault"},{"id":"luz.a.smith@dodgit.com","name":"Luz Smith","name_xss":"Luz Smith"},{"id":"marcy.aja@geometrixx-media.com","name":"Marcy Aja","name_xss":"Marcy Aja"},{"id":"mathew.echavez@geometrixx-media.com","name":"Mathew Echavez","name_xss":"Mathew Echavez"},{"id":"matt.monroe@mailinator.com","name":"Matt Monroe","name_xss":"Matt Monroe"},{"id":"oauthservice","name":"oauthservice","name_xss":"oauthservice"},{"id":"ocs-lifecycle","name":"ocs-lifecycle","name_xss":"ocs-lifecycle"},{"id":"olive.d.pixley@spambob.com","name":"Olive Pixley","name_xss":"Olive Pixley"},{"id":"omar.b.kamp@dodgit.com","name":"Omar Kamp","name_xss":"Omar Kamp"},{"id":"perry.eastman@geometrixx-media.com","name":"Perry Eastman","name_xss":"Perry Eastman"},{"id":"ralph.e.johnson@mailinator.com","name":"Ralph Johnson","name_xss":"Ralph Johnson"},{"id":"rebekah.larsen@trashymail.com","name":"Rebekah Larsen","name_xss":"Rebekah Larsen"},{"id":"replication-receiver","name":"replication-receiver","name_xss":"replication-receiver"},{"id":"ryan.palmer@spambob.com","name":"Ryan Palmer","name_xss":"Ryan Palmer"},{"id":"scott.b.reynolds@dodgit.com","name":"Scott Reynolds","name_xss":"Scott Reynolds"},{"id":"sean.smith@geometrixxoutdoors.com","name":"Sean Smith","name_xss":"Sean Smith"},{"id":"shantel.j.jones@pookmail.com","name":"Shantel Jones","name_xss":"Shantel Jones"},{"id":"suggestionservice","name":"suggestionservice","name_xss":"suggestionservice"},{"id":"trina.dombrowski@geometrixx-media.com","name":"Trina Dombrowski","name_xss":"Trina Dombrowski"},{"id":"virginia.l.armstrong@spambob.com","name":"Virginia Armstrong","name_xss":"Virginia Armstrong"},{"id":"wallace.escott@geometrixx-media.com","name":"Wallace Escott","name_xss":"Wallace Escott"},{"id":"weston.mccall@dodgit.com","name":"Weston McCall","name_xss":"Weston McCall"},{"id":"willard.ebbing@geometrixx-media.com","name":"Willard Ebbing","name_xss":"Willard Ebbing"},{"id":"william.a.plunkett@mailinator.com","name":"William Plunkett","name_xss":"William Plunkett"},{"id":"willie.a.melton@dodgit.com","name":"Willie Melton","name_xss":"Willie Melton"},{"id":"yolanda.s.huggins@trashymail.com","name":"Yolanda Huggins","name_xss":"Yolanda Huggins"},{"id":"yolles","name":"yolles","name_xss":"yolles"},{"id":"zachary.w.mitchell@spambob.com","name":"Zachary Mitchell","name_xss":"Zachary Mitchell"}],"total":59};
-
-  // for (var x = 0; x < data.authorizables.length; x++) {
-  //   $scope.sudoables.push(data.authorizables[x].id);
-  // }
-
 
   // pageDetails doesn't exist yet
   $scope.isLinkCurrentPage = function(index){
@@ -137,7 +144,7 @@ app.controller('PopupController', function($scope, $localStorage, $http){
           case 'window':
             if (tab.data) {
               pageDetails = tab.data;
-              pageDetails.location = normalizeLocation(pageDetails.location);
+              //pageDetails.location = normalizeLocation(pageDetails.location);
             }
             break;
           case 'user':
@@ -266,6 +273,22 @@ window.addEventListener('load', function(evt) {
     } else {
       setTabLocation(pageDetails.location.origin + '/cf#' + pageDetails.location.pathname + pageDetails.location.search + pageDetails.location.hash);
     }
+
+    window.close();
+  });
+
+  $('#lnk_classicUI').click(function(e){
+    e.preventDefault();
+
+    toggleUIs('classic', pageDetails.location);  
+
+    window.close();
+  });
+
+  $('#lnk_touchUI').click(function(e){
+    e.preventDefault();
+
+    toggleUIs('touch', pageDetails.location);  
 
     window.close();
   });
@@ -451,10 +474,10 @@ function normalizeLocation(location) {
       pathname,
       hash,
       tempLocation,
-      x;
+      hashIndex;
 
-  for (x = 0; x < hashedUrls.length; x++) {
-    if (location.href.indexOf('/' + hashedUrls[x] + '#/') !== -1) {
+  for (hashIndex = 0; hashIndex < hashedUrls.length; hashIndex++) {
+    if (location.href.indexOf('/' + hashedUrls[hashIndex] + '#') !== -1) {
       containsHash = true;
       break;
     }
@@ -462,9 +485,9 @@ function normalizeLocation(location) {
 
   if (containsHash) {
     tempLocation = document.createElement('a');
-    tempLocation.href = location.href.split('/cf#').join('');
+    tempLocation.href = location.href.split('/' + hashedUrls[hashIndex]).join('');
 
-    pathname = '/cf#' + tempLocation.pathname;
+    pathname = '/' + hashedUrls[hashIndex] + '#' + tempLocation.pathname;
     hash = tempLocation.hash;
     search = tempLocation.search;
   } else {
@@ -486,47 +509,45 @@ function normalizeLocation(location) {
   }
 }
 
-function toggleUIs(location) {
-  var uiMap = [
-    {'classic' : '/siteadmin#', 'touch' : '/sites.html'},
-    {'classic' : '/publishingadmin#', 'touch' : '/publications.html'},
-    {'classic' : '/damadmin#', 'touch' : '/assets.html'},
-    {'classic' : '', 'touch' : '/editor.html'},
-    {'classic' : '/libs/cq/core/content/welcome.html', 'touch' : '/projects.html'}
-  ];
+/**
+ * Toggle between classic and touch UIs.
+ *
+ * TODO: Change everything. Just getting something to demo.
+ *
+ * @param {string} changeTo - 'classic' or 'touch'
+ * @param {location} location - the location object to read from.
+ */
+function toggleUIs(changeTo, location) {
+  var newPathName = location.href;
 
-  for (var x = 0; x < uiMap.length; x++) {
-    if (location.pathname.indexOf(uiMap[x].classic) === 1) {
-      // classic found
-    } else if (location.pathname.indexOf(uiMap[x].touch) === 1) {
-      // touch found
-    }
+  //remove Content Finder first
+  if (newPathName.indexOf('/cf#') === 0) {
+    newPathName = newPathName.split('/cf#').join('');
   }
 
+  if (changeTo === 'classic') {
+    if (newPathName.indexOf('/sites.html') !== -1) {
+      newPathName = newPathName.replace('/sites.html', '/siteadmin#');
+    } else if (newPathName.indexOf('/publications.html') !== -1) {
+      newPathName = newPathName.replace('/publications.html', '/publishingadmin#');
+    } else if (newPathName.indexOf('/assets.html') !== -1) {
+      newPathName = newPathName.replace('/assets.html', '/damadmin#');
+    } else if (newPathName.indexOf('/editor.html') !== -1) {
+      newPathName = newPathName.replace('/editor.html', '');
+    }
 
+    setTabLocation(newPathName);
+  } else if (changeTo === 'touch') {
+    if (newPathName.indexOf('/siteadmin#') !== -1) {
+      newPathName = newPathName.replace('/siteadmin#', '/sites.html');
+    } else if (newPathName.indexOf('/publishingadmin#') !== -1) {
+      newPathName = newPathName.replace('/publishingadmin#', '/publications.html');
+    } else if (newPathName.indexOf('/damadmin#') !== -1) {
+      newPathName = newPathName.replace('/damadmin#', '/assets.html');
+    } else {
+      newPathName = location.origin + '/editor.html' + location.hash.replace('#', '');
+    }
+
+    setTabLocation(newPathName);
+  }
 }
-
-/*
-Projects    /projects.html      = /libs/cq/core/content/welcome.html
-      http://localhost:4502/projects/details.html/content/projects/20141016/outdoors
-
-Sites   /sites.html/content   = /siteadmin
-      http://localhost:4502/sites.html/content/geometrixx-outdoors
-      http://localhost:4502/siteadmin#/content/geometrixx-outdoors
-
-publications
-      http://localhost:4502/aem/publications.html/content/publications
-      http://localhost:4502/publishingadmin#/content/publications
-
-DAM
-      http://localhost:4502/assets.html/content/dam/geometrixx
-      http://localhost:4502/damadmin#/content/dam/geometrixx
-
-
-view page in touch ui
-  /editor.html/content/blah 
-
-view page in classic
-  /content/blah
-
-  */
