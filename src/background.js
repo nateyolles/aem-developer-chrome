@@ -15,6 +15,15 @@ var AemBackgroundScripts = (function(window, chrome, undefined) {
     });
 
     chrome.tabs.executeScript(null, { file: 'content.js' });
+
+    chrome.tabs.executeScript(null, { file: 'jsondiffpatch-full.min.js' });
+    chrome.tabs.executeScript(null, { file: 'jsondiffpatch-formatters.min.js' });
+    chrome.tabs.executeScript(null, { file: 'diff_match_patch_uncompressed.js' });
+    chrome.tabs.insertCSS(null, { file: 'html.css'});
+    // <script src="jsondiffpatch-full.min.js"></script>
+    // <script src="jsondiffpatch-formatters.min.js"></script>
+    // <script src="external/diff_match_patch_uncompressed.js"></script>
+    // <link rel="stylesheet" type="text/css" href="css/formatters-styles/html.css">
   };
 
   /**

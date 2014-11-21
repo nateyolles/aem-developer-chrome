@@ -142,7 +142,7 @@
             <section>
                 <ul data-ng-click="collapseA = !collapseA">
                     <li class="accordion clearfix">
-                        <h3>Open Page in...</h3>
+                        <h3>Environments</h3>
                         <i ng-class="{'icon-arrow-down': collapseA, 'icon-arrow-right': !collapseA}"></i>
                     </li>
                 </ul>
@@ -159,6 +159,7 @@
                     </li>
                     <li data-ng-repeat="server in options.servers" data-ng-show="!editMode">
                         <a href="#" ng-click="redirectToEnvironment($index, false)" data-link="{{server.url}}" data-ng-bind="server.name"></a>
+                        <a href="#" ng-show="showCompare($index)" ng-click="compareToEnvironment($index)">compare</a>
                         <i class="link-new-window icon-link-external" ng-click="redirectToEnvironment($index, true)"></i>
                     </li>
                     <li class="edit" data-ng-show="!editMode"><a data-ng-click="changeEditMode()">Edit <i class="icon-pencil"></i></a></li>

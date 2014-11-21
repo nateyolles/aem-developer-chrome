@@ -215,6 +215,146 @@ var AemDeveloper = (function(window, undefined) {
     xmlhttp.send(GARBAGE_COLLECTOR);
   }
 
+  function comparePage(compareToOrigin) {
+    var path = location.pathname.replace('.html', '/jcr:content.-1.json');
+
+    var currentPageRequest = new XMLHttpRequest();
+    currentPageRequest.responseType = 'json';
+    currentPageRequest.open('GET', location.origin + path);
+
+    currentPageRequest.onreadystatechange = function(){
+      if (currentPageRequest.readyState === 4 && currentPageRequest.status === 200) {
+        var comparePageRequest = new XMLHttpRequest();
+        comparePageRequest.responseType = 'json';
+        comparePageRequest.open('GET', compareToOrigin + path);
+
+        comparePageRequest.onreadystatechange = function(){
+          if (comparePageRequest.readyState === 4 && comparePageRequest.status === 200) {
+            console.log('got both');
+
+            var instance = jsondiffpatch.create({
+                objectHash: function(obj) {
+                    return obj.name;
+                }
+            })
+
+            var currentJson = currentPageRequest.response;
+            var compareJson = comparePageRequest.response;
+
+            var propertiesToIgnore = ['jcr:createdBy', 'cq:lastModified', 'cq:lastModifiedBy',
+                                      'jcr:created', 'jcr:lastModified', 'jcr:lastModifiedBy',
+                                      'jcr:baseVersion', 'jcr:isCheckedOut', 'jcr:predecessors',
+                                      'jcr:uuid', 'jcr:versionHistory', 'cq:lastReplicated'];
+            function loopJson(obj) {
+              for (key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                  if (propertiesToIgnore.indexOf(key) !== -1) {
+                    delete obj[key];
+                  } else if (typeof obj[key] === 'object') {
+                    loopJson(obj[key]);
+                  } else {
+                    obj[key] = escapeHTML(obj[key]);
+                  }
+                }
+              }
+            }
+
+            loopJson(currentJson);
+            loopJson(compareJson);
+
+            var delta = instance.diff(compareJson, currentJson);
+            var visualdiff = document.createElement('div');
+            visualdiff.className = 'aem-developer-chrome-diff';
+            
+
+            function escapeHTML (str)
+            {
+                var div = document.createElement('div');
+                var text = document.createTextNode(str);
+                div.appendChild(text);
+                return div.innerHTML;
+            }
+
+            var diffToggle = document.createElement('a');
+            diffToggle.href = '#';
+            diffToggle.innerHTML = 'Show All';
+            diffToggle.className = "aem-developer-chrome-diff-toggle";
+            var flag = false;
+            diffToggle.onclick = function(evt){
+              if (flag) {
+                jsondiffpatch.formatters.html.hideUnchanged();
+                diffToggle.innerHTML = 'Show All';
+              }
+              else {
+                jsondiffpatch.formatters.html.showUnchanged();
+                diffToggle.innerHTML = 'Show Difference';
+              }
+
+              flag = !flag;
+              evt.preventDefault();
+            };
+
+            var titleSpan = document.createElement('span');
+            titleSpan.innerHTML = 'Compare';
+            titleSpan.className = 'aem-developer-chrome-diff-title';
+
+            var close = document.createElement('a');
+            close.href = '#';
+            close.className = 'aem-developer-chrome-diff-close';
+            close.title = 'Close compare modal'
+            close.onclick= function(evt){
+              visualdiff.parentElement.removeChild(visualdiff);
+              evt.preventDefault();
+            };
+
+
+            var titleBar = document.createElement('div');
+            titleBar.className = 'aem-developer-chrome-diff-titlebar';
+            titleBar.appendChild(titleSpan);
+            titleBar.appendChild(diffToggle);
+            titleBar.appendChild(close);
+
+
+
+
+
+            
+            visualdiff.innerHTML = jsondiffpatch.formatters.html.format(delta, compareJson);
+            jsondiffpatch.formatters.html.hideUnchanged();
+
+            
+
+            document.querySelectorAll('body')[0].appendChild(visualdiff);
+            visualdiff.appendChild(titleBar);
+            var scripts = visualdiff.querySelectorAll('script');
+            for (var i = 0; i < scripts.length; i++) {
+              eval(scripts[i].innerHTML);
+            }
+
+            // var a = document.getElementsByClassName('jsondiffpatch-child-node-type-object');
+
+            // for (var x = 0; x < a.length; x++) {
+            //   a[x].addEventListener('click', function(e){
+            //     var b = this.getElementsByClassName('jsondiffpatch-unchanged');
+            //     for (var y = 0; y < b.length; y++) {
+            //       if (b[y].style.maxHeight === 'inherit') {
+            //         b[y].style.maxHeight = '0';
+            //       } else {
+            //         b[y].style.maxHeight = 'inherit';
+            //       }
+            //     }
+            //   });
+            // }
+          }
+        }
+
+        comparePageRequest.send();
+      }
+    }
+
+    currentPageRequest.send();
+  }
+
   /**
    * @public
    */
@@ -226,7 +366,8 @@ var AemDeveloper = (function(window, undefined) {
     getProductInfo : getProductInfo,
     getSlingInfo : getSlingInfo,
     getSystemInfo : getSystemInfo,
-    runGarbageCollector : runGarbageCollector
+    runGarbageCollector : runGarbageCollector,
+    comparePage : comparePage
   };
 })(window);
 

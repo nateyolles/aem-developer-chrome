@@ -115,14 +115,27 @@ app.controller('PopupController', function($scope, $localStorage, $http){
     $scope.newServer.url = '';
   };
 
+  $scope.showCompare = function(index){
+    var newOrigin = $scope.options.servers[index].url;
+
+    newOrigin = removeTrailingSlash(newOrigin);
+
+    return newOrigin !== pageDetails.location.origin;
+  }
+
+  $scope.compareToEnvironment = function(index) {
+    var newOrigin = $scope.options.servers[index].url;
+
+    newOrigin = removeTrailingSlash(newOrigin);
+
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.comparePage("' + newOrigin + '")');
+  };
+
   $scope.redirectToEnvironment = function(index, isNewWindow){
     var newOrigin = $scope.options.servers[index].url,
         newUrl;
 
-    /** Remove trailing slash */
-    if (newOrigin[newOrigin.length - 1] === '/') {
-      newOrigin = newOrigin.substr(0, newOrigin.length - 1);
-    }
+    newOrigin = removeTrailingSlash(newOrigin);
 
     newUrl = newOrigin + pageDetails.location.pathname + pageDetails.location.search + pageDetails.location.hash;
 
@@ -212,7 +225,6 @@ app.controller('PopupController', function($scope, $localStorage, $http){
 });
 
 window.addEventListener('load', function(evt) {
-  
 
   $('button').click(function(e){
     var $this = $(this),
@@ -433,6 +445,20 @@ function openNewTab(url) {
 String.prototype.isEmpty = function() {
   return (this.length === 0 || !this.trim());
 };
+
+/**
+ * Remove trailing slash
+ *
+ * @param {String} url String to remove trailing slash.
+ * @returns {String} url without trailing slash.
+ */
+function removeTrailingSlash(url) {
+  if (url && url[url.length - 1] === '/') {
+    url = url.substr(0, url.length - 1);
+  }
+
+  return url;
+}
 
 function convertSlingArrayToObject(slingArray) {
   var slingObject = {},
