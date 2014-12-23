@@ -288,6 +288,10 @@ ul.info-list li {
   word-break: break-word;
 }
 
+.user-id {
+  margin-left: 5px;
+}
+
 #sudoables {
   width: 190px;
   margin-top: 5px;
