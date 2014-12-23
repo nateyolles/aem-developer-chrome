@@ -9,7 +9,7 @@
     <body data-ng-controller="PopupController">
         <div class="body">
             <section>
-                <ul data-ng-click="collapseZ = !collapseZ">
+                <ul data-ng-click="collapseZ = !collapseZ; getInfo()">
                     <li class="accordion clearfix">
                         <h3>Info</h3>
                         <i ng-class="{'icon-arrow-down': collapseZ, 'icon-arrow-right': !collapseZ}"></i>

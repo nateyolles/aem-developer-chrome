@@ -160,6 +160,16 @@ var AemDeveloper = (function(window, undefined) {
   }
 
   /**
+   * Get all info.
+   */
+  function getAllInfo() {
+    getUserInfo();
+    getProductInfo();
+    getSlingInfo();
+    getSystemInfo();
+  }
+
+  /**
    * Get user info.
    */
   function getUserInfo() {
@@ -362,19 +372,8 @@ var AemDeveloper = (function(window, undefined) {
     openDigitalPulseDebugger : openDigitalPulseDebugger,
     clearClientLibs : clearClientLibs,
     clearCompiledJSPs : clearCompiledJSPs,
-    getUserInfo : getUserInfo,
-    getProductInfo : getProductInfo,
-    getSlingInfo : getSlingInfo,
-    getSystemInfo : getSystemInfo,
+    getAllInfo : getAllInfo,
     runGarbageCollector : runGarbageCollector,
     comparePage : comparePage
   };
 })(window);
-
-/*
- * Get the information and send it to popup.js.
- */
-AemDeveloper.getUserInfo();
-AemDeveloper.getProductInfo();
-AemDeveloper.getSlingInfo();
-AemDeveloper.getSystemInfo();

@@ -84,6 +84,10 @@ app.controller('PopupController', function($scope, $localStorage, $http){
     $scope.sudoables[0] = $scope.user.authorizableId;
   });
 
+  $scope.getInfo = function(){
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.getAllInfo()');
+  };
+
   // pageDetails doesn't exist yet
   $scope.isLinkCurrentPage = function(index){
     var curr = $scope.options.servers[index].url;
