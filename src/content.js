@@ -163,7 +163,6 @@ var AemDeveloper = (function(window, undefined) {
    * Get all info.
    */
   function getAllInfo() {
-    getUserInfo();
     getProductInfo();
     getSlingInfo();
     getSystemInfo();
@@ -372,8 +371,11 @@ var AemDeveloper = (function(window, undefined) {
     openDigitalPulseDebugger : openDigitalPulseDebugger,
     clearClientLibs : clearClientLibs,
     clearCompiledJSPs : clearCompiledJSPs,
+    getUserInfo: getUserInfo,
     getAllInfo : getAllInfo,
     runGarbageCollector : runGarbageCollector,
     comparePage : comparePage
   };
 })(window);
+
+AemDeveloper.getUserInfo();
