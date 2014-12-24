@@ -124,7 +124,11 @@ app.controller('PopupController', function($scope, $localStorage, $http){
 
     newOrigin = removeTrailingSlash(newOrigin);
 
-    return newOrigin !== pageDetails.location.origin;
+    if (pageDetails && pageDetails.location) {
+      return newOrigin !== pageDetails.location.origin;
+    }
+
+    return false;
   }
 
   $scope.compareToEnvironment = function(index) {
@@ -161,7 +165,7 @@ app.controller('PopupController', function($scope, $localStorage, $http){
           case 'window':
             if (tab.data) {
               pageDetails = tab.data;
-              //pageDetails.location = normalizeLocation(pageDetails.location);
+              pageDetails.location = normalizeLocation(pageDetails.location);
             }
             break;
           case 'user':
@@ -515,7 +519,7 @@ function normalizeLocation(location) {
 
   if (containsHash) {
     tempLocation = document.createElement('a');
-    tempLocation.href = location.href.split('/' + hashedUrls[hashIndex]).join('');
+    tempLocation.href = location.href.split('/' + hashedUrls[hashIndex] + '#').join('');
 
     pathname = '/' + hashedUrls[hashIndex] + '#' + tempLocation.pathname;
     hash = tempLocation.hash;

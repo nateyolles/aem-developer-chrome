@@ -11,7 +11,9 @@ var AemBackgroundScripts = (function(window, chrome, undefined) {
    */
   function getPageDetails(callback) {
     chrome.runtime.onMessage.addListener(function(message) {
-      callback(message);
+      if (message) {
+        callback(message);
+      }
     });
 
     chrome.tabs.executeScript(null, { file: 'content.js' });
