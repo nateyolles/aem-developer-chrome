@@ -1,4 +1,4 @@
-.jsondiffpatch-delta {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-delta {
   font-family: Courier, monospace;
   font-size: 12px;
   margin: 0;
@@ -6,157 +6,156 @@
   display: inline-block;
   position: absolute;
   overflow: scroll;
-  top: 40px;
+  top: 80px;
   left: 0;
   right: 0;
   bottom: 0;
 }
-.jsondiffpatch-delta pre {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-delta pre {
   font-family: Courier, monospace;
   font-size: 12px;
   margin: 0;
   padding: 0;
   display: inline-block;
 }
-ul.jsondiffpatch-delta {
+#aem-developer-chrome-diff::shadow ul.jsondiffpatch-delta {
   list-style-type: none;
   padding: 0 0 0 20px;
   margin: 0;
 }
-.jsondiffpatch-delta ul {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-delta ul {
   list-style-type: none;
   padding: 0 0 0 20px;
   margin: 0;
 }
-.jsondiffpatch-added .jsondiffpatch-property-name,
-.jsondiffpatch-added .jsondiffpatch-value pre,
-.jsondiffpatch-modified .jsondiffpatch-right-value,
-.jsondiffpatch-textdiff-added {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-added .jsondiffpatch-property-name,
+#aem-developer-chrome-diff::shadow .jsondiffpatch-added .jsondiffpatch-value pre,
+#aem-developer-chrome-diff::shadow .jsondiffpatch-modified .jsondiffpatch-right-value,
+#aem-developer-chrome-diff::shadow .jsondiffpatch-textdiff-added {
   background: #bbffbb;
 }
-.jsondiffpatch-deleted .jsondiffpatch-property-name,
-.jsondiffpatch-deleted pre,
-.jsondiffpatch-modified .jsondiffpatch-left-value pre,
-.jsondiffpatch-textdiff-deleted {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-deleted .jsondiffpatch-property-name,
+#aem-developer-chrome-diff::shadow .jsondiffpatch-deleted pre,
+#aem-developer-chrome-diff::shadow .jsondiffpatch-modified .jsondiffpatch-left-value pre,
+#aem-developer-chrome-diff::shadow .jsondiffpatch-textdiff-deleted {
   background: #ffbbbb;
   text-decoration: line-through;
 }
-.jsondiffpatch-unchanged,
-.jsondiffpatch-movedestination {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-unchanged,
+#aem-developer-chrome-diff::shadow .jsondiffpatch-movedestination {
   color: gray;
 }
-.jsondiffpatch-unchanged,
-.jsondiffpatch-movedestination > .jsondiffpatch-value {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-unchanged,
+#aem-developer-chrome-diff::shadow .jsondiffpatch-movedestination > .jsondiffpatch-value {
   transition: all 0.5s;
   -webkit-transition: all 0.5s;
   overflow-y: hidden;
 }
-.jsondiffpatch-unchanged-showing .jsondiffpatch-unchanged,
-.jsondiffpatch-unchanged-showing .jsondiffpatch-movedestination > .jsondiffpatch-value {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-unchanged-showing .jsondiffpatch-unchanged,
+#aem-developer-chrome-diff::shadow .jsondiffpatch-unchanged-showing .jsondiffpatch-movedestination > .jsondiffpatch-value {
   max-height: 100px;
 }
-.jsondiffpatch-unchanged-hidden .jsondiffpatch-unchanged,
-.jsondiffpatch-unchanged-hidden .jsondiffpatch-movedestination > .jsondiffpatch-value {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-unchanged-hidden .jsondiffpatch-unchanged,
+#aem-developer-chrome-diff::shadow .jsondiffpatch-unchanged-hidden .jsondiffpatch-movedestination > .jsondiffpatch-value {
   max-height: 0;
 }
-.jsondiffpatch-unchanged-hiding .jsondiffpatch-movedestination > .jsondiffpatch-value,
-.jsondiffpatch-unchanged-hidden .jsondiffpatch-movedestination > .jsondiffpatch-value {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-unchanged-hiding .jsondiffpatch-movedestination > .jsondiffpatch-value,
+#aem-developer-chrome-diff::shadow .jsondiffpatch-unchanged-hidden .jsondiffpatch-movedestination > .jsondiffpatch-value {
   display: block;
 }
-.jsondiffpatch-unchanged-visible .jsondiffpatch-unchanged,
-.jsondiffpatch-unchanged-visible .jsondiffpatch-movedestination > .jsondiffpatch-value {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-unchanged-visible .jsondiffpatch-unchanged,
+#aem-developer-chrome-diff::shadow .jsondiffpatch-unchanged-visible .jsondiffpatch-movedestination > .jsondiffpatch-value {
   max-height: 100px;
 }
-.jsondiffpatch-unchanged-hiding .jsondiffpatch-unchanged,
-.jsondiffpatch-unchanged-hiding .jsondiffpatch-movedestination > .jsondiffpatch-value {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-unchanged-hiding .jsondiffpatch-unchanged,
+#aem-developer-chrome-diff::shadow .jsondiffpatch-unchanged-hiding .jsondiffpatch-movedestination > .jsondiffpatch-value {
   max-height: 0;
 }
-.jsondiffpatch-unchanged-showing .jsondiffpatch-arrow,
-.jsondiffpatch-unchanged-hiding .jsondiffpatch-arrow {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-unchanged-showing .jsondiffpatch-arrow,
+#aem-developer-chrome-diff::shadow .jsondiffpatch-unchanged-hiding .jsondiffpatch-arrow {
   display: none;
 }
-.jsondiffpatch-value {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-value {
   display: inline-block;
 }
-.jsondiffpatch-property-name {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-property-name {
   display: inline-block;
   padding-right: 5px;
   vertical-align: top;
 }
-.jsondiffpatch-property-name:after {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-property-name:after {
   content: ': ';
 }
-.jsondiffpatch-child-node-type-array > .jsondiffpatch-property-name:after {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-child-node-type-array > .jsondiffpatch-property-name:after {
   content: ': [';
 }
-.jsondiffpatch-child-node-type-array:after {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-child-node-type-array:after {
   content: '],';
 }
-div.jsondiffpatch-child-node-type-array:before {
+#aem-developer-chrome-diff::shadow div.jsondiffpatch-child-node-type-array:before {
   content: '[';
 }
-div.jsondiffpatch-child-node-type-array:after {
+#aem-developer-chrome-diff::shadow div.jsondiffpatch-child-node-type-array:after {
   content: ']';
 }
-.jsondiffpatch-child-node-type-object > .jsondiffpatch-property-name:after {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-child-node-type-object > .jsondiffpatch-property-name:after {
   content: ': {';
 }
-.jsondiffpatch-child-node-type-object:after {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-child-node-type-object:after {
   content: '},';
 }
-div.jsondiffpatch-child-node-type-object:before {
+#aem-developer-chrome-diff::shadow div.jsondiffpatch-child-node-type-object:before {
   content: '{';
 }
-div.jsondiffpatch-child-node-type-object:after {
+#aem-developer-chrome-diff::shadow div.jsondiffpatch-child-node-type-object:after {
   content: '}';
 }
-.jsondiffpatch-value pre:after {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-value pre:after {
   content: ',';
 }
-li:last-child > .jsondiffpatch-value pre:after,
+#aem-developer-chrome-diff::shadow li:last-child > .jsondiffpatch-value pre:after,
 .jsondiffpatch-modified > .jsondiffpatch-left-value pre:after {
   content: '';
 }
-.jsondiffpatch-modified .jsondiffpatch-value {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-modified .jsondiffpatch-value {
   display: inline-block;
 }
-.jsondiffpatch-modified .jsondiffpatch-right-value {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-modified .jsondiffpatch-right-value {
   margin-left: 5px;
 }
-.jsondiffpatch-moved .jsondiffpatch-value {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-moved .jsondiffpatch-value {
   display: none;
 }
-.jsondiffpatch-moved .jsondiffpatch-moved-destination {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-moved .jsondiffpatch-moved-destination {
   display: inline-block;
   background: #ffffbb;
   color: #888;
 }
-.jsondiffpatch-moved .jsondiffpatch-moved-destination:before {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-moved .jsondiffpatch-moved-destination:before {
   content: ' => ';
 }
-ul.jsondiffpatch-textdiff {
+#aem-developer-chrome-diff::shadow ul.jsondiffpatch-textdiff {
   padding: 0;
 }
-.jsondiffpatch-textdiff-location {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-textdiff-location {
   color: #bbb;
   display: inline-block;
   min-width: 60px;
 }
-.jsondiffpatch-textdiff-line {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-textdiff-line {
   display: inline-block;
 }
-.jsondiffpatch-textdiff-line-number:after {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-textdiff-line-number:after {
   content: ',';
 }
-.jsondiffpatch-error {
+#aem-developer-chrome-diff::shadow .jsondiffpatch-error {
   background: red;
   color: white;
   font-weight: bold;
 }
 
-
 /* diff */
-.aem-developer-chrome-diff {
+#aem-developer-chrome-diff::shadow .container {
   position: fixed !important;
   background: white;
   top: 20px;
@@ -164,14 +163,13 @@ ul.jsondiffpatch-textdiff {
   right: 20px;
   bottom: 20px;
   z-index: 999999;
-  border: solid 1px #000;
-  padding: 20px;
+  border: solid 1px #333;
   overflow: scroll;
   box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.6);
   overflow: hidden;
 }
 
-.aem-developer-chrome-diff .aem-developer-chrome-diff-titlebar {
+#aem-developer-chrome-diff::shadow .titlebar {
   position: absolute;
   left: 0;
   right: 0;
@@ -180,7 +178,7 @@ ul.jsondiffpatch-textdiff {
   background: #c8c8c8;
 }
 
-.aem-developer-chrome-diff .aem-developer-chrome-diff-title {
+#aem-developer-chrome-diff::shadow .title {
   display: inline-block;
   margin: 10px 10px auto 10px;
   color: #7e7e7e;
@@ -189,15 +187,15 @@ ul.jsondiffpatch-textdiff {
 }
 
 
-.aem-developer-chrome-diff .aem-developer-chrome-diff-toggle:before {
+#aem-developer-chrome-diff::shadow .toggle:before {
   content: '[';
 }
 
-.aem-developer-chrome-diff .aem-developer-chrome-diff-toggle:after {
+#aem-developer-chrome-diff::shadow .toggle:after {
   content: ']';
 }
 
-.aem-developer-chrome-diff .aem-developer-chrome-diff-toggle {
+#aem-developer-chrome-diff::shadow .toggle {
   display: inline-block;
   font-size: 12px;
   color: #0051FF;
@@ -206,14 +204,14 @@ ul.jsondiffpatch-textdiff {
   font-family: Helvetica,Arial,sans-serif;
 }
 
-.aem-developer-chrome-diff .aem-developer-chrome-diff-close {
+#aem-developer-chrome-diff::shadow .close {
   display: inline-block;
   position: absolute;
   top: 6px;
   right: 8px;
 }
 
-.aem-developer-chrome-diff .aem-developer-chrome-diff-close:after {
+#aem-developer-chrome-diff::shadow .close:after {
   content: 'x';
   display: inline-block;
   border-radius: 50px;
@@ -224,6 +222,33 @@ ul.jsondiffpatch-textdiff {
   font-size: 16px;
 }
 
-.aem-developer-chrome-diff .aem-developer-chrome-diff-close:hover {
+#aem-developer-chrome-diff::shadow .close:hover {
   text-decoration: none;
+}
+
+#aem-developer-chrome-diff::shadow .comparebar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 40px;
+  height: 40px;
+  background: #efefef;
+  color: #7e7e7e;
+  font-size: 14px;
+  padding-left: 10px;
+}
+
+#aem-developer-chrome-diff::shadow .comparebar span .origin {
+  color: #333;
+}
+
+#aem-developer-chrome-diff::shadow .comparebar > span:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#aem-developer-chrome-diff::shadow li::-webkit-scrollbar,
+#aem-developer-chrome-diff::shadow ul::-webkit-scrollbar {
+    -webkit-appearance: none;
 }
