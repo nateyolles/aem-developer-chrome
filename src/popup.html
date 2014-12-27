@@ -81,34 +81,6 @@
             <section>
                 <ul>
                     <li class="clearfix">
-                        <h3>Debug Clientlibs</h3>
-                        <div class="content">
-                            <div class="btn-group">
-                                <button class="querystring" data-querystring-key="debugClientLibs" data-querystring-value="true">On</button>
-                                <button class="querystring" data-querystring-key="debugClientLibs">Off</button>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </section>
-
-            <section>
-                <ul>
-                    <li class="clearfix">
-                        <h3>Debug Layout</h3>
-                        <div class="content">
-                            <div class="btn-group">
-                                <button class="querystring" data-querystring-key="debug" data-querystring-value="layout">On</button>
-                                <button class="querystring" data-querystring-key="debug">Off</button>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </section>
-
-            <section>
-                <ul>
-                    <li class="clearfix">
                         <h3>Toggle UI</h3>
                         <div class="content">
                             <div class="btn-group">
@@ -126,11 +98,15 @@
             <section>
                 <ul>
                     <li class="clearfix">
-                        <h3>Marketing Cloud Debugger</h3>
+                        <h3>Impersonate</h3>
                         <div class="content">
                             <div class="btn-group">
-                                <button id="lnk_digitalPulseDebugger">Open</button>
+                                <button data-ng-show="user.isImpersonated" id="lnk_revertToSelf">Revert to self</button>
                             </div>
+                            <select id="sudoables">
+                                <option data-ng-repeat="sudoable in sudoables" value="{{sudoable}}" data-ng-bind="sudoable"></option>
+                            </select>
+                            
                         </div>
                     </li>
                 </ul>
@@ -181,15 +157,39 @@
             <section>
                 <ul>
                     <li class="clearfix">
-                        <h3>Impersonate</h3>
+                        <h3>Debug Clientlibs</h3>
                         <div class="content">
                             <div class="btn-group">
-                                <button data-ng-show="user.isImpersonated" id="lnk_revertToSelf">Revert to self</button>
+                                <button class="querystring" data-querystring-key="debugClientLibs" data-querystring-value="true">On</button>
+                                <button class="querystring" data-querystring-key="debugClientLibs">Off</button>
                             </div>
-                            <select id="sudoables">
-                                <option data-ng-repeat="sudoable in sudoables" value="{{sudoable}}" data-ng-bind="sudoable"></option>
-                            </select>
-                            
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <ul>
+                    <li class="clearfix">
+                        <h3>Debug Layout</h3>
+                        <div class="content">
+                            <div class="btn-group">
+                                <button class="querystring" data-querystring-key="debug" data-querystring-value="layout">On</button>
+                                <button class="querystring" data-querystring-key="debug">Off</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <ul>
+                    <li class="clearfix">
+                        <h3>Marketing Cloud Debugger</h3>
+                        <div class="content">
+                            <div class="btn-group">
+                                <button id="lnk_digitalPulseDebugger">Open</button>
+                            </div>
                         </div>
                     </li>
                 </ul>
