@@ -1,15 +1,4 @@
 /**
- * On page load send information about the tab to the content script.
- */
-chrome.runtime.sendMessage({
-  type : 'window',
-  data : {
-    'title': document.title,
-    'location': window.location
-  }
-});
-
-/**
  * AemDeveloper namespace.
  * @namespace
  */
@@ -130,6 +119,19 @@ var AemDeveloper = (function(window, undefined) {
    */
   function clearCompiledJSPs() {
     deleteQueryResults('compiled_jsps', COMPILED_JSP_QUERY);
+  }
+
+  /**
+   * Get window title and location.
+   */
+  function getWindowInfo() {
+    chrome.runtime.sendMessage({
+      type : 'window',
+      data : {
+        'title': document.title,
+        'location': window.location
+      }
+    });
   }
 
   /**
@@ -434,8 +436,11 @@ var AemDeveloper = (function(window, undefined) {
     getUserInfo: getUserInfo,
     getAllInfo : getAllInfo,
     runGarbageCollector : runGarbageCollector,
-    comparePage : comparePage
+    comparePage : comparePage,
+    getWindowInfo : getWindowInfo
   };
 })(window);
 
+/* Send window title, window location and user information on page load */
+AemDeveloper.getWindowInfo();
 AemDeveloper.getUserInfo();
