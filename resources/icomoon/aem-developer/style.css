@@ -1,0 +1,82 @@
+@font-face {
+	font-family: 'aem-developer';
+	src:url('fonts/aem-developer.eot?s8pfxj');
+	src:url('fonts/aem-developer.eot?#iefixs8pfxj') format('embedded-opentype'),
+		url('fonts/aem-developer.woff?s8pfxj') format('woff'),
+		url('fonts/aem-developer.ttf?s8pfxj') format('truetype'),
+		url('fonts/aem-developer.svg?s8pfxj#aem-developer') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'aem-developer';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-file-empty:before {
+	content: "\e924";
+}
+.icon-files-empty:before {
+	content: "\e925";
+}
+.icon-link-external:before {
+	content: "\f07f";
+}
+.icon-mail:before {
+	content: "\e60a";
+}
+.icon-pencil:before {
+	content: "\e600";
+}
+.icon-minus:before {
+	content: "\e602";
+}
+.icon-plus:before {
+	content: "\e603";
+}
+.icon-cross2:before {
+	content: "\e60d";
+}
+.icon-info:before {
+	content: "\e60f";
+}
+.icon-help:before {
+	content: "\e606";
+}
+.icon-warning:before {
+	content: "\e607";
+}
+.icon-loop:before {
+	content: "\e608";
+}
+.icon-history:before {
+	content: "\e609";
+}
+.icon-disk:before {
+	content: "\e601";
+}
+.icon-arrow-down:before {
+	content: "\e604";
+}
+.icon-arrow-right:before {
+	content: "\e605";
+}
+.icon-github:before {
+	content: "\e60b";
+}
+.icon-twitter:before {
+	content: "\e60c";
+}
+.icon-linkedin:before {
+	content: "\e60e";
+}
