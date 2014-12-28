@@ -136,7 +136,7 @@ app.controller('PopupController', function($scope, $localStorage, $http){
 
     newOrigin = removeTrailingSlash(newOrigin);
 
-    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.comparePage("' + newOrigin + '")');
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.comparePage("' + newOrigin + '",' + index + ')');
   };
 
   $scope.redirectToEnvironment = function(index, isNewWindow){
@@ -215,7 +215,7 @@ app.controller('PopupController', function($scope, $localStorage, $http){
             showStatus($('#lnk_clearCompiledJSPs'), tab.status);
             break;
           case 'garbage_collector':
-            showStatus($('#lnk_runGarbageCollector'), tab.status);
+            showStatus($('a'), tab.status);
             break;
           case 'sudoables':
             $scope.$apply(function(){
@@ -223,6 +223,13 @@ app.controller('PopupController', function($scope, $localStorage, $http){
                 $scope.sudoables.push(tab.data.authorizables[x].id);
               }  
             });
+            break;
+          case 'compare':
+            if (tab.status === 'success') {
+              window.close();
+            } else {
+              showStatus($('#compare_' + tab.data.index), tab.status);
+            }
             break;
         }
       }

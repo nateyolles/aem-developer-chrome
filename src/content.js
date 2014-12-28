@@ -415,8 +415,9 @@ var AemDeveloper = (function(window, undefined) {
    * Compare page to the same page on a given domain.
    *
    * @param {String} Domain to compare current page to (e.g. 'http://localhost:4503'). 
+   * @param {Number} Index of compare link clicked.
    */
-  function comparePage(compareToOrigin) {
+  function comparePage(compareToOrigin, index) {
     var location = getNormalizedLocation(),
         path = location.pathname.replace('.html', '/jcr:content.-1.json');
 
@@ -424,28 +425,63 @@ var AemDeveloper = (function(window, undefined) {
     currentPageRequest.responseType = 'json';
     currentPageRequest.open('GET', location.origin + path);
 
-    currentPageRequest.onreadystatechange = function(){
-      if (currentPageRequest.readyState === 4 && currentPageRequest.status === 200) {
-        var comparePageRequest = new XMLHttpRequest();
-        comparePageRequest.responseType = 'json';
-        comparePageRequest.open('GET', compareToOrigin + path);
+    currentPageRequest.onreadystatechange = function() {
+      if (currentPageRequest.readyState === 4) {
+        if (currentPageRequest.status === 200) {
+          var comparePageRequest = new XMLHttpRequest();
 
-        comparePageRequest.onreadystatechange = function(){
-          if (comparePageRequest.readyState === 4 && comparePageRequest.status === 200) {
+          comparePageRequest.onreadystatechange = function() {
+            if (comparePageRequest.readyState === 4) {
+              if (comparePageRequest.status === 200) {
+                var body = document.querySelector('body'),
+                    html = getDifferenceHtml(currentPageRequest.response, comparePageRequest.response),
+                    oldContainer = document.getElementById(COMPARE_CONTAINER_NAME);
 
-            var body = document.querySelector('body'),
-                html = getDifferenceHtml(currentPageRequest.response, comparePageRequest.response),
-                oldContainer = document.getElementById(COMPARE_CONTAINER_NAME);
+                if (oldContainer) {
+                  body.removeChild(oldContainer);
+                }
 
-            if (oldContainer) {
-              body.removeChild(oldContainer);
+                createDifferenceHtml(body, html, location.origin, compareToOrigin, path);
+
+                chrome.runtime.sendMessage({
+                  type: 'compare',
+                  status: 'success'
+                });
+              } else {
+                chrome.runtime.sendMessage({
+                  type: 'compare',
+                  status: 'fail',
+                  data: {
+                    index: index
+                  }
+                });
+              }
             }
+          };
 
-            createDifferenceHtml(body, html, location.origin, compareToOrigin, path);
-          }
-        };
+          comparePageRequest.responseType = 'json';
+          comparePageRequest.open('GET', compareToOrigin + path);
+          comparePageRequest.timeout = 3000;
+          comparePageRequest.ontimeout = function () {
+            chrome.runtime.sendMessage({
+              type: 'compare',
+              status: 'fail',
+              data: {
+                index: index
+              }
+            });
+          };
 
-        comparePageRequest.send();
+          comparePageRequest.send();
+        } else {
+          chrome.runtime.sendMessage({
+            type: 'compare',
+            status: 'fail',
+            data: {
+              index: index
+            }
+          });
+        }
       }
     };
 
