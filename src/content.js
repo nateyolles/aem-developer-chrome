@@ -387,12 +387,38 @@ var AemDeveloper = (function(window, undefined) {
   }
 
   /**
+   * Gets location object without the content finder.
+   *
+   * @returns {Object} Pseudo location object
+   */
+  function getNormalizedLocation() {
+    if (location.pathname === '/cf') {
+      var anchor = document.createElement('a');
+
+      anchor.href = location.href.replace('/cf#/', '/');
+
+      return {
+        pathname : anchor.pathname,
+        origin : anchor.origin,
+        search : anchor.search,
+        host : anchor.host,
+        hostname : anchor.hostname,
+        protocol : anchor.protocol,
+        port : anchor.port
+      };
+    } else {
+      return location;
+    }
+  }
+
+  /**
    * Compare page to the same page on a given domain.
    *
    * @param {String} Domain to compare current page to (e.g. 'http://localhost:4503'). 
    */
   function comparePage(compareToOrigin) {
-    var path = location.pathname.replace('.html', '/jcr:content.-1.json');
+    var location = getNormalizedLocation(),
+        path = location.pathname.replace('.html', '/jcr:content.-1.json');
 
     var currentPageRequest = new XMLHttpRequest();
     currentPageRequest.responseType = 'json';
