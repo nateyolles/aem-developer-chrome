@@ -292,14 +292,11 @@ window.addEventListener('load', function(evt) {
     openNewTab(pageDetails.location.origin + url);
   });
 
-  $('#lnk_siteAdminToggle').click(function(e){
+  $('#lnk_contentFinder').click(function(e){
+    
     e.preventDefault();
 
-    if (pageDetails.location.href.indexOf('/cf#/') !== -1) {
-      setTabLocation(pageDetails.location.href.split('/cf#').join(''));
-    } else {
-      setTabLocation(pageDetails.location.origin + '/cf#' + pageDetails.location.pathname + pageDetails.location.search + pageDetails.location.hash);
-    }
+    toggleContentFinder(pageDetails.location);
 
     window.close();
   });
@@ -590,5 +587,20 @@ function toggleUIs(changeTo, location) {
     }
 
     setTabLocation(newPathName);
+  }
+}
+
+/**
+ * Toggle Content Finder
+ *
+ * @param {location} location - the location object to read from.
+ */
+function toggleContentFinder(location) {
+  if (location.href.indexOf('/editor.html/') !== -1) {
+    setTabLocation(location.href.replace('/editor.html', '/cf#'));
+  } else if (location.href.indexOf('/cf#/') !== -1) {
+    setTabLocation(location.href.replace('/cf#', ''));
+  } else {
+    setTabLocation(location.origin + '/cf#' + location.pathname + location.search + location.hash);
   }
 }
