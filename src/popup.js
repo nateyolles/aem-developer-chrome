@@ -260,7 +260,8 @@ app.controller('PopupController', function($scope, $localStorage, $http){
             showStatus($('#lnk_clearCompiledJSPs'), tab.status);
             break;
           case 'garbage_collector':
-            showStatus($('a'), tab.status);
+            showStatus($('#lnk_runGarbageCollector'), tab.status);
+
             break;
           case 'sudoables':
             $scope.$apply(function(){
