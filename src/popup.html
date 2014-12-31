@@ -121,7 +121,7 @@
                     <li data-ng-repeat="server in options.servers" data-ng-show="editMode" class="input-container">
                         <input placeholder="name" data-ng-model="server.name">
                         <input placeholder="url" data-ng-model="server.url">
-                        <i data-ng-click="remove($index)" class="icon-minus"></i>
+                        <i data-ng-click="remove()" class="icon-minus"></i>
                     </li>
                     <li data-ng-show="editMode" class="input-container">
                         <input placeholder="name" data-ng-model="newServer.name" required>
@@ -129,12 +129,16 @@
                         <i data-ng-click="add()" class="icon-plus"></i>
                     </li>
                     <li data-ng-repeat="server in options.servers" data-ng-show="!editMode">
-                        <a href="#" ng-click="redirectToEnvironment($index, false)" data-link="{{server.url}}" data-ng-bind="server.name"></a>
-                        <a href="#" ng-show="showCompare()" ng-click="compareToEnvironment($index)" id="compare_{{$index}}">compare</a>
-                        <i class="link-new-window icon-link-external" ng-click="redirectToEnvironment($index, true)"></i>
+                        <a href="" ng-click="redirectToEnvironment(false)" title="open same page in {{server.name}}" data-ng-bind="server.name"></a>
+                        <a href="" ng-click="redirectToEnvironment(true)" title="open same page in {{server.name}} in new window" class="new-window">
+                            <i class="icon-link-external"></i>
+                        </a>
+                        <div class="btn-group compare-container">
+                            <button data-ng-show="showCompare()" ng-click="compareToEnvironment()" id="compare_{{$index}}"><i class="icon-files-empty"></i> Compare</button>
+                        </div>
                     </li>
-                    <li class="edit" data-ng-show="!editMode"><a data-ng-click="changeEditMode()">Edit <i class="icon-pencil"></i></a></li>
-                    <li class="edit" data-ng-show="editMode"><a data-ng-click="changeEditMode()">Done <i class="icon-disk"></i></a></li>
+                    <li class="edit" data-ng-show="!editMode"><a data-ng-click="changeEditMode()" title="add, edit and remove servers">Edit <i class="icon-pencil"></i></a></li>
+                    <li class="edit" data-ng-show="editMode"><a data-ng-click="changeEditMode()" title="save servers">Done <i class="icon-disk"></i></a></li>
                 </ul>
             </section>
 
@@ -146,9 +150,9 @@
                     </li>
                 </ul>
                 <ul class="sublist" data-ng-show="collapseB">
-                    <li><a id="lnk_clearClientLibs" data-ng-click="clearClientLibs()" href="#">Delete cached clientlibs</a></li>
-                    <li><a id="lnk_clearCompiledJSPs" data-ng-click="clearCompiledJSPs()" href="#">Delete compiled JSPs</a></li>
-                    <li><a id="lnk_runGarbageCollector" data-ng-click="runGarbageCollector()" href="#">Run garbage collector</a></li>
+                    <li><a id="lnk_clearClientLibs" data-ng-click="clearClientLibs()" href="">Delete cached clientlibs</a></li>
+                    <li><a id="lnk_clearCompiledJSPs" data-ng-click="clearCompiledJSPs()" href="">Delete compiled JSPs</a></li>
+                    <li><a id="lnk_runGarbageCollector" data-ng-click="runGarbageCollector()" href="">Run garbage collector</a></li>
                 </ul>
             </section>
 
@@ -195,7 +199,7 @@
 
             <section class="outer-section">
                 <div class="clearfix">
-                    <a href="#" data-ng-click="collapseE = !collapseE" class="light pull-right">About <i data-ng-class="{'icon-info': !collapseE, 'icon-cross2': collapseE}"></i></a>
+                    <a href="" data-ng-click="collapseE = !collapseE" class="light pull-right">About <i data-ng-class="{'icon-info': !collapseE, 'icon-cross2': collapseE}"></i></a>
                 </div>
                 <div class="inner-section" data-ng-show="collapseE">
                     <img class="pull-right" src="/images/icon48.png">

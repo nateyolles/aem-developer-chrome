@@ -359,16 +359,6 @@ window.addEventListener('load', function(evt) {
     window.close();
   });
 
-  $('.js-new-window').click(function(e){
-    e.preventDefault();
-
-    var $this = $(e.target),
-        $a = $this.prev(),
-        url = $a.attr('data-link');
-
-    openNewTab(pageDetails.location.origin + url);
-  });
-
   $('.querystring').click(function(e){
     e.preventDefault();
 

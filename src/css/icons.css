@@ -23,7 +23,13 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.link-new-window:before {
+.icon-file-empty:before {
+	content: "\e924";
+}
+.icon-files-empty:before {
+	content: "\e925";
+}
+.icon-link-external:before {
 	content: "\f07f";
 }
 .icon-mail:before {
