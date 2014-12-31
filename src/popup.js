@@ -196,7 +196,7 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
    * Impersonate a user.
    */
   $scope.impersonate = function(selectedSudoable) {
-    var location = getUrlWithUpdatedQueryString(pageDetails.location, SUDOABLE_REDIRECT_PARAM_KEY, pageDetails.location.pathname, true);
+    var location = getUrlWithUpdatedQueryString($scope.pageDetails.location, SUDOABLE_REDIRECT_PARAM_KEY, $scope.pageDetails.location.pathname, true);
         location = getUrlWithUpdatedQueryString(location, SUDOABLE_USER_PARAM_KEY, selectedSudoable);
 
     setTabLocation(location);
