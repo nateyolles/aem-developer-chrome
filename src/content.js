@@ -450,18 +450,28 @@ var AemDeveloper = (function(window, undefined) {
     var location = getNormalizedLocation(),
         path = getPathnameForJcrAjaxCall(location.pathname);  //location.pathname.replace('.html', '/jcr:content.-1.json');
 
-    var currentPageRequest = new XMLHttpRequest();
-    currentPageRequest.responseType = 'json';
-    currentPageRequest.open('GET', location.origin + path);
+    var sendFail = function() {
+      chrome.runtime.sendMessage({
+        type: 'compare',
+        status: 'fail',
+        data: {
+          index: index
+        }
+      });
+    };
 
-    currentPageRequest.onreadystatechange = function() {
-      if (currentPageRequest.readyState === 4) {
-        if (currentPageRequest.status === 200) {
-          var comparePageRequest = new XMLHttpRequest();
+    var comparePageRequest = new XMLHttpRequest();
 
-          comparePageRequest.onreadystatechange = function() {
-            if (comparePageRequest.readyState === 4) {
-              if (comparePageRequest.status === 200) {
+    comparePageRequest.onreadystatechange = function() {
+      if (comparePageRequest.readyState === 4) {
+        if (comparePageRequest.status === 200) {
+          var currentPageRequest = new XMLHttpRequest();
+          currentPageRequest.responseType = 'json';
+          currentPageRequest.open('GET', location.origin + path);
+
+          currentPageRequest.onreadystatechange = function() {
+            if (currentPageRequest.readyState === 4) {
+              if (currentPageRequest.status === 200) {
                 var body = document.querySelector('body'),
                     html = getDifferenceHtml(currentPageRequest.response, comparePageRequest.response),
                     oldContainer = document.getElementById(COMPARE_CONTAINER_NAME);
@@ -477,44 +487,26 @@ var AemDeveloper = (function(window, undefined) {
                   status: 'success'
                 });
               } else {
-                chrome.runtime.sendMessage({
-                  type: 'compare',
-                  status: 'fail',
-                  data: {
-                    index: index
-                  }
-                });
+                sendFail();
               }
             }
           };
 
-          comparePageRequest.responseType = 'json';
-          comparePageRequest.open('GET', compareToOrigin + path);
-          comparePageRequest.timeout = 3000;
-          comparePageRequest.ontimeout = function () {
-            chrome.runtime.sendMessage({
-              type: 'compare',
-              status: 'fail',
-              data: {
-                index: index
-              }
-            });
-          };
-
-          comparePageRequest.send();
+          currentPageRequest.send();
         } else {
-          chrome.runtime.sendMessage({
-            type: 'compare',
-            status: 'fail',
-            data: {
-              index: index
-            }
-          });
+          sendFail();
         }
       }
     };
 
-    currentPageRequest.send();
+    comparePageRequest.responseType = 'json';
+    comparePageRequest.open('GET', compareToOrigin + path);
+    comparePageRequest.timeout = 2000;
+    comparePageRequest.ontimeout = function() {
+      sendFail();
+    };
+
+    comparePageRequest.send();
   }
 
   /**
