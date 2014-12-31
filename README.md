@@ -51,10 +51,8 @@ Delete compiled clientlibs under the /var/clientlibs directory. Delete compiled 
 Todo:
 -----
 + Performance: extension starts too slow
-+ JS errors produced in the Chrome messaging process
-+ Authorization: Figure out how to check if browser is authenticated through Basic authentication without a login dialog appearing.
 + Remove jQuery from popup.js
-+ Clean up AngularJS in popup.js
-+ Chrome doesn't currently support HTML5 datalists in extensions
-+ Toggling UI between Classic and Touch needs to be ironed out and cleaned up.
-+ Handle URLs that contain items such as '/cf#', '/siteadmin#', etc... better.
++ Chrome doesn't currently support HTML5 datalists in extensions, use when available.
++ Comparison should show reordering of nodes
++ Comparison should have view as well.
++ Setup dev process: Grunt, Bower, SASS/LESS, build/zip/version, etc...
