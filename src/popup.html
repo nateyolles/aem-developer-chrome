@@ -84,11 +84,10 @@
                         <h3>Toggle UI</h3>
                         <div class="content">
                             <div class="btn-group">
-                                <button id="lnk_contentFinder">Content Finder</button>
+                                <button data-ng-click="toggleContentFinder()">Content Finder</button>
                             </div>
                             <div class="btn-group">
-                                <button id="lnk_classicUI">Classic</button>
-                                <button id="lnk_touchUI">Touch</button>
+                                <button data-ng-click="toggleUI()" data-ng-bind="currentUI === 'classic' ? 'Show Touch' : ' Show Classic'">Classic/Touch</button>
                             </div>
                         </div>
                     </li>

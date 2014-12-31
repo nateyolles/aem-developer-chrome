@@ -1,23 +1,12 @@
-/*
-TODO: comment code
-TODO: organize code
-TODO: change jquery to angular
-TODO: make links full size to list item
-TODO: hover over on those links
-TODO: touch/classic ui
-TODO: organize debugger tools, query and clientlibs
-TODO: redo show status timeout
-TODO: common links needs to read current touch/classic mode and stay in it
-TODO: GA code and clicks(?)
-*/
-
 var app = angular.module('PopupApp', ['ngStorage']),
     MANIFEST_URL = 'https://raw.githubusercontent.com/nateyolles/aem-developer-chrome/master/manifest.json',
     EXTENSION_URL = 'https://chrome.google.com/webstore/detail/aem-developer/hgjhcngmldfpgpakbnffnbnmcmohfmfc',
+    UI_MAP_CLASSIC = 'classic',
+    UI_MAP_TOUCH = 'touch',
     cachedEventPage,
     pageDetails;
 
-var uiMap = [
+var UI_MAP = [
   {
     'classic' : '/siteadmin#',
     'touch'   : '/sites.html'
@@ -29,7 +18,7 @@ var uiMap = [
     'touch'   : '/assets.html'
   }, {
     'classic' : '',
-     'touch'  : '/editor.html'
+    'touch'   : '/editor.html'
    }
 ];
 
@@ -41,6 +30,8 @@ app.controller('PopupController', function($scope, $localStorage, $http){
       {name: 'Local Publish', url: 'http://localhost:4503'}
     ]
   });
+
+  $scope.pageDetails = null;
 
   $scope.newServer = {
     name : '',
@@ -78,17 +69,27 @@ app.controller('PopupController', function($scope, $localStorage, $http){
 
   $scope.editMode = false;
 
-  $scope.sudoables = ['', '-------'];  
+  $scope.sudoables = ['', '-------']; 
+
+  $scope.currentUI = null;
 
   $scope.$watch('user.authorizableId', function(newValue, oldValue) {
     $scope.sudoables[0] = $scope.user.authorizableId;
+  });
+
+  $scope.$watch('pageDetails', function(newValue, oldValue) {
+    //convert everything to angularJS, remove jQuery, remove this.
+    pageDetails = $scope.pageDetails;
+
+    if (newValue && newValue.location) {
+      $scope.currentUI = getCurrentUI(newValue.location);
+    }
   });
 
   $scope.getInfo = function(){
     cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.getAllInfo()');
   };
 
-  // pageDetails doesn't exist yet
   $scope.isLinkCurrentPage = function(index){
     var curr = $scope.options.servers[index].url;
 
@@ -97,8 +98,7 @@ app.controller('PopupController', function($scope, $localStorage, $http){
       curr = curr.substr(0, curr.length - 1);
     }
 
-    console.dir(pageDetails);
-    return curr === pageDetails.location.origin;
+    return curr === $scope.pageDetails.location.origin;
   }
 
   $scope.changeEditMode = function() {
@@ -119,13 +119,25 @@ app.controller('PopupController', function($scope, $localStorage, $http){
     $scope.newServer.url = '';
   };
 
+  $scope.toggleUI = function() {
+    toggleUI($scope.currentUI, $scope.pageDetails.location);  
+
+    window.close();
+  };
+
+  $scope.toggleContentFinder = function() {
+    toggleContentFinder($scope.pageDetails.location);
+
+    window.close();
+  }
+
   $scope.showCompare = function(index){
     var newOrigin = $scope.options.servers[index].url;
 
     newOrigin = removeTrailingSlash(newOrigin);
 
-    if (pageDetails && pageDetails.location) {
-      return newOrigin !== pageDetails.location.origin;
+    if ($scope.pageDetails && $scope.pageDetails.location) {
+      return newOrigin !== $scope.pageDetails.location.origin;
     }
 
     return false;
@@ -145,7 +157,7 @@ app.controller('PopupController', function($scope, $localStorage, $http){
 
     newOrigin = removeTrailingSlash(newOrigin);
 
-    newUrl = newOrigin + pageDetails.location.pathname + pageDetails.location.search + pageDetails.location.hash;
+    newUrl = newOrigin + $scope.pageDetails.location.pathname + $scope.pageDetails.location.search + $scope.pageDetails.location.hash;
 
     if (isNewWindow) {
       openNewTab(newUrl);
@@ -164,8 +176,8 @@ app.controller('PopupController', function($scope, $localStorage, $http){
         switch(tab.type){
           case 'window':
             if (tab.data) {
-              pageDetails = tab.data;
-              pageDetails.location = normalizeLocation(pageDetails.location);
+              $scope.pageDetails = tab.data;
+              $scope.pageDetails.location = normalizeLocation($scope.pageDetails.location);
             }
             break;
           case 'user':
@@ -290,31 +302,6 @@ window.addEventListener('load', function(evt) {
         url = $a.attr('data-link');
 
     openNewTab(pageDetails.location.origin + url);
-  });
-
-  $('#lnk_contentFinder').click(function(e){
-    
-    e.preventDefault();
-
-    toggleContentFinder(pageDetails.location);
-
-    window.close();
-  });
-
-  $('#lnk_classicUI').click(function(e){
-    e.preventDefault();
-
-    toggleUIs('classic', pageDetails.location);  
-
-    window.close();
-  });
-
-  $('#lnk_touchUI').click(function(e){
-    e.preventDefault();
-
-    toggleUIs('touch', pageDetails.location);  
-
-    window.close();
   });
 
   $('.querystring').click(function(e){
@@ -472,30 +459,29 @@ function removeTrailingSlash(url) {
   return url;
 }
 
+/**
+ * Converts an array of strings with key value pairs separated by an
+ * equals sign.
+ *
+ * Certain responses with JSON Sling selectors to the Felix console returns
+ * this proprietary format.
+ *
+ * @param {Array} array of strings
+ * @returns {JSON} JSON object created from array
+ */
 function convertSlingArrayToObject(slingArray) {
-  var slingObject = {},
+  var SEPARATOR = ' = ',
+      slingObject = {},
       tmp,
       x;
 
   for (x = 0; x < slingArray.length; x++) {
-    tmp = slingArray[x].split(' = ');
+    tmp = slingArray[x].split(SEPARATOR);
     slingObject[tmp[0]] = tmp[1];
   }
 
   return slingObject;
 }
-
-
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount', 'UA-56261124-1']);
-_gaq.push(['_trackPageview']);
-
-(function() {
-  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-  ga.src = 'https://ssl.google-analytics.com/ga.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
-
 
 /**
  * Create a pseudo location object fixing problems when the Location object
@@ -550,44 +536,80 @@ function normalizeLocation(location) {
 /**
  * Toggle between classic and touch UIs.
  *
- * TODO: Change everything. Just getting something to demo.
+ * This works for editor, sites, assets, publishing, etc...
  *
- * @param {string} changeTo - 'classic' or 'touch'
  * @param {location} location - the location object to read from.
  */
-function toggleUIs(changeTo, location) {
-  var newPathName = location.href;
+function toggleUI(currentUI, location) {
+  var pathnameWithoutCF,
+      targetUI = (currentUI === UI_MAP_TOUCH) ? UI_MAP_CLASSIC : UI_MAP_TOUCH;
+
+  if (!location || !location.href) {
+    return;
+  }
+
+  pathnameWithoutCF = location.pathname;
 
   //remove Content Finder first
-  if (newPathName.indexOf('/cf#') === 0) {
-    newPathName = newPathName.split('/cf#').join('');
+  if (pathnameWithoutCF.indexOf('/cf#') === 0) {
+    pathnameWithoutCF = pathnameWithoutCF.replace('/cf#', '');
   }
 
-  if (changeTo === 'classic') {
-    if (newPathName.indexOf('/sites.html') !== -1) {
-      newPathName = newPathName.replace('/sites.html', '/siteadmin#');
-    } else if (newPathName.indexOf('/publications.html') !== -1) {
-      newPathName = newPathName.replace('/publications.html', '/publishingadmin#');
-    } else if (newPathName.indexOf('/assets.html') !== -1) {
-      newPathName = newPathName.replace('/assets.html', '/damadmin#');
-    } else if (newPathName.indexOf('/editor.html') !== -1) {
-      newPathName = newPathName.replace('/editor.html', '');
-    }
+  // for (var x = 0; x < UI_MAP.length; x++) {
+  //   if (pathnameWithoutCF.indexOf(UI_MAP[x][UI_MAP_TOUCH]) === 0) {
+  //     pathnameWithoutCF = pathnameWithoutCF.replace(UI_MAP[x][UI_MAP_TOUCH], UI_MAP[x][UI_MAP_CLASSIC]);
+  //     break;
+  //   } else if (pathnameWithoutCF.indexOf(UI_MAP[x][UI_MAP_CLASSIC]) === 0) {
+  //     pathnameWithoutCF = pathnameWithoutCF.replace(UI_MAP[x][UI_MAP_CLASSIC], UI_MAP[x][UI_MAP_TOUCH]);
+  //     break;
+  //   }
+  // }
 
-    setTabLocation(newPathName);
-  } else if (changeTo === 'touch') {
-    if (newPathName.indexOf('/siteadmin#') !== -1) {
-      newPathName = newPathName.replace('/siteadmin#', '/sites.html');
-    } else if (newPathName.indexOf('/publishingadmin#') !== -1) {
-      newPathName = newPathName.replace('/publishingadmin#', '/publications.html');
-    } else if (newPathName.indexOf('/damadmin#') !== -1) {
-      newPathName = newPathName.replace('/damadmin#', '/assets.html');
-    } else {
-      newPathName = location.origin + '/editor.html' + location.hash.replace('#', '');
+  for (var x = 0; x < UI_MAP.length; x++) {
+    if (pathnameWithoutCF.indexOf(UI_MAP[x][currentUI]) === 0) {
+      pathnameWithoutCF = pathnameWithoutCF.replace(UI_MAP[x][currentUI], UI_MAP[x][targetUI]);
+      break;
     }
-
-    setTabLocation(newPathName);
   }
+
+  setTabLocation(location.origin + pathnameWithoutCF + location.search + location.hash);
+}
+
+/**
+ * Gets the current UI, 'classic' or 'touch'
+ *
+ * @param {Location} location object
+ * @returns {String} 'classic' or 'touch'
+ */
+function getCurrentUI(location) {
+  var pathnameWithoutCF;
+
+  if (!location || !location.href) {
+    return;
+  }
+
+  pathnameWithoutCF = location.pathname;
+
+  //remove Content Finder first
+  if (pathnameWithoutCF.indexOf('/cf#') === 0) {
+    pathnameWithoutCF = pathnameWithoutCF.replace('/cf#', '');
+  }
+
+  /* 
+   * You must check against Touch before Classic. Likewise, you must
+   * check against Editor last for the same reason: touch's editor.html
+   * companion to classic is empty string. Empty string equates to the
+   * regular view edit view and is the default fallback. 
+   */
+  for (var x = 0; x < UI_MAP.length; x++) {
+    if (pathnameWithoutCF.indexOf(UI_MAP[x][UI_MAP_TOUCH]) === 0) {
+      return UI_MAP_TOUCH;
+    } else if (pathnameWithoutCF.indexOf(UI_MAP[x][UI_MAP_CLASSIC]) === 0) {
+      return UI_MAP_CLASSIC;
+    }
+  }
+
+  return UI_MAP_CLASSIC;
 }
 
 /**
@@ -604,3 +626,13 @@ function toggleContentFinder(location) {
     setTabLocation(location.origin + '/cf#' + location.pathname + location.search + location.hash);
   }
 }
+
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-56261124-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = 'https://ssl.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
