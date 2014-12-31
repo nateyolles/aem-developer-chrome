@@ -100,12 +100,11 @@
                         <h3>Impersonate</h3>
                         <div class="content">
                             <div class="btn-group">
-                                <button data-ng-show="user.isImpersonated" id="lnk_revertToSelf">Revert to self</button>
+                                <button data-ng-show="user.isImpersonated" data-ng-click="revertToSelf()">Revert to self</button>
                             </div>
-                            <select id="sudoables">
+                            <select data-ng-model="user.authorizableId" data-ng-change="impersonate(user.authorizableId)" id="sudoables">
                                 <option data-ng-repeat="sudoable in sudoables" value="{{sudoable}}" data-ng-bind="sudoable"></option>
                             </select>
-                            
                         </div>
                     </li>
                 </ul>

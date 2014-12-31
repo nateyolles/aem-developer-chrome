@@ -3,6 +3,9 @@ var app = angular.module('PopupApp', ['ngStorage']),
     EXTENSION_URL = 'https://chrome.google.com/webstore/detail/aem-developer/hgjhcngmldfpgpakbnffnbnmcmohfmfc',
     UI_MAP_CLASSIC = 'classic',
     UI_MAP_TOUCH = 'touch',
+    SUDOABLE_REDIRECT_PARAM_KEY = 'sling.auth.redirect',
+    SUDOABLE_USER_PARAM_KEY = 'sudo',
+    SUDOABLE_REVERT_PARAM_VALUE = '-',
     cachedEventPage,
     pageDetails;
 
@@ -189,6 +192,28 @@ app.controller('PopupController', function($scope, $localStorage, $http){
     window.close();
   };
 
+  /**
+   * Impersonate a user.
+   */
+  $scope.impersonate = function(selectedSudoable) {
+    var location = getUrlWithUpdatedQueryString(pageDetails.location, SUDOABLE_REDIRECT_PARAM_KEY, pageDetails.location.pathname, true);
+        location = getUrlWithUpdatedQueryString(location, SUDOABLE_USER_PARAM_KEY, selectedSudoable);
+
+    setTabLocation(location);
+    window.close();
+  };
+
+  /**
+   * Impersonation revert to self.
+   */
+  $scope.revertToSelf = function() {
+    var location = getUrlWithUpdatedQueryString($scope.pageDetails.location, SUDOABLE_REDIRECT_PARAM_KEY, $scope.pageDetails.location.pathname, true);
+        location = getUrlWithUpdatedQueryString(location, SUDOABLE_USER_PARAM_KEY, SUDOABLE_REVERT_PARAM_VALUE);
+
+    setTabLocation(location);
+    window.close();
+  };
+
   chrome.runtime.getBackgroundPage(function(eventPage) {
 
     cachedEventPage = eventPage;
@@ -347,22 +372,6 @@ window.addEventListener('load', function(evt) {
 
     setTabLocation(getUrlWithUpdatedQueryString(pageDetails.location, key, value));
 
-    window.close();
-  });
-
-  $('#sudoables').change(function(){
-    var location = getUrlWithUpdatedQueryString(pageDetails.location, 'sling.auth.redirect', pageDetails.location.pathname, true);
-    location = getUrlWithUpdatedQueryString(location, 'sudo', this.value);
-
-    setTabLocation(location);
-    window.close();
-  });
-
-  $('#lnk_revertToSelf').click(function(){
-    var location = getUrlWithUpdatedQueryString(pageDetails.location, 'sling.auth.redirect', pageDetails.location.pathname, true);
-    location = getUrlWithUpdatedQueryString(location, 'sudo', '-');
-
-    setTabLocation(location);
     window.close();
   });
 });
