@@ -87,7 +87,7 @@
                                 <button data-ng-click="toggleContentFinder()">Content Finder</button>
                             </div>
                             <div class="btn-group">
-                                <button data-ng-click="toggleUI()" data-ng-bind="currentUI === 'classic' ? 'Show Touch' : ' Show Classic'">Classic/Touch</button>
+                                <button data-ng-click="toggleUI()" data-ng-bind="currentUI === 'classic' ? 'Touch UI' : ' Classic UI'">Classic/Touch</button>
                             </div>
                         </div>
                     </li>
@@ -131,7 +131,7 @@
                     </li>
                     <li data-ng-repeat="server in options.servers" data-ng-show="!editMode">
                         <a href="#" ng-click="redirectToEnvironment($index, false)" data-link="{{server.url}}" data-ng-bind="server.name"></a>
-                        <a href="#" ng-show="showCompare($index)" ng-click="compareToEnvironment($index)" id="compare_{{$index}}">compare</a>
+                        <a href="#" ng-show="showCompare()" ng-click="compareToEnvironment($index)" id="compare_{{$index}}">compare</a>
                         <i class="link-new-window icon-link-external" ng-click="redirectToEnvironment($index, true)"></i>
                     </li>
                     <li class="edit" data-ng-show="!editMode"><a data-ng-click="changeEditMode()">Edit <i class="icon-pencil"></i></a></li>

@@ -86,21 +86,18 @@ app.controller('PopupController', function($scope, $localStorage, $http){
     }
   });
 
+  /**
+   * Get all Sling, Java, and OS information except the current user. 
+   */
   $scope.getInfo = function(){
     cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.getAllInfo()');
   };
 
-  $scope.isLinkCurrentPage = function(index){
-    var curr = $scope.options.servers[index].url;
-
-    /** Remove trailing slash */
-    if (curr[curr.length - 1] === '/') {
-      curr = curr.substr(0, curr.length - 1);
-    }
-
-    return curr === $scope.pageDetails.location.origin;
-  }
-
+  /**
+   * Toggle Environments view from Edit to View.
+   *
+   * When user clicks "Save/Done", first save the new fields, then change edit mode.
+   */
   $scope.changeEditMode = function() {
     if (!$scope.newServer.name.isEmpty() && !$scope.newServer.url.isEmpty()) {
       $scope.add();
@@ -109,30 +106,47 @@ app.controller('PopupController', function($scope, $localStorage, $http){
     $scope.editMode = !$scope.editMode;
   }
 
-  $scope.remove = function(index) {
-    $scope.options.servers.splice(index, 1);
+  /**
+   * Remove item from servers list. 
+   */
+  $scope.remove = function() {
+    $scope.options.servers.splice(this.$index, 1);
   };
 
+  /**
+   * Add item to servers list.
+   */
   $scope.add = function() {
     $scope.options.servers.push({name: $scope.newServer.name, url: $scope.newServer.url});
     $scope.newServer.name = '';
     $scope.newServer.url = '';
   };
 
+  /**
+   * Toggle between classic and touch UI.
+   */
   $scope.toggleUI = function() {
     toggleUI($scope.currentUI, $scope.pageDetails.location);  
 
     window.close();
   };
 
+  /**
+   * Toggle content finder on and off.
+   */
   $scope.toggleContentFinder = function() {
     toggleContentFinder($scope.pageDetails.location);
 
     window.close();
   }
 
-  $scope.showCompare = function(index){
-    var newOrigin = $scope.options.servers[index].url;
+  /**
+   * Show comparison link if the target origin isn't the same as the current origin.
+   *
+   * @returns {Boolean} true if target origin isn't the same as the current origin.  
+   */
+  $scope.showCompare = function(){
+    var newOrigin = $scope.options.servers[this.$index].url;
 
     newOrigin = removeTrailingSlash(newOrigin);
 
@@ -143,16 +157,24 @@ app.controller('PopupController', function($scope, $localStorage, $http){
     return false;
   }
 
-  $scope.compareToEnvironment = function(index) {
-    var newOrigin = $scope.options.servers[index].url;
+  /**
+   * Compare current page to same page on target origin.
+   */
+  $scope.compareToEnvironment = function() {
+    var newOrigin = $scope.options.servers[this.$index].url;
 
     newOrigin = removeTrailingSlash(newOrigin);
 
-    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.comparePage("' + newOrigin + '",' + index + ')');
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.comparePage("' + newOrigin + '",' + this.$index + ')');
   };
 
-  $scope.redirectToEnvironment = function(index, isNewWindow){
-    var newOrigin = $scope.options.servers[index].url,
+  /**
+   * Redirect current page to same page on target origin.
+   *
+   * @param {Boolean} open page in new broswer window/tab.
+   */
+  $scope.redirectToEnvironment = function(isNewWindow){
+    var newOrigin = $scope.options.servers[this.$index].url,
         newUrl;
 
     newOrigin = removeTrailingSlash(newOrigin);
@@ -171,7 +193,18 @@ app.controller('PopupController', function($scope, $localStorage, $http){
 
     cachedEventPage = eventPage;
 
-    eventPage.AemBackgroundScripts.getPageDetails(function(tab){
+    /**
+     * Run initial method on Background page to insert static assets and
+     * set function as the listener which acts as a pseudo callback
+     * function.
+     *
+     * The method accepts a response message from the tab with the following
+     * properties:
+     *  - type: the name of the response
+     *  - status: 'fail' or 'success'
+     *  - data: JSON data
+     */
+    eventPage.AemBackgroundScripts.initialize(function(tab){
       if (tab && tab.type) {
         switch(tab.type){
           case 'window':
@@ -548,22 +581,7 @@ function toggleUI(currentUI, location) {
     return;
   }
 
-  pathnameWithoutCF = location.pathname;
-
-  //remove Content Finder first
-  if (pathnameWithoutCF.indexOf('/cf#') === 0) {
-    pathnameWithoutCF = pathnameWithoutCF.replace('/cf#', '');
-  }
-
-  // for (var x = 0; x < UI_MAP.length; x++) {
-  //   if (pathnameWithoutCF.indexOf(UI_MAP[x][UI_MAP_TOUCH]) === 0) {
-  //     pathnameWithoutCF = pathnameWithoutCF.replace(UI_MAP[x][UI_MAP_TOUCH], UI_MAP[x][UI_MAP_CLASSIC]);
-  //     break;
-  //   } else if (pathnameWithoutCF.indexOf(UI_MAP[x][UI_MAP_CLASSIC]) === 0) {
-  //     pathnameWithoutCF = pathnameWithoutCF.replace(UI_MAP[x][UI_MAP_CLASSIC], UI_MAP[x][UI_MAP_TOUCH]);
-  //     break;
-  //   }
-  // }
+  pathnameWithoutCF = removeContentFinder(location.pathname);
 
   for (var x = 0; x < UI_MAP.length; x++) {
     if (pathnameWithoutCF.indexOf(UI_MAP[x][currentUI]) === 0) {
@@ -588,12 +606,7 @@ function getCurrentUI(location) {
     return;
   }
 
-  pathnameWithoutCF = location.pathname;
-
-  //remove Content Finder first
-  if (pathnameWithoutCF.indexOf('/cf#') === 0) {
-    pathnameWithoutCF = pathnameWithoutCF.replace('/cf#', '');
-  }
+  pathnameWithoutCF = removeContentFinder(location.pathname);
 
   /* 
    * You must check against Touch before Classic. Likewise, you must
@@ -625,6 +638,22 @@ function toggleContentFinder(location) {
   } else {
     setTabLocation(location.origin + '/cf#' + location.pathname + location.search + location.hash);
   }
+}
+
+/**
+ * Remove Content Finder from path name.
+ *
+ * @param {String} location pathname (e.g. '/cf#/content/us/en/home.html')
+ * @returns {String} pathname without '/cf#'
+ */
+function removeContentFinder(pathname) {
+  var CONTENT_FINDER = '/cf#';
+
+  if (pathname.indexOf(CONTENT_FINDER) === 0) {
+    pathname = pathname.replace(CONTENT_FINDER, '');
+  }
+
+  return pathname;
 }
 
 var _gaq = _gaq || [];
