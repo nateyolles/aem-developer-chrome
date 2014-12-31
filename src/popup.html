@@ -146,9 +146,9 @@
                     </li>
                 </ul>
                 <ul class="sublist" data-ng-show="collapseB">
-                    <li><a id="lnk_clearClientLibs" href="#">Delete cached clientlibs</a></li>
-                    <li><a id="lnk_clearCompiledJSPs" href="#">Delete compiled JSPs</a></li>
-                    <li><a id="lnk_runGarbageCollector" href="#">Run garbage collector</a></li>
+                    <li><a id="lnk_clearClientLibs" data-ng-click="clearClientLibs()" href="#">Delete cached clientlibs</a></li>
+                    <li><a id="lnk_clearCompiledJSPs" data-ng-click="clearCompiledJSPs()" href="#">Delete compiled JSPs</a></li>
+                    <li><a id="lnk_runGarbageCollector" data-ng-click="runGarbageCollector()" href="#">Run garbage collector</a></li>
                 </ul>
             </section>
 
@@ -186,7 +186,7 @@
                         <h3>Marketing Cloud Debugger</h3>
                         <div class="content">
                             <div class="btn-group">
-                                <button id="lnk_digitalPulseDebugger">Open</button>
+                                <button data-ng-click="openDigitalPulseDebugger()">Open</button>
                             </div>
                         </div>
                     </li>

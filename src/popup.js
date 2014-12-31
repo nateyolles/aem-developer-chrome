@@ -25,7 +25,7 @@ var UI_MAP = [
    }
 ];
 
-app.controller('PopupController', function($scope, $localStorage, $http){
+app.controller('PopupController', function($scope, $localStorage, $http) {
 
   $scope.options = $localStorage.$default({
     servers: [
@@ -214,8 +214,42 @@ app.controller('PopupController', function($scope, $localStorage, $http){
     window.close();
   };
 
+  /**
+   * Delete cached clientlibs.
+   */
+  $scope.clearClientLibs = function() {
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.clearClientLibs()');
+  };
+
+  /**
+   * Delete compiled JSP files.
+   */
+  $scope.clearCompiledJSPs = function() {
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.clearCompiledJSPs()');
+  };
+
+  /**
+   * Run Garbage Collector.
+   */
+  $scope.runGarbageCollector = function() {
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.runGarbageCollector()');
+  };
+
+  /**
+   * Open Digital Pulse Debugger in new window.
+   */
+  $scope.openDigitalPulseDebugger = function() {
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.openDigitalPulseDebugger()');
+    window.close();
+  };
+
+  /**
+   * Get the Background page which will insert static assets and allow connection
+   * with the content page.
+   */
   chrome.runtime.getBackgroundPage(function(eventPage) {
 
+    /** The background page. */
     cachedEventPage = eventPage;
 
     /**
@@ -286,7 +320,6 @@ app.controller('PopupController', function($scope, $localStorage, $http){
             break;
           case 'garbage_collector':
             showStatus($('#lnk_runGarbageCollector'), tab.status);
-
             break;
           case 'sudoables':
             $scope.$apply(function(){
@@ -324,33 +357,6 @@ window.addEventListener('load', function(evt) {
     e.preventDefault();
     setTabLocation(pageDetails.location.origin + $(this).attr('data-link'));
     window.close();
-  });
-
-  $('#lnk_clearClientLibs').click(function(e){
-    e.preventDefault();
-    var target = e.target;
-
-    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.clearClientLibs()');
-  });
-
-  $('#lnk_clearCompiledJSPs').click(function(e){
-    e.preventDefault();
-    var target = e.target;
-
-    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.clearCompiledJSPs()');
-  });
-
-  $('#lnk_runGarbageCollector').click(function(e){
-    e.preventDefault();
-    var target = e.target;
-
-    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.runGarbageCollector()');
-  });
-
-  $('#lnk_digitalPulseDebugger').click(function(e){
-    e.preventDefault();
-    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.openDigitalPulseDebugger()');
-    //window.close();
   });
 
   $('.js-new-window').click(function(e){
