@@ -45,6 +45,7 @@ var AemDeveloper = (function(window, undefined) {
   /**
    * Delete the results of the query and post a message with status.
    *
+   * @private
    * @param {String} query the URL with query to the JCR.
    */
   function deleteQueryResults(type, query) {
@@ -137,6 +138,7 @@ var AemDeveloper = (function(window, undefined) {
   /**
    * Get info and send a Chrome message.
    *
+   * @private
    * @param {String} Type of message to send.
    * @param {String} URL to query the JCR.
    */
@@ -249,6 +251,7 @@ var AemDeveloper = (function(window, undefined) {
   /**
    * Escape HTML String. Not to be used for XSS protection.
    *
+   * @private
    * @param {String} String to escape.
    * @returns {String} Escaped string.
    */
@@ -263,6 +266,7 @@ var AemDeveloper = (function(window, undefined) {
   /**
    * Remove provided keys from JSON objects.
    *
+   * @private 
    * @param {JSON} JSON object.
    * @param {String[]} Array of Strings to remove from JSON object.
    */
@@ -283,6 +287,7 @@ var AemDeveloper = (function(window, undefined) {
   /**
    * Get the difference between two JSON objects in jsondiffpatch HTML format.
    *
+   * @private
    * @param {JSON} JSON object to be compared against
    * @param {JSON} JSON object to be compared with
    * @returns {String} The delta of the two JSON objects formatted in HTML.
@@ -312,6 +317,7 @@ var AemDeveloper = (function(window, undefined) {
   /**
    * Create and add differential HTML to the page.
    *
+   * @private
    * @param {HTMLElement} The DOM node to attach the Shadow DOM and HTML difference to.
    * @param {String} HTML difference to insert into page.
    * @param {String} The current origin to compare against (e.g. 'http://localhost:4502').
@@ -389,6 +395,7 @@ var AemDeveloper = (function(window, undefined) {
   /**
    * Gets location object without the content finder.
    *
+   * @private
    * @returns {Object} Pseudo location object
    */
   function getNormalizedLocation() {
@@ -412,6 +419,28 @@ var AemDeveloper = (function(window, undefined) {
   }
 
   /**
+   * Get a location pathname for use in an AJAX call to the JCR.
+   *
+   * Add the jcr:content node to the current path, change selector
+   * from html to an inifinity JSON selector, remove 
+   *
+   * @private
+   * @param {String} location pathname
+   * @returns {String} location pathname ready for use to 
+   */
+  function getPathnameForJcrAjaxCall(pathname){
+    var EDITOR = '/editor.html';
+
+    if (pathname.indexOf(EDITOR) === 0) {
+      pathname = pathname.replace(EDITOR, '');
+    }
+
+    pathname = pathname.replace('.html', '/jcr:content.-1.json');
+
+    return pathname;
+  }
+
+  /**
    * Compare page to the same page on a given domain.
    *
    * @param {String} Domain to compare current page to (e.g. 'http://localhost:4503'). 
@@ -419,7 +448,7 @@ var AemDeveloper = (function(window, undefined) {
    */
   function comparePage(compareToOrigin, index) {
     var location = getNormalizedLocation(),
-        path = location.pathname.replace('.html', '/jcr:content.-1.json');
+        path = getPathnameForJcrAjaxCall(location.pathname);  //location.pathname.replace('.html', '/jcr:content.-1.json');
 
     var currentPageRequest = new XMLHttpRequest();
     currentPageRequest.responseType = 'json';
