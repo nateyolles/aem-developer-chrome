@@ -117,7 +117,7 @@
                         <i ng-class="{'icon-arrow-down': collapseA, 'icon-arrow-right': !collapseA}"></i>
                     </li>
                 </ul>
-                <ul class="sublist" data-ng-show="collapseA">
+                <ul class="sublist environments" data-ng-show="collapseA">
                     <li data-ng-repeat="server in options.servers" data-ng-show="editMode" class="input-container">
                         <input placeholder="name" data-ng-model="server.name">
                         <input placeholder="url" data-ng-model="server.url">

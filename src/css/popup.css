@@ -115,7 +115,6 @@ ul.sublist {
 }
 
 ul.sublist li {
-  line-height: 29px;
   overflow: hidden;
   position: relative;
 }
@@ -139,6 +138,17 @@ ul.sublist .new-window {
 ul.sublist li:hover .new-window {
   -webkit-animation: fadeIn .5s;
   -webkit-animation-fill-mode: forwards;
+}
+
+ul.sublist.environments button {
+  font-size: 9px;
+  padding-left: 6px;
+  padding-right: 8px;
+}
+
+ul.sublist.environments li {
+  line-height: 24px;
+  padding: 4px 10px;
 }
 
 button {
