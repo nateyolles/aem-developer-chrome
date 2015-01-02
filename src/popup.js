@@ -31,7 +31,7 @@ var UI_MAP = [
   }, {
     'classic' : '',
     'touch'   : '/editor.html'
-   }
+  }
 ];
 
 app.controller('PopupController', function($scope, $localStorage, $http) {

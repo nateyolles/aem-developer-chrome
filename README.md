@@ -23,15 +23,23 @@ Provide information on the user, Sling, Java, and the OS. This is dependent on t
 
 ![Info screenshot](images/screenshot_info.png)
 
-
-Open page in...
+Environments
 ---------------
 
 Open the current page in any of your predefined environments. Click 'edit' to add, remove, or update saved environments. Updates are immediately saved. '+' to add and '-' to remove entries. Click 'Done' to exit editing mode.
 
-![Open page in screenshot](images/screenshot_openin.png)
+Click the icon next to the text to open the environment in a new browser tab.
 
-![Open page in edit mode screenshot](images/screenshot_openin_edit.png)
+![Environments in screenshot](images/screenshot_environments.png)
+
+![Environments edit mode screenshot](images/screenshot_environments_edit.png)
+
+Compare
+---------------
+
+Compare the current page to the same page in any environment. Toggle between showing only the difference or the entire node structure.
+
+![Compare screenshot](images/screenshot_compare.png)
 
 Impersonate
 -----------
@@ -47,12 +55,20 @@ Delete compiled clientlibs under the /var/clientlibs directory. Delete compiled 
 
 ![Clear cache and memory screenshot](images/screenshot_clearcache.png)
 
+Toggle UI
+--------------------
+
+Toggle Content Finder on and off. If you are in a Touch UI view, you will be taken to the classic view with Content Finder. Toggling between Classic and Touch UIs works in siteadmin/sites.html, publishingadmin/publications.html, damadmin/assets.html, welcome/projects.html, and normal view/editor.html. Unexpected redirects may happen if you are on a page that doesn't have a Touch/Classic equivalent.
+
+![Toggle UI screenshot](images/screenshot_toggle_ui.png)
 
 Todo:
 -----
-+ Performance: extension starts too slow
-+ Remove jQuery from popup.js
++ Performance: extension starts too slow.
++ Remove jQuery from popup.js.
 + Chrome doesn't currently support HTML5 datalists in extensions, use when available.
-+ Comparison should show reordering of nodes
++ Comparison should show reordering of nodes.
 + Comparison should have view as well.
-+ Setup dev process: Grunt, Bower, SASS/LESS, build/zip/version, etc...
++ Setup dev process: Grunt, Bower, SASS/LESS, build/zip/version, minification, concatenation, etc...
++ Improve UI Toggle for pages that don't map between Touch and Classic.
++ Test in AEM versions below 6.
