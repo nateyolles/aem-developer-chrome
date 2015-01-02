@@ -1,3 +1,4 @@
+/** @global */
 var app = angular.module('PopupApp', ['ngStorage']),
     MANIFEST_URL = 'https://raw.githubusercontent.com/nateyolles/aem-developer-chrome/master/manifest.json',
     EXTENSION_URL = 'https://chrome.google.com/webstore/detail/aem-developer/hgjhcngmldfpgpakbnffnbnmcmohfmfc',
@@ -9,6 +10,11 @@ var app = angular.module('PopupApp', ['ngStorage']),
     cachedEventPage,
     pageDetails;
 
+/**
+ * @global
+ *
+ * classic: ''; touch: '/editor.html' must be the final item in the array.
+ */
 var UI_MAP = [
   {
     'classic' : '/siteadmin#',
@@ -19,6 +25,9 @@ var UI_MAP = [
   }, {
     'classic' : '/damadmin#',
     'touch'   : '/assets.html'
+  }, {
+    'classic' : '/libs/cq/core/content/welcome.html',
+    'touch'   : '/projects.html'
   }, {
     'classic' : '',
     'touch'   : '/editor.html'
