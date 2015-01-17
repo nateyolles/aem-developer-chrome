@@ -472,20 +472,35 @@ var AemDeveloper = (function(window, undefined) {
           currentPageRequest.onreadystatechange = function() {
             if (currentPageRequest.readyState === 4) {
               if (currentPageRequest.status === 200) {
-                var body = document.querySelector('body'),
-                    html = getDifferenceHtml(currentPageRequest.response, comparePageRequest.response),
-                    oldContainer = document.getElementById(COMPARE_CONTAINER_NAME);
+                var html = getDifferenceHtml(currentPageRequest.response, comparePageRequest.response),
+                    body,
+                    oldContainer;
 
-                if (oldContainer) {
-                  body.removeChild(oldContainer);
+                if (html) {
+                  // difference found
+                  body = document.querySelector('body'),
+                  oldContainer = document.getElementById(COMPARE_CONTAINER_NAME);
+
+                  if (oldContainer) {
+                    body.removeChild(oldContainer);
+                  }
+
+                  createDifferenceHtml(body, html, location.origin, compareToOrigin, path);
+
+                  chrome.runtime.sendMessage({
+                    type: 'compare',
+                    status: 'success'
+                  });
+                } else {
+                  // AJAX successful but no differences found
+                  chrome.runtime.sendMessage({
+                    type: 'compare',
+                    status: 'noaction',
+                    data: {
+                      index: index
+                    }
+                  });
                 }
-
-                createDifferenceHtml(body, html, location.origin, compareToOrigin, path);
-
-                chrome.runtime.sendMessage({
-                  type: 'compare',
-                  status: 'success'
-                });
               } else {
                 sendFail();
               }
@@ -501,6 +516,7 @@ var AemDeveloper = (function(window, undefined) {
 
     comparePageRequest.responseType = 'json';
     comparePageRequest.open('GET', compareToOrigin + path);
+    comparePageRequest.setRequestHeader('Access-Control-Allow-Origin', '*');
     comparePageRequest.timeout = 2000;
     comparePageRequest.ontimeout = function() {
       sendFail();
