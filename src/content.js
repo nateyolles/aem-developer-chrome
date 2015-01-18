@@ -20,7 +20,9 @@ var AemDeveloper = (function(window, undefined) {
       TITLE_BAR_CLASS_NAME    = 'titlebar',
       COMPARE_BAR_CLASS_NAME  = 'comparebar',
       CONTAINER_CLASS_NAME    = 'container',
+      SELF_VIEW_CLASS_NAME    = 'self_view',
       COMPARE_TEXT            = 'Compare',
+      VIEW_TEXT               = 'View',
       TITLE_CLASS_NAME        = 'title',
       TOGGLE_CLASS_NAME       = 'toggle',
       TOGGLE_HIDE_ALL_TEXT    = 'Show Difference',
@@ -337,9 +339,10 @@ var AemDeveloper = (function(window, undefined) {
         right = document.createElement('span'),
         container = document.createElement('div'),
         root = container.createShadowRoot();
-        isShowingAll = false;
+        isShowingAll = false,
+        isSelfView = !compareToOrigin;
 
-    titleSpan.innerHTML = COMPARE_TEXT;
+    titleSpan.innerHTML = isSelfView ? VIEW_TEXT : COMPARE_TEXT;
     titleSpan.className = TITLE_CLASS_NAME;
 
     close.href = '#';
@@ -368,7 +371,11 @@ var AemDeveloper = (function(window, undefined) {
 
     titleBar.className = TITLE_BAR_CLASS_NAME;
     titleBar.appendChild(titleSpan);
-    titleBar.appendChild(diffToggle);
+
+    if (!isSelfView) {
+      titleBar.appendChild(diffToggle);
+    }
+
     titleBar.appendChild(close);
 
     left.innerHTML = '<span class="origin">' + origin + '</span>' + path;
@@ -376,10 +383,13 @@ var AemDeveloper = (function(window, undefined) {
 
     compareBar.className = COMPARE_BAR_CLASS_NAME;
     compareBar.appendChild(left);
-    compareBar.appendChild(right);
+
+    if (!isSelfView) {
+      compareBar.appendChild(right);
+    }
 
     visualdiff.innerHTML = html;
-    visualdiff.className = CONTAINER_CLASS_NAME;
+    visualdiff.className = isSelfView ? CONTAINER_CLASS_NAME + ' ' + SELF_VIEW_CLASS_NAME : CONTAINER_CLASS_NAME;
     visualdiff.appendChild(titleBar);
     visualdiff.appendChild(compareBar);
 
@@ -429,13 +439,15 @@ var AemDeveloper = (function(window, undefined) {
    * @returns {String} location pathname ready for use to 
    */
   function getPathnameForJcrAjaxCall(pathname){
-    var EDITOR = '/editor.html';
+    var EDITOR = '/editor.html',
+        HTML_EXTENSION = '.html',
+        JSON_EXTENSION = '.-1.json';
 
     if (pathname.indexOf(EDITOR) === 0) {
       pathname = pathname.replace(EDITOR, '');
     }
 
-    pathname = pathname.replace('.html', '/jcr:content.-1.json');
+    pathname = pathname.replace(HTML_EXTENSION, JSON_EXTENSION);
 
     return pathname;
   }
@@ -447,8 +459,9 @@ var AemDeveloper = (function(window, undefined) {
    * @param {Number} Index of compare link clicked.
    */
   function comparePage(compareToOrigin, index) {
-    var location = getNormalizedLocation(),
-        path = getPathnameForJcrAjaxCall(location.pathname);  //location.pathname.replace('.html', '/jcr:content.-1.json');
+    var isSelfView = !compareToOrigin,
+        location = getNormalizedLocation(),
+        path = getPathnameForJcrAjaxCall(location.pathname);
 
     var sendFail = function() {
       chrome.runtime.sendMessage({
@@ -459,6 +472,11 @@ var AemDeveloper = (function(window, undefined) {
         }
       });
     };
+
+    // TEMP: if self view only do one request to current page
+    if (isSelfView) {
+      compareToOrigin = location.origin;
+    }
 
     var comparePageRequest = new XMLHttpRequest();
 
@@ -472,9 +490,15 @@ var AemDeveloper = (function(window, undefined) {
           currentPageRequest.onreadystatechange = function() {
             if (currentPageRequest.readyState === 4) {
               if (currentPageRequest.status === 200) {
-                var html = getDifferenceHtml(currentPageRequest.response, comparePageRequest.response),
+                var html,
                     body,
                     oldContainer;
+
+                if (isSelfView) {
+                  html = getDifferenceHtml(currentPageRequest.response, {});
+                } else {
+                  html = getDifferenceHtml(currentPageRequest.response, comparePageRequest.response);
+                }
 
                 if (html) {
                   // difference found
@@ -485,6 +509,8 @@ var AemDeveloper = (function(window, undefined) {
                     body.removeChild(oldContainer);
                   }
 
+                  // TEMP: if self view only do one request to current page
+                  if (isSelfView) { compareToOrigin = ''}
                   createDifferenceHtml(body, html, location.origin, compareToOrigin, path);
 
                   chrome.runtime.sendMessage({

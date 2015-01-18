@@ -252,3 +252,19 @@
 #aem-developer-chrome-diff::shadow ul::-webkit-scrollbar {
     -webkit-appearance: none;
 }
+
+/* self view */
+#aem-developer-chrome-diff::shadow .container.self_view .comparebar {
+  height: 20px;
+}
+
+#aem-developer-chrome-diff::shadow .container.self_view .jsondiffpatch-delta {
+  top: 60px;
+}
+
+#aem-developer-chrome-diff::shadow .container.self_view .jsondiffpatch-added .jsondiffpatch-property-name,
+#aem-developer-chrome-diff::shadow .container.self_view .jsondiffpatch-added .jsondiffpatch-value pre,
+#aem-developer-chrome-diff::shadow .container.self_view .jsondiffpatch-modified .jsondiffpatch-right-value,
+#aem-developer-chrome-diff::shadow .container.self_view .jsondiffpatch-textdiff-added {
+  background: transparent;
+}

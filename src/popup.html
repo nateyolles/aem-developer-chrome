@@ -133,8 +133,11 @@
                         <a href="" ng-click="redirectToEnvironment(true)" title="open same page in {{server.name}} in new window" class="new-window">
                             <i class="icon-link-external"></i>
                         </a>
-                        <div class="btn-group compare-container">
-                            <button data-ng-show="showCompare()" ng-click="compareToEnvironment()" id="compare_{{$index}}"><i class="icon-files-empty"></i> Compare</button>
+                        <div data-ng-show="showCompare()" class="btn-group compare-container">
+                            <button ng-click="compareToEnvironment(false)" id="compare_{{$index}}"><i class="icon-files-empty"></i> Compare</button>
+                        </div>
+                        <div data-ng-show="!showCompare()" class="btn-group compare-container">
+                            <button ng-click="compareToEnvironment(true)" id="compare_{{$index}}"><i class="icon-file-empty"></i> View</button>
                         </div>
                     </li>
                     <li class="edit" data-ng-show="!editMode"><a data-ng-click="changeEditMode()" title="add, edit and remove servers">Edit <i class="icon-pencil"></i></a></li>

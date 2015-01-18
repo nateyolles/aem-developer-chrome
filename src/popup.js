@@ -171,13 +171,18 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
 
   /**
    * Compare current page to same page on target origin.
+   *
+   * @param {Boolean} true to view current page without comparing.
    */
-  $scope.compareToEnvironment = function() {
-    var newOrigin = $scope.options.servers[this.$index].url;
+  $scope.compareToEnvironment = function(isSelfView) {
+    var target = '';
 
-    newOrigin = removeTrailingSlash(newOrigin);
+    if (!isSelfView) {
+      target = $scope.options.servers[this.$index].url;
+      target = removeTrailingSlash(target);
+    }
 
-    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.comparePage("' + newOrigin + '",' + this.$index + ')');
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.comparePage("' + target + '",' + this.$index + ')');
   };
 
   /**
