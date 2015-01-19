@@ -25,6 +25,10 @@ a.light {
   color: #c8c8c8;
 }
 
+a.light:hover {
+  color: #2b9af3;
+}
+
 .pull-right {
   float: right;
 }
@@ -275,6 +279,20 @@ ul.contact li:hover {
   0% {background-color: #f5f5f5;}
   10% {background-color: #ffff66;}
   100% {background-color: #f5f5f5;}
+}
+
+.text-success {
+  background: #3c763d;
+  color: #fff;
+}
+
+.text-fail {
+  background: #a94442;
+  color: #fff;
+}
+
+.text-noaction {
+  background: #ffff66;
 }
 
 ul.info-list li {

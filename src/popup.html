@@ -202,7 +202,7 @@
 
             <section class="outer-section">
                 <div class="clearfix">
-                    <a href="" data-ng-click="collapseE = !collapseE" class="light pull-right">About <i data-ng-class="{'icon-info': !collapseE, 'icon-cross2': collapseE}"></i></a>
+                    <a href="" data-ng-click="collapseE = !collapseE" class="light pull-right">Help &amp; About <i data-ng-class="{'icon-info': !collapseE, 'icon-cross2': collapseE}"></i></a>
                 </div>
                 <div class="inner-section" data-ng-show="collapseE">
                     <img class="pull-right" src="/images/icon48.png">
@@ -212,12 +212,25 @@
                     alter the browser location, and makes AJAX calls to get information from the JCR and Felix
                     console as well as to perform actions.</p>
 
+                    <p>This extension is completely agnostic to your AEM project, your instances and code. You must
+                    authenticate yourself into your AEM instance and/or Felix web console for certain functionality.</p>
+
+                    <p><span class="text-success">Green</span> signifies the operation was successful.</p>
+
+                    <p><span class="text-noaction">Yellow</span> signifies that operation was successful but no action was taken. For example, there were no compiled ClientLibs to delete.</p>
+
+                    <p><span class="text-fail">Red</span> signifies that the operation failed. For example, comparing pages to another environment
+                        that is unavailable.</p>
+
+                    <p>Clicking on an environment link will open the same page in that new environment. Clicking the <i class="icon-link-external"></i> icon
+                    will do the same but in a new Chrome tab.</p>
+
                     <p>I'm currently the lead AEM Engineer at Adobe for the Acrobat.com and EchoSign.com marketing
                     websites. I created this tool to speed up my daily workflow and hopefully help others in our
                     community as well. It's a work in progress; I'd love to hear feedback and suggestions. Please
                     let me know what you like and what you don't like about his extension. Feel free to report any
                     bugs as well as feature requests.</p>
-                    
+
                     <ul class="contact">
                         <li><strong>Nate Yolles</strong></li>
                         <li><i class="icon-twitter"></i> <a href="https://twitter.com/nateyolles" target="_blank">@nateyolles</a></li>
