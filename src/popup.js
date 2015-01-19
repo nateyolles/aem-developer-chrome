@@ -262,6 +262,28 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
   };
 
   /**
+   * Toggle Debug ClientLibs on and off.
+   */
+  $scope.toggleDebugClientLibs = function() {
+    var QUERY_STRING_PARAM = 'debugClientLibs',
+        QUERY_STRING_ON_VALUE = 'true',
+        QUERY_STRING_OFF_VALUE = null;
+
+    toggleQueryStringParam($scope.pageDetails.location, QUERY_STRING_PARAM, QUERY_STRING_ON_VALUE, QUERY_STRING_OFF_VALUE);
+  };
+
+  /**
+   * Toggle Debug Layout on and off.
+   */
+  $scope.toggleDebugLayout = function() {
+    var QUERY_STRING_PARAM = 'debug',
+        QUERY_STRING_ON_VALUE = 'layout',
+        QUERY_STRING_OFF_VALUE = null;
+
+    toggleQueryStringParam($scope.pageDetails.location, QUERY_STRING_PARAM, QUERY_STRING_ON_VALUE, QUERY_STRING_OFF_VALUE);
+  };
+
+  /**
    * Get the Background page which will insert static assets and allow connection
    * with the content page.
    */
@@ -693,6 +715,24 @@ function removeContentFinder(pathname) {
   }
 
   return pathname;
+}
+
+/**
+ * Toggle querystring parameter.
+ *
+ * @param {Location} the location object
+ * @param {String} the querystring parameter to toggle
+ * @param {String} the querystring on value
+ * @param {String} the querystring off value
+ */
+function toggleQueryStringParam(location, querystringParam, onValue, offValue) {
+  if (location.search.indexOf(querystringParam + '=' + onValue) >= 0) {
+    setTabLocation(getUrlWithUpdatedQueryString(location, querystringParam, offValue));
+  } else {
+    setTabLocation(getUrlWithUpdatedQueryString(location, querystringParam, onValue));
+  }
+
+  window.close();
 }
 
 var _gaq = _gaq || [];

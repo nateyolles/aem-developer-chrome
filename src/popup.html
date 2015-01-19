@@ -162,25 +162,13 @@
             <section>
                 <ul>
                     <li class="clearfix">
-                        <h3>Debug Clientlibs</h3>
+                        <h3>Toggle Debug</h3>
                         <div class="content">
                             <div class="btn-group">
-                                <button class="querystring" data-querystring-key="debugClientLibs" data-querystring-value="true">On</button>
-                                <button class="querystring" data-querystring-key="debugClientLibs">Off</button>
+                                <button data-ng-click="toggleDebugLayout()">Debug Layout</button>
                             </div>
-                        </div>
-                    </li>
-                </ul>
-            </section>
-
-            <section>
-                <ul>
-                    <li class="clearfix">
-                        <h3>Debug Layout</h3>
-                        <div class="content">
                             <div class="btn-group">
-                                <button class="querystring" data-querystring-key="debug" data-querystring-value="layout">On</button>
-                                <button class="querystring" data-querystring-key="debug">Off</button>
+                                <button data-ng-click="toggleDebugClientLibs()">Debug ClientLibs</button>
                             </div>
                         </div>
                     </li>
