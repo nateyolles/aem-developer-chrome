@@ -284,6 +284,25 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
   };
 
   /**
+   * Open the current page in CRXDE Lite.
+   *
+   * @param {Boolean} open in new Window
+   */
+  $scope.openCRXDE = function(isNewWindow) {
+    var newUrl = $scope.pageDetails.location.origin +
+                 '/crx/de/index.jsp#' +
+                 $scope.pageDetails.location.pathname.replace('.html', '/jcr:content');
+
+    if (isNewWindow) {
+      openNewTab(newUrl);
+    } else {
+      setTabLocation(newUrl);
+    }
+
+    window.close();
+  };
+
+  /**
    * Get the Background page which will insert static assets and allow connection
    * with the content page.
    */
