@@ -17,20 +17,24 @@ var app = angular.module('PopupApp', ['ngStorage']),
  */
 var UI_MAP = [
   {
-    'classic' : '/siteadmin#',
-    'touch'   : '/sites.html'
+    'classic' : '/siteadmin',
+    'touch'   : '/sites.html',
+    'useHash' : true
   }, {
-    'classic' : '/publishingadmin#',
-    'touch'   : '/publications.html'
+    'classic' : '/publishingadmin',
+    'touch'   : '/publications.html',
+    'useHash' : true
   }, {
-    'classic' : '/damadmin#',
-    'touch'   : '/assets.html'
+    'classic' : '/damadmin',
+    'touch'   : '/assets.html',
+    'useHash' : true
   }, {
     'classic' : '/libs/cq/core/content/welcome.html',
     'touch'   : '/projects.html'
   }, {
     'classic' : '',
-    'touch'   : '/editor.html'
+    'touch'   : '/editor.html',
+    'useHash' : false
   }
 ];
 
@@ -595,7 +599,10 @@ function normalizeLocation(location) {
  */
 function toggleUI(currentUI, location) {
   var pathnameWithoutCF,
-      targetUI = (currentUI === UI_MAP_TOUCH) ? UI_MAP_CLASSIC : UI_MAP_TOUCH;
+      targetUI = (currentUI === UI_MAP_TOUCH) ? UI_MAP_CLASSIC : UI_MAP_TOUCH,
+      targetText,
+      currentText,
+      useHash;
 
   if (!location || !location.href) {
     return;
@@ -605,7 +612,19 @@ function toggleUI(currentUI, location) {
 
   for (var x = 0; x < UI_MAP.length; x++) {
     if (pathnameWithoutCF.indexOf(UI_MAP[x][currentUI]) === 0) {
-      pathnameWithoutCF = pathnameWithoutCF.replace(UI_MAP[x][currentUI], UI_MAP[x][targetUI]);
+      useHash = UI_MAP[x].useHash;
+      currentText = UI_MAP[x][currentUI];
+      targetText = UI_MAP[x][targetUI];
+
+      if (useHash) {
+        if (targetUI === UI_MAP_CLASSIC) {
+          targetText += '#';
+        } else if (pathnameWithoutCF.indexOf(currentText + '#') === 0) {
+          currentText += '#';
+        }
+      }
+
+      pathnameWithoutCF = pathnameWithoutCF.replace(currentText, targetText);
       break;
     }
   }
