@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "AEM Developer",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Tools for AEM developers.",
   "homepage_url": "https://github.com/nateyolles/aem-developer-chrome/",
 
