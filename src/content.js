@@ -9,6 +9,7 @@ var AemDeveloper = (function(window, undefined) {
    */
   var CLIENTLIB_QUERY         = '/crx/de/query.jsp?type=xpath&stmt=/jcr:root/var/clientlibs/*&showResults=true',
       COMPILED_JSP_QUERY      = '/crx/de/query.jsp?type=xpath&stmt=/jcr:root/var/classes//jsp&showResults=true',
+      LINKCHECKER_QUERY       = '/crx/de/query.jsp?type=xpath&stmt=/jcr:root/var/linkchecker/*&showResults=true',
       USER_INFO               = '/libs/granite/security/currentuser.json'
       PRODUCT_INFO            = '/libs/cq/core/productinfo.json',
       SLING_INFO              = '/system/console/status-slingsettings.json',
@@ -122,6 +123,13 @@ var AemDeveloper = (function(window, undefined) {
    */
   function clearCompiledJSPs() {
     deleteQueryResults('compiled_jsps', COMPILED_JSP_QUERY);
+  }
+
+  /**
+   * Delete cached linkchecker results.
+   */
+  function clearLinkChecker() {
+    deleteQueryResults('linkChecker', LINKCHECKER_QUERY);
   }
 
   /**
@@ -558,6 +566,7 @@ var AemDeveloper = (function(window, undefined) {
     openDigitalPulseDebugger : openDigitalPulseDebugger,
     clearClientLibs : clearClientLibs,
     clearCompiledJSPs : clearCompiledJSPs,
+    clearLinkChecker : clearLinkChecker,
     getUserInfo: getUserInfo,
     getAllInfo : getAllInfo,
     runGarbageCollector : runGarbageCollector,

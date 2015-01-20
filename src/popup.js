@@ -247,6 +247,14 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
   };
 
   /**
+   * Delete Link Checker cache.
+   */
+  $scope.clearLinkChecker = function() {
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.clearLinkChecker()');
+  };
+
+
+  /**
    * Run Garbage Collector.
    */
   $scope.runGarbageCollector = function() {
@@ -379,6 +387,9 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
             break;
           case 'garbage_collector':
             showStatus($('#lnk_runGarbageCollector'), tab.status);
+            break;
+          case 'linkChecker':
+            showStatus($('#lnk_clearLinkChecker'), tab.status);
             break;
           case 'sudoables':
             $scope.$apply(function(){
