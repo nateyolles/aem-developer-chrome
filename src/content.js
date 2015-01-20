@@ -206,7 +206,6 @@ var AemDeveloper = (function(window, undefined) {
    */
   function getUserInfo() {
     getInfo('user', USER_INFO, function(data){
-      console.dir(data.home);
       getSudoables(data.home);
     });
   }
