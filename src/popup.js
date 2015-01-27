@@ -297,9 +297,20 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
    * @param {Boolean} open in new Window
    */
   $scope.openCRXDE = function(isNewWindow) {
-    var newUrl = $scope.pageDetails.location.origin +
-                 '/crx/de/index.jsp#' +
-                 $scope.pageDetails.location.pathname.replace('.html', '/jcr:content');
+    var cleanPathname,
+        newUrl;
+
+    cleanPathname = getContentPath($scope.pageDetails.location.pathname);
+
+    if (cleanPathname.endsWith('.html')) {
+      cleanPathname = cleanPathname.replace('.html', '/jcr:content'); 
+    } else {
+      cleanPathname += '/jcr:content';
+    }
+
+    newUrl = $scope.pageDetails.location.origin +
+              '/crx/de/index.jsp#' +
+              cleanPathname;
 
     if (isNewWindow) {
       openNewTab(newUrl);
@@ -555,6 +566,18 @@ String.prototype.isEmpty = function() {
 };
 
 /**
+ * endsWith added to global String object.
+ * 
+ * @param {String} suffix to check if string ends with.
+ * @returns {boolean} If String object ends with suffix.
+ */
+if (typeof String.prototype.endsWith !== 'function') {
+  String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+  };
+}
+
+/**
  * Remove trailing slash
  *
  * @param {String} url String to remove trailing slash.
@@ -745,6 +768,32 @@ function removeContentFinder(pathname) {
   }
 
   return pathname;
+}
+
+/**
+ * Get the content path without content finder, classic or touch UI pages.
+ *
+ * @param {String} location pathname (e.g. '/cf#/content/us/en/home.html')
+ * @returns {String} pathname without '/cf#'
+ */
+function getContentPath(pathname) {
+  var pathnameWithoutCF = removeContentFinder(pathname);
+
+    /*
+      /editor.html/content/doc-cloud/us/en/products/acrobat-pro.html
+      /siteadmin#/content/doc-cloud/us/en/products.html
+      /content/doc-cloud/us/en/products.html
+    */
+
+  for (var x = 0; x < UI_MAP.length; x++) {
+    if (pathnameWithoutCF.indexOf(UI_MAP[x][UI_MAP_TOUCH]) === 0) {
+      return pathnameWithoutCF.replace(UI_MAP[x][UI_MAP_TOUCH], '');
+    } else if (pathnameWithoutCF.indexOf(UI_MAP[x][UI_MAP_CLASSIC]) === 0) {
+      return pathnameWithoutCF.replace(UI_MAP[x][UI_MAP_CLASSIC] + '#', '');
+    }
+  }
+
+  return pathnameWithoutCF;
 }
 
 /**
