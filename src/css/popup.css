@@ -144,7 +144,7 @@ ul.sublist li:hover .new-window {
   -webkit-animation-fill-mode: forwards;
 }
 
-ul.sublist.environments button {
+ul.sublist button {
   font-size: 9px;
   padding-left: 6px;
   padding-right: 8px;
@@ -153,6 +153,14 @@ ul.sublist.environments button {
 ul.sublist.environments li {
   line-height: 24px;
   padding: 4px 10px;
+}
+
+.authentication-container {
+  float: right;
+}
+
+.authentication-container input {
+  width: 100px;
 }
 
 button {
@@ -177,7 +185,7 @@ button:active {
   box-shadow: inset 0px 2px 4px 0px rgba(0,0,0,0.25);
 }
 
-h3 {
+h3, h5 {
   margin: 0;
   padding: 0;
   font-size: 13px;
@@ -186,7 +194,11 @@ h3 {
   line-height: 29px;
 }
 
-li h3 {
+h5 {
+  font-size: 12px;
+}
+
+li h3, li h5 {
   float: left;
 }
 
@@ -317,4 +329,8 @@ ul.info-list li {
 .icon-plus,
 .icon-minus {
   cursor: pointer;
+}
+
+form {
+  display: inline;
 }

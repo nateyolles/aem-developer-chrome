@@ -98,10 +98,30 @@
             </section>
 
             <section>
-                <ul>
-                    <li class="clearfix">
-                        <h3>Impersonate</h3>
-                        <div class="content">
+                <ul data-ng-click="collapseC = !collapseC">
+                    <li class="accordion clearfix">
+                        <h3>Authentication</h3>
+                        <i ng-class="{'icon-arrow-down': collapseC, 'icon-arrow-right': !collapseC}"></i>
+                    </li>
+                </ul>
+                <ul class="sublist authentication" data-ng-show="collapseC">
+                    <li><h5>User</h5>
+                        <div class="authentication-container">
+                            <form>
+                                <input type="text" data-ng-model="auth.user" placeholder="Name">
+                                <input type="password" data-ng-model="auth.pass" placeholder="Password">
+                                <div class="btn-group">
+                                    <button id="lnk_logIn" data-ng-click="logIn()">Log in</button>
+                                </div>
+                            </form>
+                            <div class="btn-group" data-ng-show="isAuthenticated">
+                                <button id="lnk_logOut" data-ng-click="logOut()">Log out</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li data-ng-show="isAuthenticated">
+                        <h5>Impersonate</h5>
+                        <div class="pull-right">
                             <div class="btn-group">
                                 <button data-ng-show="user.isImpersonated" data-ng-click="revertToSelf()">Revert to self</button>
                             </div>

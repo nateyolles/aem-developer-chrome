@@ -61,6 +61,8 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
     home : ''
   };
 
+  $scope.isAuthenticated = false;
+
   $scope.product = {
     version : ''
   };
@@ -88,6 +90,11 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
   $scope.sudoables = ['', '-------']; 
 
   $scope.currentUI = null;
+
+  $scope.auth = {
+    user: '',
+    pass: ''
+  }
 
   $scope.$watch('user.authorizableId', function(newValue, oldValue) {
     $scope.sudoables[0] = $scope.user.authorizableId;
@@ -233,6 +240,23 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
   };
 
   /**
+   * Log out of AEM.
+   */
+  $scope.logOut = function() {
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.logOut()');
+  };
+
+  /**
+   * Log into AEM.
+   *
+   * @param user username
+   * @param pass password
+   */
+  $scope.logIn = function() {
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.logIn("' + $scope.auth.user + '", "' + $scope.auth.pass + '")');
+  };
+
+  /**
    * Delete cached clientlibs.
    */
   $scope.clearClientLibs = function() {
@@ -357,6 +381,7 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
                 $scope.user.authorizableId = tab.data.authorizableId_xss;
                 $scope.user.isImpersonated = tab.data.isImpersonated;
                 $scope.user.home = tab.data.home;
+                $scope.isAuthenticated = true;
               });
             }
             break;
@@ -401,6 +426,20 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
             break;
           case 'linkChecker':
             showStatus($('#lnk_clearLinkChecker'), tab.status);
+            break;
+          case 'logout':
+            if (tab.status === 'fail') {
+              showStatus($('#lnk_logOut'), tab.status);
+            } else if (tab.status === 'success') {
+              window.close();
+            }
+            break;
+          case 'login':
+           if (tab.status === 'fail') {
+              showStatus($('#lnk_logIn'), tab.status);
+            } else if (tab.status === 'success') {
+              window.close();
+            }
             break;
           case 'sudoables':
             $scope.$apply(function(){
@@ -493,7 +532,7 @@ function getUrlWithUpdatedQueryString(location, key, value, returnLocationObject
     // loop through object and create string
     for (var prop in queryParams) {
       if (queryParams.hasOwnProperty(prop)) {
-        if (isFirstParam) {
+        if (isFirstParam) {is
           updatedSearchString = '?';
           isFirstParam = false;
         } else {

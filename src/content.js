@@ -10,6 +10,8 @@ var AemDeveloper = (function(window, undefined) {
   var CLIENTLIB_QUERY         = '/crx/de/query.jsp?type=xpath&stmt=/jcr:root/var/clientlibs/*&showResults=true',
       COMPILED_JSP_QUERY      = '/crx/de/query.jsp?type=xpath&stmt=/jcr:root/var/classes//jsp&showResults=true',
       LINKCHECKER_QUERY       = '/crx/de/query.jsp?type=xpath&stmt=/jcr:root/var/linkchecker/*&showResults=true',
+      AUTH_LOG_OUT            = '/crx/de/logout.jsp',
+      AUTH_LOG_IN             = '/crx/de/j_security_check',
       USER_INFO               = '/libs/granite/security/currentuser.json'
       PRODUCT_INFO            = '/libs/cq/core/productinfo.json',
       SLING_INFO              = '/system/console/status-slingsettings.json',
@@ -181,6 +183,48 @@ var AemDeveloper = (function(window, undefined) {
 
     xmlhttp.open('GET', url + '?_=' + Date.now(), true);
     xmlhttp.send();
+  }
+
+  /**
+   * Log out of AEM and refresh the browser.
+   */
+  function logOut() {
+    getInfo('logout', AUTH_LOG_OUT, function(){
+      location.reload();
+    });
+  }
+
+  /**
+   * Log into AEM.
+   *
+   * @param {String} user The user name
+   * @param {String} pass The password
+   */
+  function logIn(user, pass) {
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function() {
+      var data;
+
+      if (xmlhttp.readyState === 4) {
+        if (xmlhttp.status === 200) {
+          chrome.runtime.sendMessage({
+            type: 'login',
+            status: 'success'
+          });
+          location.reload();
+        } else {
+          chrome.runtime.sendMessage({
+            type: 'login',
+            status: 'fail'
+          });
+        }
+      }
+    };
+
+    xmlhttp.open('POST', AUTH_LOG_IN, true);
+    xmlhttp.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+    xmlhttp.send('j_username=' + user + '&j_password=' + pass + '&j_workspace=crx.default&j_validate=true&_charset_=utf-8');
   }
 
   /**
@@ -570,7 +614,9 @@ var AemDeveloper = (function(window, undefined) {
     getAllInfo : getAllInfo,
     runGarbageCollector : runGarbageCollector,
     comparePage : comparePage,
-    getWindowInfo : getWindowInfo
+    getWindowInfo : getWindowInfo,
+    logOut : logOut,
+    logIn : logIn
   };
 })(window);
 
