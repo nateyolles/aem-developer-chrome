@@ -10,6 +10,8 @@ var AemDeveloper = (function(window, undefined) {
   var CLIENTLIB_QUERY         = '/crx/de/query.jsp?type=xpath&stmt=/jcr:root/var/clientlibs/*&showResults=true',
       COMPILED_JSP_QUERY      = '/crx/de/query.jsp?type=xpath&stmt=/jcr:root/var/classes//jsp&showResults=true',
       LINKCHECKER_QUERY       = '/crx/de/query.jsp?type=xpath&stmt=/jcr:root/var/linkchecker/*&showResults=true',
+      ACTIVATE_TREE           = '/etc/replication/treeactivation.html',
+      ACTIVATE_PAGE           = '/bin/replicate.json',
       AUTH_LOG_OUT            = '/crx/de/logout.jsp',
       AUTH_LOG_IN             = '/crx/de/j_security_check',
       USER_INFO               = '/libs/granite/security/currentuser.json'
@@ -153,6 +155,7 @@ var AemDeveloper = (function(window, undefined) {
    * @private
    * @param {String} Type of message to send.
    * @param {String} URL to query the JCR.
+   * @param {Function} Callback function.
    */
   function getInfo(type, url, callback) {
     var xmlhttp = new XMLHttpRequest();
@@ -186,6 +189,71 @@ var AemDeveloper = (function(window, undefined) {
   }
 
   /**
+   * Post to AEM
+   *
+   * @private
+   * @param {String} Type of message to send.
+   * @param {String} URL to post to the JCR.
+   * @param {String} parameters for the post request.
+   * @param {Function} Callback function.
+   */
+  function post(type, url, params, callback) {
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function() {
+      if (xmlhttp.readyState === 4) {
+        if (xmlhttp.status === 200) {
+          chrome.runtime.sendMessage({
+            type: type,
+            status: 'success'
+          });
+          
+          if (callback) {
+            callback(xmlhttp);
+          }
+
+        } else {
+          chrome.runtime.sendMessage({
+            type: type,
+            status: 'fail'
+          });
+        }
+      }
+    };
+
+    xmlhttp.open('POST', url, true);
+    xmlhttp.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+    xmlhttp.send(params);
+  }
+
+  /**
+   * Activate Tree starting at current page.
+   *
+   * @param {String} pathname
+   */
+  function activateTree(pathname) {
+    post('activateTree', ACTIVATE_TREE, 'cmd=activate&ignoredeactivated=false&onlymodified=false&path=' + pathname + '&_charset_=utf-8');
+  }
+
+  /**
+   * Activate current page.
+   *
+   * @param {String} pathname
+   */
+  function activatePage(pathname) {
+    post('activatePage', ACTIVATE_PAGE, 'cmd=activate&path=' + pathname + '&_charset_=utf-8');
+  }
+
+  /**
+   * Deactivate current page.
+   *
+   * @param {String} pathname
+   */
+  function deactivatePage(pathname) {
+    post('deactivatePage', ACTIVATE_PAGE, 'cmd=deactivate&path=' + pathname + '&_charset_=utf-8');
+  }
+
+  /**
    * Log out of AEM and refresh the browser.
    */
   function logOut() {
@@ -201,30 +269,11 @@ var AemDeveloper = (function(window, undefined) {
    * @param {String} pass The password
    */
   function logIn(user, pass) {
-    var xmlhttp = new XMLHttpRequest();
+    var params = 'j_username=' + user + '&j_password=' + pass + '&j_workspace=crx.default&j_validate=true&_charset_=utf-8';
 
-    xmlhttp.onreadystatechange = function() {
-      var data;
-
-      if (xmlhttp.readyState === 4) {
-        if (xmlhttp.status === 200) {
-          chrome.runtime.sendMessage({
-            type: 'login',
-            status: 'success'
-          });
-          location.reload();
-        } else {
-          chrome.runtime.sendMessage({
-            type: 'login',
-            status: 'fail'
-          });
-        }
-      }
-    };
-
-    xmlhttp.open('POST', AUTH_LOG_IN, true);
-    xmlhttp.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-    xmlhttp.send('j_username=' + user + '&j_password=' + pass + '&j_workspace=crx.default&j_validate=true&_charset_=utf-8');
+    post('login', AUTH_LOG_IN, params, function(){
+      location.reload();
+    });
   }
 
   /**
@@ -483,7 +532,7 @@ var AemDeveloper = (function(window, undefined) {
    * Get a location pathname for use in an AJAX call to the JCR.
    *
    * Add the jcr:content node to the current path, change selector
-   * from html to an inifinity JSON selector, remove 
+   * from html to an inifinity JSON selector, remove editor.html.
    *
    * @private
    * @param {String} location pathname
@@ -616,7 +665,10 @@ var AemDeveloper = (function(window, undefined) {
     comparePage : comparePage,
     getWindowInfo : getWindowInfo,
     logOut : logOut,
-    logIn : logIn
+    logIn : logIn,
+    activateTree : activateTree,
+    activatePage : activatePage,
+    deactivatePage : deactivatePage
   };
 })(window);
 

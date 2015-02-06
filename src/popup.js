@@ -257,6 +257,27 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
   };
 
   /**
+   * Activate tree
+   */
+  $scope.activateTree = function() {
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.activateTree("' + getPathForActivation($scope.pageDetails.location.pathname) + '")');
+  };
+
+  /**
+   * Activate page
+   */
+  $scope.activatePage = function() {
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.activatePage("' + getPathForActivation($scope.pageDetails.location.pathname) + '")');
+  };
+
+  /**
+   * deactivate page
+   */
+  $scope.deactivatePage = function() {
+    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.deactivatePage("' + getPathForActivation($scope.pageDetails.location.pathname) + '")');
+  };
+
+  /**
    * Delete cached clientlibs.
    */
   $scope.clearClientLibs = function() {
@@ -276,7 +297,6 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
   $scope.clearLinkChecker = function() {
     cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.clearLinkChecker()');
   };
-
 
   /**
    * Run Garbage Collector.
@@ -427,6 +447,15 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
           case 'linkChecker':
             showStatus($('#lnk_clearLinkChecker'), tab.status);
             break;
+          case 'activateTree':
+            showStatus($('#lnk_activateTree'), tab.status);
+            break;
+          case 'activatePage':
+            showStatus($('#lnk_activatePage'), tab.status);
+            break;
+          case 'deactivatePage':
+            showStatus($('#lnk_deactivatePage'), tab.status);
+            break;
           case 'logout':
             if (tab.status === 'fail') {
               showStatus($('#lnk_logOut'), tab.status);
@@ -532,7 +561,7 @@ function getUrlWithUpdatedQueryString(location, key, value, returnLocationObject
     // loop through object and create string
     for (var prop in queryParams) {
       if (queryParams.hasOwnProperty(prop)) {
-        if (isFirstParam) {is
+        if (isFirstParam) {
           updatedSearchString = '?';
           isFirstParam = false;
         } else {
@@ -662,7 +691,7 @@ function convertSlingArrayToObject(slingArray) {
  * @returns {Object} A pseudo location object.
  */
 function normalizeLocation(location) {
-  var hashedUrls = ['cf', 'siteadmin', 'useradmin', 'publishingadmin', 'damadmin', 'miscadmin', 'mcmadmin'],
+  var hashedUrls = ['cf', 'siteadmin', 'useradmin', 'publishingadmin', 'damadmin', 'miscadmin', 'mcmadmin', 'crx/de/index.jsp'],
       containsHash = false,
       origin = location.origin,
       search,
@@ -807,6 +836,27 @@ function removeContentFinder(pathname) {
   }
 
   return pathname;
+}
+
+/**
+ * Prepare pathname for activation. Remove content finder, editor,
+ * and crxde from path, and remove ".html".
+ *
+ * @param {String} location pathname
+ * @returns {String} pathname ready for activation
+ */
+function getPathForActivation(pathname) {
+  var PREFIXES = ['/cf#', '/editor.html', '/crx/de/index.jsp#'],
+      len = PREFIXES.length,
+      x;
+
+  for (x = 0; x < len; x++) {
+    if (pathname.indexOf(PREFIXES[x]) === 0) {
+      pathname = pathname.replace(PREFIXES[x], '');
+    }
+  }
+
+  return pathname.replace('.html', '');
 }
 
 /**

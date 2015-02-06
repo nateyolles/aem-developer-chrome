@@ -169,6 +169,20 @@
             </section>
 
             <section>
+                <ul data-ng-click="collapseD = !collapseD">
+                    <li class="accordion clearfix">
+                        <h3>Activation</h3>
+                        <i ng-class="{'icon-arrow-down': collapseD, 'icon-arrow-right': !collapseD}"></i>
+                    </li>
+                </ul>
+                <ul class="sublist" data-ng-show="collapseD">
+                    <li><a id="lnk_activateTree" data-ng-click="activateTree()" href="">Activate tree</a></li>
+                    <li><a id="lnk_activatePage" data-ng-click="activatePage()" href="">Active page</a></li>
+                    <li><a id="lnk_deactivatePage" data-ng-click="deactivatePage()" href="">Deactivate page</a></li>
+                </ul>
+            </section>
+
+            <section>
                 <ul data-ng-click="collapseB = !collapseB">
                     <li class="accordion clearfix">
                         <h3>Clear Caches &amp; Memory</h3>
