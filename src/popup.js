@@ -535,20 +535,18 @@ window.addEventListener('load', function(evt) {
         //domain: domain,
         secure: url.slice(0,5) === "https"
     };
-    //chrome.tabs.getCurrent(function(tab) {
-      chrome.cookies.getAll({}, function(cookies) {
+    chrome.cookies.getAll({}, function(cookies) {
         var wcmModeCookie = cookies.filter(function(cookie) {
-          return cookie.name === "wcmmode";
+            return cookie.name === "wcmmode";
         });
         
         if (!wcmModeCookie.length || wcmModeCookie[0].value !== wcmMode) {
-          newCookie.value = wcmMode
-          chrome.cookies.set(newCookie, function() {
-            chrome.tabs.reload();
-          });
+            newCookie.value = wcmMode
+            chrome.cookies.set(newCookie, function() {
+                chrome.tabs.reload();
+            });
         }
-      });
-    //});
+    });
   });
 });
 
