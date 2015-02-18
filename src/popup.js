@@ -561,8 +561,11 @@ window.addEventListener('load', function(evt) {
     e.preventDefault();
     
     var $this = $(this),
-        url = getUrlWithUpdatedQueryString(pageDetails.location, null),
-        wcmMode = $this.attr("data-wcmmode");
+        wcmModeParamValue = $(/(\?|&)wcmmode=([^&]*)(&|$)/.exec(pageDetails.search || ""))[2];
+        url = pageDetails.location.origin + pageDetails.location.pathname,
+        wcmMode = $this.attr("data-wcmmode"),
+        wcmModeCookieValue = null;
+        
     
     var newCookie = {
         url: url,
@@ -572,14 +575,17 @@ window.addEventListener('load', function(evt) {
         secure: url.slice(0,5) === "https"
     };
     chrome.cookies.getAll({}, function(cookies) {
-      var wcmModeCookie = cookies.filter(function(cookie) {
-        return cookie.name === "wcmmode";
-      });
+      var wcmModeCookieValue = $(cookies.map(function(cookie) {
+        if (cookie.name === "wcmmode") {
+          return cookie.value;
+        }
+      }))[0];
       
-      if (!wcmModeCookie.length || wcmModeCookie[0].value !== wcmMode) {
+      
+      if (wcmModeCookieValue !== wcmMode || wcmModeParamValue !== wcmMode) {
         newCookie.value = wcmMode
         chrome.cookies.set(newCookie, function() {
-            chrome.tabs.reload();
+            setTabLocation(getUrlWithUpdatedQueryString(pageDetails.location, 'wcmmode'));
         });
       }
     });
@@ -613,7 +619,7 @@ function getUrlWithUpdatedQueryString(location, key, value, returnLocationObject
     queryParams = getQueryParameters(search);
   }
 
-  if (value !== null) {
+  if (value !== null && value !== undefined) {
     // overwrite or add key/value
     queryParams[key] = value;
   } else {
