@@ -519,6 +519,37 @@ window.addEventListener('load', function(evt) {
 
     window.close();
   });
+  
+  $(".wcmmode").click(function(e) {
+    e.preventDefault();
+    
+    var $this = $(this),
+        url = getUrlWithUpdatedQueryString(pageDetails.location, null),
+        wcmMode = $this.attr("data-wcmmode");
+    
+    var newCookie = {
+        url: url,
+        name: "wcmmode",
+        value: wcmMode,
+        path: "/",
+        //domain: domain,
+        secure: url.slice(0,5) === "https"
+    };
+    //chrome.tabs.getCurrent(function(tab) {
+      chrome.cookies.getAll({}, function(cookies) {
+        var wcmModeCookie = cookies.filter(function(cookie) {
+          return cookie.name === "wcmmode";
+        });
+        
+        if (!wcmModeCookie.length || wcmModeCookie[0].value !== wcmMode) {
+          newCookie.value = wcmMode
+          chrome.cookies.set(newCookie, function() {
+            chrome.tabs.reload();
+          });
+        }
+      });
+    //});
+  });
 });
 
 /**
