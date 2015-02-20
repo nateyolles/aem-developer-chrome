@@ -49,6 +49,11 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
 
   $scope.pageDetails = null;
 
+  $scope.newServer = {
+    name : '',
+    url: ''
+  }
+
   $scope.user = {
     name : '',
     authorizableId : '',
@@ -80,6 +85,8 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
     }
   };
 
+  $scope.editMode = false;
+
   $scope.sudoables = ['', '-------']; 
 
   $scope.currentUI = null;
@@ -108,80 +115,36 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
   $scope.getInfo = function(){
     cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.getAllInfo()');
   };
-  
+
   /**
-   * Handles all functionality of the Environments/Servers accordion item
+   * Toggle Environments view from Edit to View.
+   *
+   * When user clicks "Save/Done", first save the new fields, then change edit mode.
    */
-  $scope.ServersForm = {
-    mode: "view",
-    serversJson: "[]",
-    newServer: {name: "", url: ""},
-    Modes: {
-      VIEW: "view",
-      EDIT: "edit",
-      IMPORT: "import"
-    },
-    /**
-     * Checks which mode the servers form is in. Options are in $scope.editModes
-     */
-    isMode: function(mode) {
-      return $scope.ServersForm.mode === mode;
-    },
-    /**
-     * Changes the servers form to edit mode, allowing the edit of servers
-     */
-    changeToEdit: function() {
-      $scope.ServersForm.mode = $scope.ServersForm.Modes.EDIT;
-    },
-    /**
-     * Saves changes from servers form edit mode, and changes back to view mode
-     */
-    saveEditChanges: function() {
-      if (!$scope.ServersForm.newServer.name.isEmpty() && !$scope.ServersForm.newServer.url.isEmpty()) {
-        $scope.ServersForm.add();
-      }
-      
-      $scope.ServersForm.mode = $scope.ServersForm.Modes.VIEW;
-    },
-    /**
-     * Changes the servers form to import mode, allowing to bulk import servers, as JSON
-     */
-    changeToImport: function() {
-      $scope.ServersForm.serversJson = JSON.stringify($scope.options.servers, ["name", "url"], " ");
-      $scope.ServersForm.mode = $scope.ServersForm.Modes.IMPORT;
-    },
-    /**
-     * Saves changes from servers form import mode, and changes back to view mode
-     */
-    saveImportChanges: function() {
-      try {
-        var serversArray = JSON.parse($scope.ServersForm.serversJson);
-        $scope.options.servers.splice(0, $scope.options.servers.length);
-        serversArray.forEach(function(server) {
-          $scope.options.servers.push(server);
-        });
-      } catch(e) {
-        // TODO handle error
-      }
-      
-      $scope.ServersForm.mode = $scope.ServersForm.Modes.VIEW;
-    },
-    /**
-     * Remove item from servers list. 
-     */
-    remove: function() {
-      $scope.options.servers.splice(this.$index, 1);
-    },
-    /**
-     * Add item to servers list.
-     */
-    add: function() {
-      $scope.options.servers.push({name: $scope.ServersForm.newServer.name, url: $scope.ServersForm.newServer.url});
-      $scope.ServersForm.newServer.name = '';
-      $scope.ServersForm.newServer.url = '';
+  $scope.changeEditMode = function() {
+    if (!$scope.newServer.name.isEmpty() && !$scope.newServer.url.isEmpty()) {
+      $scope.add();
     }
+
+    $scope.editMode = !$scope.editMode;
+  }
+
+  /**
+   * Remove item from servers list. 
+   */
+  $scope.remove = function() {
+    $scope.options.servers.splice(this.$index, 1);
   };
-  
+
+  /**
+   * Add item to servers list.
+   */
+  $scope.add = function() {
+    $scope.options.servers.push({name: $scope.newServer.name, url: $scope.newServer.url});
+    $scope.newServer.name = '';
+    $scope.newServer.url = '';
+  };
+
   /**
    * Toggle between classic and touch UI.
    */
@@ -556,40 +519,6 @@ window.addEventListener('load', function(evt) {
 
     window.close();
   });
-  
-  $(".wcmmode").click(function(e) {
-    e.preventDefault();
-    
-    var $this = $(this),
-        wcmModeParamValue = $(/(\?|&)wcmmode=([^&]*)(&|$)/.exec(pageDetails.search || ""))[2];
-        url = pageDetails.location.origin + pageDetails.location.pathname,
-        wcmMode = $this.attr("data-wcmmode"),
-        wcmModeCookieValue = null;
-        
-    
-    var newCookie = {
-        url: url,
-        name: "wcmmode",
-        value: wcmMode,
-        path: "/",
-        secure: url.slice(0,5) === "https"
-    };
-    chrome.cookies.getAll({}, function(cookies) {
-      var wcmModeCookieValue = $(cookies.map(function(cookie) {
-        if (cookie.name === "wcmmode") {
-          return cookie.value;
-        }
-      }))[0];
-      
-      
-      if (wcmModeCookieValue !== wcmMode || wcmModeParamValue !== wcmMode) {
-        newCookie.value = wcmMode
-        chrome.cookies.set(newCookie, function() {
-            setTabLocation(getUrlWithUpdatedQueryString(pageDetails.location, 'wcmmode'));
-        });
-      }
-    });
-  });
 });
 
 /**
@@ -619,7 +548,7 @@ function getUrlWithUpdatedQueryString(location, key, value, returnLocationObject
     queryParams = getQueryParameters(search);
   }
 
-  if (value !== null && value !== undefined) {
+  if (value !== null) {
     // overwrite or add key/value
     queryParams[key] = value;
   } else {

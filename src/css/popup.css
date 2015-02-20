@@ -15,11 +15,6 @@ input {
   height: 14px;
 }
 
-textarea {
-  width: 100%;
-  height: 150px;
-}
-
 a {
   color: #2b9af3;
   text-decoration: none;

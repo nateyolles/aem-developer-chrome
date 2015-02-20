@@ -68,10 +68,10 @@
                         <h3>WCM Mode</h3>
                         <div class="content">
                             <div class="btn-group">
-                                <button class="wcmmode" data-wcmmode="disabled">Disabled</button>
-                                <button class="wcmmode" data-wcmmode="edit">Edit</button>
-                                <button class="wcmmode" data-wcmmode="design">Design</button>
-                                <button class="wcmmode" data-wcmmode="preview">Preview</button>
+                                <button class="querystring" data-querystring-key="wcmmode" data-querystring-value="disabled">Disabled</button>
+                                <button class="querystring" data-querystring-key="wcmmode" data-querystring-value="edit">Edit</button>
+                                <button class="querystring" data-querystring-key="wcmmode" data-querystring-value="design">Design</button>
+                                <button class="querystring" data-querystring-key="wcmmode" data-querystring-value="preview">Preview</button>
                             </div>
                         </div>
                     </li>
@@ -141,20 +141,17 @@
                     </li>
                 </ul>
                 <ul class="sublist environments" data-ng-show="collapseA">
-                    <li data-ng-repeat="server in options.servers" data-ng-show="ServersForm.isMode('edit')" class="input-container">
+                    <li data-ng-repeat="server in options.servers" data-ng-show="editMode" class="input-container">
                         <input placeholder="name" data-ng-model="server.name">
                         <input placeholder="url" data-ng-model="server.url">
                         <i data-ng-click="remove()" class="icon-minus"></i>
                     </li>
-                    <li data-ng-show="ServersForm.isMode('edit')" class="input-container">
-                        <input placeholder="name" data-ng-model="ServersForm.newServer.name" required>
-                        <input placeholder="url" data-ng-model="ServersForm.newServer.url" required>
+                    <li data-ng-show="editMode" class="input-container">
+                        <input placeholder="name" data-ng-model="newServer.name" required>
+                        <input placeholder="url" data-ng-model="newServer.url" required>
                         <i data-ng-click="add()" class="icon-plus"></i>
                     </li>
-                    <li data-ng-show="ServersForm.isMode('import')">
-                      <textarea data-ng-model="ServersForm.serversJson" class=""></textarea>
-                    </li>
-                    <li data-ng-repeat="server in options.servers" data-ng-show="ServersForm.isMode('view')">
+                    <li data-ng-repeat="server in options.servers" data-ng-show="!editMode">
                         <a href="" ng-click="redirectToEnvironment(false)" title="open same page in {{server.name}}" data-ng-bind="server.name"></a>
                         <a href="" ng-click="redirectToEnvironment(true)" title="open same page in {{server.name}} in new window" class="new-window">
                             <i class="icon-link-external"></i>
@@ -166,12 +163,8 @@
                             <button ng-click="compareToEnvironment(true)" id="compare_{{$index}}"><i class="icon-file-empty"></i> View</button>
                         </div>
                     </li>
-                    <li class="edit" data-ng-show="ServersForm.isMode('view')">
-                        <a data-ng-click="ServersForm.changeToImport()" title="import servers as JSON">Import <i class="icon-pencil"></i></a>|
-                        <a data-ng-click="ServersForm.changeToEdit()" title="add, edit and remove servers">Edit <i class="icon-pencil"></i></a>
-                    </li>
-                    <li class="edit" data-ng-show="ServersForm.isMode('edit')"><a data-ng-click="ServersForm.saveEditChanges()" title="save servers">Done <i class="icon-disk"></i></a></li>
-                    <li class="edit" data-ng-show="ServersForm.isMode('import')"><a data-ng-click="ServersForm.saveImportChanges()" title="save servers">Done <i class="icon-disk"></i></a></li>
+                    <li class="edit" data-ng-show="!editMode"><a data-ng-click="changeEditMode()" title="add, edit and remove servers">Edit <i class="icon-pencil"></i></a></li>
+                    <li class="edit" data-ng-show="editMode"><a data-ng-click="changeEditMode()" title="save servers">Done <i class="icon-disk"></i></a></li>
                 </ul>
             </section>
 
