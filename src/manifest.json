@@ -1,27 +1,31 @@
 {
-   "background": {
-      "scripts": [ "background.js" ]
-   },
-   "browser_action": {
-      "default_icon": {
-         "19": "images/icon19.png",
-         "38": "images/icon38.png"
-      },
-      "default_popup": "popup.html",
-      "default_title": "AEM Developer"
-   },
-   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
-   "description": "Tools for AEM developers.",
-   "homepage_url": "https://github.com/nateyolles/aem-developer-chrome/",
-   "icons": {
-      "128": "images/icon128.png",
-      "16": "images/icon16.png",
-      "48": "images/icon48.png"
-   },
-   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgQAaVZNFeKhzLEKrxctYHoHIveeVkNE73LKQbEzPBhp0UJm7ofjDcPC/k7r9WrkBith3I4Mwvvo0Ujjq78olb0j/qDF6T/SPJX9VPsJAbXwunO6pgkIUD6JLyYPc1l2PmomxWVTm3xsd+LvPZh/VKSGI4VdKbq3fqYMdUQbTY3xAwosMkHeQu40VEztsHU4czr2ea3snOFSIstpy4eqnMJvA95cCfSPxmCa+BWzCZVxTj6/CqbI/c/E+edG059h+RE2XloJ+tBGODxWpTfJfBpamj2G0vJapY/SnP6c4Sz+tQVqA0g19Rhy4NovYFrz/yDeYLgeWVhDMdjZ0t0AlhwIDAQAB",
-   "manifest_version": 2,
-   "name": "AEM Developer",
-   "permissions": [ "tabs", "cookies", "notifications", "http://*/*", "https://*/*" ],
-   "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "0.3.1"
+  "manifest_version": 2,
+
+  "name": "AEM Developer",
+  "version": "0.3.1",
+  "description": "Tools for AEM developers.",
+  "homepage_url": "https://github.com/nateyolles/aem-developer-chrome/",
+
+  "icons": {
+    "16" : "images/icon16.png",
+    "48" : "images/icon48.png",
+    "128" : "images/icon128.png"
+  },
+
+  "browser_action": {
+    "default_icon": {
+      "19": "images/icon19.png",
+      "38": "images/icon38.png"
+    },
+    "default_title": "AEM Developer",
+    "default_popup": "popup.html"
+  },
+
+  "background": {
+    "scripts": ["background.js"]
+  },
+
+  "permissions": ["tabs", "notifications", "http://*/*", "https://*/*"],
+
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'"
 }
