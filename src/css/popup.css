@@ -313,6 +313,8 @@ ul.info-list li {
 
 .info-list span {
   float: right;
+  max-width: 300px;
+  text-align: right;
   word-break: break-word;
 }
 

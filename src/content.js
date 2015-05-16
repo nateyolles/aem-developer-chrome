@@ -18,6 +18,7 @@ var AemDeveloper = (function(window, undefined) {
       PRODUCT_INFO            = '/libs/cq/core/productinfo.json',
       SLING_INFO              = '/system/console/status-slingsettings.json',
       SYSTEM_INFO             = '/system/console/status-System%20Properties.json',
+      HOTFIX_INFO             = '/crx/packmgr/service.jsp?cmd=ls',
       SUDOABLE_INFO           = '.sudoables.json',
       MEMORY_USAGE            = '/system/console/memoryusage',
       COMPARE_CONTAINER_NAME  = 'aem-developer-chrome-diff',
@@ -46,6 +47,19 @@ var AemDeveloper = (function(window, undefined) {
       type: 'dp_debugger',
       status: 'success'
     });
+  }
+
+  /**
+   * Get a non-caching URL.
+   *
+   * @private
+   * @param {String} url The URL to modify
+   * @returns {String} The modified URL.
+   */
+  function getNonCachingUrl(url) {
+    var separator = url.indexOf('?') === -1 ? '?' : '&';
+    
+    return url + separator + '_=' + Date.now();
   }
 
   /**
@@ -110,7 +124,7 @@ var AemDeveloper = (function(window, undefined) {
       } //end readystate
     };
 
-    xmlhttp.open('GET', query + '&_=' + Date.now(), true);
+    xmlhttp.open('GET', getNonCachingUrl(query), true);
     xmlhttp.send();
   }
 
@@ -155,8 +169,9 @@ var AemDeveloper = (function(window, undefined) {
    * @param {String} Type of message to send.
    * @param {String} URL to query the JCR.
    * @param {Function} Callback function.
+   * @param {Boolean} preventSuccessMessage  
    */
-  function getInfo(type, url, callback) {
+  function getInfo(type, url, callback, preventSuccessMessage) {
     var xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function() {
@@ -164,15 +179,21 @@ var AemDeveloper = (function(window, undefined) {
 
       if (xmlhttp.readyState === 4) {
         if (xmlhttp.status === 200) {
-          data = JSON.parse(xmlhttp.responseText);
-          chrome.runtime.sendMessage({
-            type: type,
-            status: 'success',
-            data: data
-          });
+
+          if (!preventSuccessMessage) {
+            data = JSON.parse(xmlhttp.responseText);
+
+            chrome.runtime.sendMessage({
+              type: type,
+              status: 'success',
+              data: data
+            });
+          } else {
+            data = xmlhttp.responseText;
+          }
 
           if (callback) {
-            callback(data)
+            callback(data);
           }
         } else {
           chrome.runtime.sendMessage({
@@ -183,7 +204,7 @@ var AemDeveloper = (function(window, undefined) {
       }
     };
 
-    xmlhttp.open('GET', url + '?_=' + Date.now(), true);
+    xmlhttp.open('GET', getNonCachingUrl(url), true);
     xmlhttp.send();
   }
 
@@ -289,6 +310,7 @@ var AemDeveloper = (function(window, undefined) {
    */
   function getAllInfo() {
     getProductInfo();
+    getHotfixes();
     getSlingInfo();
     getSystemInfo();
   }
@@ -321,6 +343,39 @@ var AemDeveloper = (function(window, undefined) {
    */
   function getSystemInfo() {
     getInfo('system', SYSTEM_INFO);
+  }
+
+  /**
+   * Get hotfixes
+   */
+  function getHotfixes() {
+    var hotfixes = [];
+
+    function formatHotfixData(data) {
+      var parser = new DOMParser();
+      var xmlDoc = parser.parseFromString(data, "text/xml");
+      var packages = xmlDoc.getElementsByTagName("package");
+
+      var pattern = /^cq-.*-hotfix-(\d+)$/i;
+
+      for (var x = 0; x < packages.length; x++) {
+        var name = packages[x].getElementsByTagName("name")[0].innerHTML;
+        var result = pattern.exec(name)
+        if (result && hotfixes.indexOf(result[1]) === -1) {
+          hotfixes.push(result[1]);
+        }
+      }
+
+      hotfixes.sort(function(l, r){ return l < r; });
+
+      chrome.runtime.sendMessage({
+        type: 'hotfixes',
+        status: 'success',
+        data: '[' + hotfixes.join(', ') + ']'
+      });
+    };
+
+    getInfo('hotfixes', HOTFIX_INFO, formatHotfixData, true);
   }
 
   /**
@@ -640,7 +695,8 @@ var AemDeveloper = (function(window, undefined) {
     logIn : logIn,
     activateTree : activateTree,
     activatePage : activatePage,
-    deactivatePage : deactivatePage
+    deactivatePage : deactivatePage,
+    getHotfixes : getHotfixes
   };
 })(window);
 
