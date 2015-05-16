@@ -20,7 +20,6 @@ var AemDeveloper = (function(window, undefined) {
       SYSTEM_INFO             = '/system/console/status-System%20Properties.json',
       SUDOABLE_INFO           = '.sudoables.json',
       MEMORY_USAGE            = '/system/console/memoryusage',
-      GARBAGE_COLLECTOR       = 'command=gc',
       COMPARE_CONTAINER_NAME  = 'aem-developer-chrome-diff',
       TITLE_BAR_CLASS_NAME    = 'titlebar',
       COMPARE_BAR_CLASS_NAME  = 'comparebar',
@@ -322,32 +321,6 @@ var AemDeveloper = (function(window, undefined) {
    */
   function getSystemInfo() {
     getInfo('system', SYSTEM_INFO);
-  }
-
-  /**
-   * Run garbage collector
-   */
-  function runGarbageCollector(){
-    var xmlhttp = new XMLHttpRequest();
-
-    xmlhttp.open('POST', MEMORY_USAGE, true);
-    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xmlhttp.onreadystatechange = function(){
-      if (xmlhttp.readyState === 4) {
-        if (xmlhttp.status === 200) {
-          chrome.runtime.sendMessage({
-            type: 'garbage_collector',
-            status: 'success'
-          });
-        } else {
-          chrome.runtime.sendMessage({
-            type: 'garbage_collector',
-            status: 'fail'
-          });
-        }
-      }
-    };
-    xmlhttp.send(GARBAGE_COLLECTOR);
   }
 
   /**
@@ -661,7 +634,6 @@ var AemDeveloper = (function(window, undefined) {
     clearLinkChecker : clearLinkChecker,
     getUserInfo: getUserInfo,
     getAllInfo : getAllInfo,
-    runGarbageCollector : runGarbageCollector,
     comparePage : comparePage,
     getWindowInfo : getWindowInfo,
     logOut : logOut,

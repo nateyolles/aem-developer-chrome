@@ -299,13 +299,6 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
   };
 
   /**
-   * Run Garbage Collector.
-   */
-  $scope.runGarbageCollector = function() {
-    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.runGarbageCollector()');
-  };
-
-  /**
    * Open Digital Pulse Debugger in new window.
    */
   $scope.openDigitalPulseDebugger = function() {
