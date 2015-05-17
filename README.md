@@ -68,7 +68,7 @@ Building
 To create a zip file for deployment to the Google web store:
 
 ```
-grunt package
+grunt package --project-version=x.x.x
 ```
 
 Todo:

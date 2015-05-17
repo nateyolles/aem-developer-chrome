@@ -25,7 +25,56 @@ module.exports = function(grunt) {
       }
     }
   });
+
+  grunt.registerTask('updatejson', function (key, value) {
+    function update(file, version) {
+      if (!grunt.file.exists(file)) {
+        grunt.log.error('File ' + file + ' not found.');
+        return false;
+      }
+
+      var json = grunt.file.readJSON(file);
+
+      json['version'] = version;
+
+      grunt.file.write(file, JSON.stringify(json, null, 2));
+    }
+
+    var version = grunt.option('project-version'); 
+
+    if (!version) {
+      grunt.log.error('Project version not set. i.e. "--project-version=0.5.5"');
+      return false;
+    }
+
+    update('src/manifest.json', version);
+    update('package.json', version);
+
+    // var manifestFile = 'src/manifest.json';
+    // var packageFile = 'package.json';
+    // var version = grunt.option('project-version'); 
+
+    // if (!grunt.file.exists(manifestFile)) {
+    //   grunt.log.error('File ' + manifestFile + ' not found.');
+    //   return false;
+    // }
+
+    // if (!version) {
+    //   grunt.log.error('Project version not set. i.e. "--project-version=0.5.5"');
+    //   return false;
+    // }
+
+    // var manifest = grunt.file.readJSON(manifestFile);
+    // var package = grunt.file.readJSON(packageFile);
+
+    // manifest['version'] = version;
+    // package['version'] = version;
+
+    // grunt.file.write(manifestFile, JSON.stringify(manifest, null, 2));
+    // grunt.file.write(packageFile, JSON.stringify(package, null, 2));
+  });
+
   grunt.loadNpmTasks('grunt-contrib-compress');
 
-  grunt.registerTask('package', ['compress']);
+  grunt.registerTask('package', ['updatejson', 'compress']);
 };
