@@ -62,13 +62,20 @@ Toggle Content Finder on and off. If you are in a Touch UI view, you will be tak
 
 ![Toggle UI screenshot](images/screenshot_toggle_ui.png)
 
+Building
+--------------------
+
+To create a zip file for deployment to the Google web store:
+
+```
+grunt package
+```
+
 Todo:
 -----
-+ Performance: extension starts too slow.
++ Performance: We can always do better.
 + Remove jQuery from popup.js.
 + Chrome doesn't currently support HTML5 datalists in extensions, use when available.
 + Comparison should show reordering of nodes.
-+ Comparison should have view as well.
-+ Setup dev process: Grunt, Bower, SASS/LESS, build/zip/version, minification, concatenation, etc...
++ Improve dev process: Grunt, Bower, SASS/LESS, build/zip/version, minification, concatenation, etc...
 + Improve UI Toggle for pages that don't map between Touch and Classic.
-+ Test in AEM versions below 6.

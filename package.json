@@ -1,0 +1,38 @@
+{
+  "name": "aem-developer-chrome",
+  "version": "0.3.2",
+  "description": "Chrome extension for AEM developers.",
+  "main": "Gruntfile.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:nateyolles/aem-developer-chrome.git"
+  },
+  "keywords": [
+    "adobe",
+    "adobe experience manager",
+    "aem",
+    "cq",
+    "cq5",
+    "chrome extension"
+  ],
+  "author": "Nate Yolles",
+  "contributors": [
+    {
+      "name": "Nate Yolles",
+      "email": "yolles@adobe.com"
+    }
+  ],
+  "homepage": "https://chrome.google.com/webstore/detail/aem-developer/hgjhcngmldfpgpakbnffnbnmcmohfmfc",
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-compress": "^0.13.0",
+    "grunt-contrib-concat": "~0.4.0",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-qunit": "~0.5.2",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-contrib-watch": "~0.6.1"
+  }
+}
