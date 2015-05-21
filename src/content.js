@@ -157,7 +157,17 @@ var AemDeveloper = (function(window, undefined) {
       type : 'window',
       data : {
         'title': document.title,
-        'location': window.location
+        'location': {
+          hash: window.location.hash,
+          host: window.location.host,
+          hostname: window.location.hostname,
+          href: window.location.href,
+          origin: window.location.origin,
+          pathname: window.location.pathname,
+          port: window.location.port,
+          protocol: window.location.protocol,
+          search: window.location.search
+        }
       }
     });
   }
