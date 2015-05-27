@@ -362,16 +362,19 @@ var AemDeveloper = (function(window, undefined) {
     var hotfixes = [];
 
     function formatHotfixData(data) {
-      var parser = new DOMParser();
-      var xmlDoc = parser.parseFromString(data, "text/xml");
-      var packages = xmlDoc.getElementsByTagName("package");
+      var XML_ATTR_NAME = 'name',
+          XML_ATTR_LAST_UNPACKED = 'lastUnpacked',
+          parser = new DOMParser(),
+          xmlDoc = parser.parseFromString(data, 'text/xml'),
+          packages = xmlDoc.getElementsByTagName("package");
 
       var pattern = /^cq-.*-hotfix-(\d+)$/i;
 
       for (var x = 0; x < packages.length; x++) {
-        var name = packages[x].getElementsByTagName("name")[0].innerHTML;
-        var result = pattern.exec(name)
-        if (result && hotfixes.indexOf(result[1]) === -1) {
+        var name = packages[x].getElementsByTagName(XML_ATTR_NAME)[0].innerHTML,
+            result = pattern.exec(name)
+
+        if (result && packages[x].getElementsByTagName(XML_ATTR_LAST_UNPACKED)[0].innerHTML && hotfixes.indexOf(result[1]) === -1) {
           hotfixes.push(result[1]);
         }
       }
