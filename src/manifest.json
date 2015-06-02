@@ -6,8 +6,8 @@
   },
   "browser_action": {
     "default_icon": {
-      "19": "images/icon19.png",
-      "38": "images/icon38.png"
+      "19": "images/61/icon19.png",
+      "38": "images/61/icon38.png"
     },
     "default_popup": "popup.html",
     "default_title": "AEM Developer"
@@ -16,9 +16,9 @@
   "description": "Tools for AEM developers.",
   "homepage_url": "https://github.com/nateyolles/aem-developer-chrome/",
   "icons": {
-    "16": "images/icon16.png",
-    "48": "images/icon48.png",
-    "128": "images/icon128.png"
+    "16": "images/61/icon16.png",
+    "48": "images/61/icon48.png",
+    "128": "images/61/icon128.png"
   },
   "manifest_version": 2,
   "name": "AEM Developer",
