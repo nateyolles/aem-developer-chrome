@@ -185,13 +185,18 @@ var AemDeveloper = (function(window, undefined) {
     var xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function() {
-      var data;
+      var responseText,
+          data;
 
       if (xmlhttp.readyState === 4) {
         if (xmlhttp.status === 200) {
 
           if (!preventSuccessMessage) {
-            data = JSON.parse(xmlhttp.responseText);
+            /* Escape backslashes for Windows servers. */
+            responseText = xmlhttp.responseText;
+            responseText = responseText.replace(/\\/g, '\\\\');
+
+            data = JSON.parse(responseText);
 
             chrome.runtime.sendMessage({
               type: type,
