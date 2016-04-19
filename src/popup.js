@@ -64,7 +64,8 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
   $scope.isAuthenticated = false;
 
   $scope.product = {
-    version : ''
+    version : '',
+    hotfixes: []
   };
 
   $scope.sling = {
@@ -299,13 +300,6 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
   };
 
   /**
-   * Run Garbage Collector.
-   */
-  $scope.runGarbageCollector = function() {
-    cachedEventPage.AemBackgroundScripts.executeScript('AemDeveloper.runGarbageCollector()');
-  };
-
-  /**
    * Open Digital Pulse Debugger in new window.
    */
   $scope.openDigitalPulseDebugger = function() {
@@ -409,6 +403,13 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
             if (tab.data) {
               $scope.$apply(function(){
                 $scope.product.version = tab.data.version;
+              });
+            }
+            break;
+          case 'hotfixes':
+            if (tab.data) {
+              $scope.$apply(function(){
+                $scope.product.hotfixes = tab.data;
               });
             }
             break;

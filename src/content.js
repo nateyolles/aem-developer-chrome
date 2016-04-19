@@ -18,9 +18,9 @@ var AemDeveloper = (function(window, undefined) {
       PRODUCT_INFO            = '/libs/cq/core/productinfo.json',
       SLING_INFO              = '/system/console/status-slingsettings.json',
       SYSTEM_INFO             = '/system/console/status-System%20Properties.json',
+      HOTFIX_INFO             = '/crx/packmgr/service.jsp?cmd=ls',
       SUDOABLE_INFO           = '.sudoables.json',
       MEMORY_USAGE            = '/system/console/memoryusage',
-      GARBAGE_COLLECTOR       = 'command=gc',
       COMPARE_CONTAINER_NAME  = 'aem-developer-chrome-diff',
       TITLE_BAR_CLASS_NAME    = 'titlebar',
       COMPARE_BAR_CLASS_NAME  = 'comparebar',
@@ -47,6 +47,19 @@ var AemDeveloper = (function(window, undefined) {
       type: 'dp_debugger',
       status: 'success'
     });
+  }
+
+  /**
+   * Get a non-caching URL.
+   *
+   * @private
+   * @param {String} url The URL to modify
+   * @returns {String} The modified URL.
+   */
+  function getNonCachingUrl(url) {
+    var separator = url.indexOf('?') === -1 ? '?' : '&';
+    
+    return url + separator + '_=' + Date.now();
   }
 
   /**
@@ -111,7 +124,7 @@ var AemDeveloper = (function(window, undefined) {
       } //end readystate
     };
 
-    xmlhttp.open('GET', query + '&_=' + Date.now(), true);
+    xmlhttp.open('GET', getNonCachingUrl(query), true);
     xmlhttp.send();
   }
 
@@ -144,7 +157,17 @@ var AemDeveloper = (function(window, undefined) {
       type : 'window',
       data : {
         'title': document.title,
-        'location': window.location
+        'location': {
+          hash: window.location.hash,
+          host: window.location.host,
+          hostname: window.location.hostname,
+          href: window.location.href,
+          origin: window.location.origin,
+          pathname: window.location.pathname,
+          port: window.location.port,
+          protocol: window.location.protocol,
+          search: window.location.search
+        }
       }
     });
   }
@@ -156,24 +179,36 @@ var AemDeveloper = (function(window, undefined) {
    * @param {String} Type of message to send.
    * @param {String} URL to query the JCR.
    * @param {Function} Callback function.
+   * @param {Boolean} preventSuccessMessage  
    */
-  function getInfo(type, url, callback) {
+  function getInfo(type, url, callback, preventSuccessMessage) {
     var xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function() {
-      var data;
+      var responseText,
+          data;
 
       if (xmlhttp.readyState === 4) {
         if (xmlhttp.status === 200) {
-          data = JSON.parse(xmlhttp.responseText);
-          chrome.runtime.sendMessage({
-            type: type,
-            status: 'success',
-            data: data
-          });
+
+          if (!preventSuccessMessage) {
+            /* Escape backslashes for Windows servers. */
+            responseText = xmlhttp.responseText;
+            responseText = responseText.replace(/\\/g, '\\\\');
+
+            data = JSON.parse(responseText);
+
+            chrome.runtime.sendMessage({
+              type: type,
+              status: 'success',
+              data: data
+            });
+          } else {
+            data = xmlhttp.responseText;
+          }
 
           if (callback) {
-            callback(data)
+            callback(data);
           }
         } else {
           chrome.runtime.sendMessage({
@@ -184,7 +219,7 @@ var AemDeveloper = (function(window, undefined) {
       }
     };
 
-    xmlhttp.open('GET', url + '?_=' + Date.now(), true);
+    xmlhttp.open('GET', getNonCachingUrl(url), true);
     xmlhttp.send();
   }
 
@@ -290,6 +325,7 @@ var AemDeveloper = (function(window, undefined) {
    */
   function getAllInfo() {
     getProductInfo();
+    getHotfixes();
     getSlingInfo();
     getSystemInfo();
   }
@@ -325,29 +361,39 @@ var AemDeveloper = (function(window, undefined) {
   }
 
   /**
-   * Run garbage collector
+   * Get hotfixes
    */
-  function runGarbageCollector(){
-    var xmlhttp = new XMLHttpRequest();
+  function getHotfixes() {
+    var hotfixes = [];
 
-    xmlhttp.open('POST', MEMORY_USAGE, true);
-    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xmlhttp.onreadystatechange = function(){
-      if (xmlhttp.readyState === 4) {
-        if (xmlhttp.status === 200) {
-          chrome.runtime.sendMessage({
-            type: 'garbage_collector',
-            status: 'success'
-          });
-        } else {
-          chrome.runtime.sendMessage({
-            type: 'garbage_collector',
-            status: 'fail'
-          });
+    function formatHotfixData(data) {
+      var XML_ATTR_NAME = 'name',
+          XML_ATTR_LAST_UNPACKED = 'lastUnpacked',
+          parser = new DOMParser(),
+          xmlDoc = parser.parseFromString(data, 'text/xml'),
+          packages = xmlDoc.getElementsByTagName("package");
+
+      var pattern = /^cq-.*-hotfix-(\d+)$/i;
+
+      for (var x = 0; x < packages.length; x++) {
+        var name = packages[x].getElementsByTagName(XML_ATTR_NAME)[0].innerHTML,
+            result = pattern.exec(name)
+
+        if (result && packages[x].getElementsByTagName(XML_ATTR_LAST_UNPACKED)[0].innerHTML && hotfixes.indexOf(result[1]) === -1) {
+          hotfixes.push(result[1]);
         }
       }
+
+      hotfixes.sort(function(l, r){ return l < r; });
+
+      chrome.runtime.sendMessage({
+        type: 'hotfixes',
+        status: 'success',
+        data: '[' + hotfixes.join(', ') + ']'
+      });
     };
-    xmlhttp.send(GARBAGE_COLLECTOR);
+
+    getInfo('hotfixes', HOTFIX_INFO, formatHotfixData, true);
   }
 
   /**
@@ -661,14 +707,14 @@ var AemDeveloper = (function(window, undefined) {
     clearLinkChecker : clearLinkChecker,
     getUserInfo: getUserInfo,
     getAllInfo : getAllInfo,
-    runGarbageCollector : runGarbageCollector,
     comparePage : comparePage,
     getWindowInfo : getWindowInfo,
     logOut : logOut,
     logIn : logIn,
     activateTree : activateTree,
     activatePage : activatePage,
-    deactivatePage : deactivatePage
+    deactivatePage : deactivatePage,
+    getHotfixes : getHotfixes
   };
 })(window);
 

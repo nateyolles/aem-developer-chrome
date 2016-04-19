@@ -28,6 +28,10 @@
                         <span data-ng-bind="product.version"></span>
                     </li>
                     <li>
+                        AEM hot fixes
+                        <span data-ng-bind="product.hotfixes"></span>
+                    </li>
+                    <li>
                         Sling run modes
                         <span data-ng-bind="sling.runModes"></span>
                     </li>
@@ -185,7 +189,7 @@
             <section>
                 <ul data-ng-click="collapseB = !collapseB">
                     <li class="accordion clearfix">
-                        <h3>Clear Caches &amp; Memory</h3>
+                        <h3>Clear Caches</h3>
                         <i ng-class="{'icon-arrow-down': collapseB, 'icon-arrow-right': !collapseB}"></i>
                     </li>
                 </ul>
@@ -193,7 +197,6 @@
                     <li><a id="lnk_clearClientLibs" data-ng-click="clearClientLibs()" href="">Delete cached clientlibs</a></li>
                     <li><a id="lnk_clearCompiledJSPs" data-ng-click="clearCompiledJSPs()" href="">Delete compiled JSPs</a></li>
                     <li><a id="lnk_clearLinkChecker" data-ng-click="clearLinkChecker()" href="">Delete Link Checker cache</a></li>
-                    <li><a id="lnk_runGarbageCollector" data-ng-click="runGarbageCollector()" href="">Run garbage collector</a></li>
                 </ul>
             </section>
 
@@ -231,7 +234,7 @@
                     <a href="" data-ng-click="collapseE = !collapseE" class="light pull-right">Help &amp; About <i data-ng-class="{'icon-info': !collapseE, 'icon-cross2': collapseE}"></i></a>
                 </div>
                 <div class="inner-section" data-ng-show="collapseE">
-                    <img class="pull-right" src="/images/icon48.png">
+                    <img class="pull-right" src="/images/61/icon48.png">
                     <h3>AEM Developer</h3>
                     <p>This Chrome extension is meant to help AEM engineers, web developers, admins and authors on
                     a daily basis. AEM Developer was written with AngularJS, does some basic string manipulation to
