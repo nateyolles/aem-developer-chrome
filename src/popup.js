@@ -52,7 +52,7 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
   $scope.newServer = {
     name : '',
     url: ''
-  }
+  };
 
   $scope.user = {
     name : '',
@@ -95,7 +95,7 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
   $scope.auth = {
     user: '',
     pass: ''
-  }
+  };
 
   $scope.$watch('user.authorizableId', function(newValue, oldValue) {
     $scope.sudoables[0] = $scope.user.authorizableId;
@@ -128,7 +128,7 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
     }
 
     $scope.editMode = !$scope.editMode;
-  }
+  };
 
   /**
    * Remove item from servers list. 
@@ -162,7 +162,7 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
     toggleContentFinder($scope.pageDetails.location);
 
     window.close();
-  }
+  };
 
   /**
    * Show comparison link if the target origin isn't the same as the current origin.
@@ -179,7 +179,7 @@ app.controller('PopupController', function($scope, $localStorage, $http) {
     }
 
     return false;
-  }
+  };
 
   /**
    * Compare current page to same page on target origin.

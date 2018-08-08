@@ -14,7 +14,7 @@ var AemDeveloper = (function(window, undefined) {
       ACTIVATE_PAGE           = '/bin/replicate.json',
       AUTH_LOG_OUT            = '/crx/de/logout.jsp',
       AUTH_LOG_IN             = '/crx/de/j_security_check',
-      USER_INFO               = '/libs/granite/security/currentuser.json'
+      USER_INFO               = '/libs/granite/security/currentuser.json',
       PRODUCT_INFO            = '/libs/cq/core/productinfo.json',
       SLING_INFO              = '/system/console/status-slingsettings.json',
       SYSTEM_INFO             = '/system/console/status-System%20Properties.json',
@@ -40,7 +40,7 @@ var AemDeveloper = (function(window, undefined) {
    */
   function openDigitalPulseDebugger() {
     var dp_debugger = window.open("","dp_debugger","width=700,height=1000,location=0,menubar=0,status=1,toolbar=0,resizable=1,scrollbars=1");
-    dp_debugger.document.write("<script language=\"JavaScript\" id=dbg src=\"https://www.adobetag.com/d1/digitalpulsedebugger/live/DPD.js\"></"+"script>");
+    dp_debugger.document.write( "<script language=\"JavaScript\" id=\"dbg\" src=\"https://www.adobetag.com/d1/digitalpulsedebugger/live/DPD.js\"></script>" );
     dp_debugger.focus();
 
     chrome.runtime.sendMessage({
@@ -58,7 +58,7 @@ var AemDeveloper = (function(window, undefined) {
    */
   function getNonCachingUrl(url) {
     var separator = url.indexOf('?') === -1 ? '?' : '&';
-    
+
     return url + separator + '_=' + Date.now();
   }
 
@@ -179,7 +179,7 @@ var AemDeveloper = (function(window, undefined) {
    * @param {String} Type of message to send.
    * @param {String} URL to query the JCR.
    * @param {Function} Callback function.
-   * @param {Boolean} preventSuccessMessage  
+   * @param {Boolean} preventSuccessMessage
    */
   function getInfo(type, url, callback, preventSuccessMessage) {
     var xmlhttp = new XMLHttpRequest();
@@ -242,7 +242,7 @@ var AemDeveloper = (function(window, undefined) {
             type: type,
             status: 'success'
           });
-          
+
           if (callback) {
             callback(xmlhttp);
           }
@@ -377,7 +377,7 @@ var AemDeveloper = (function(window, undefined) {
 
       for (var x = 0; x < packages.length; x++) {
         var name = packages[x].getElementsByTagName(XML_ATTR_NAME)[0].innerHTML,
-            result = pattern.exec(name)
+            result = pattern.exec(name);
 
         if (result && packages[x].getElementsByTagName(XML_ATTR_LAST_UNPACKED)[0].innerHTML && hotfixes.indexOf(result[1]) === -1) {
           hotfixes.push(result[1]);
@@ -391,7 +391,7 @@ var AemDeveloper = (function(window, undefined) {
         status: 'success',
         data: '[' + hotfixes.join(', ') + ']'
       });
-    };
+    }
 
     getInfo('hotfixes', HOTFIX_INFO, formatHotfixData, true);
   }
@@ -414,12 +414,12 @@ var AemDeveloper = (function(window, undefined) {
   /**
    * Remove provided keys from JSON objects.
    *
-   * @private 
+   * @private
    * @param {JSON} JSON object.
    * @param {String[]} Array of Strings to remove from JSON object.
    */
   function scrubJson(obj, propertiesToRemove) {
-    for (key in obj) {
+    for ( var key in obj) {
       if (obj.hasOwnProperty(key)) {
         if (propertiesToRemove.indexOf(key) !== -1) {
           delete obj[key];
@@ -470,7 +470,7 @@ var AemDeveloper = (function(window, undefined) {
    * @param {String} HTML difference to insert into page.
    * @param {String} The current origin to compare against (e.g. 'http://localhost:4502').
    * @param {String} The origin to compare with (e.g. 'http://localhost:4503').
-   * @param {String} The path of the page to compare (e.g '/content/project/en_us/about.html). 
+   * @param {String} The path of the page to compare (e.g '/content/project/en_us/about.html).
    * @see {@link https://github.com/benjamine/jsondiffpatch/blob/master/docs/formatters.md} for further information.
    * @requires {@link https://github.com/benjamine/jsondiffpatch}
    */
@@ -484,7 +484,7 @@ var AemDeveloper = (function(window, undefined) {
         left = document.createElement('span'),
         right = document.createElement('span'),
         container = document.createElement('div'),
-        root = container.createShadowRoot();
+        root = container.createShadowRoot(),
         isShowingAll = false,
         isSelfView = !compareToOrigin;
 
@@ -582,7 +582,7 @@ var AemDeveloper = (function(window, undefined) {
    *
    * @private
    * @param {String} location pathname
-   * @returns {String} location pathname ready for use to 
+   * @returns {String} location pathname ready for use to
    */
   function getPathnameForJcrAjaxCall(pathname){
     var EDITOR = '/editor.html',
@@ -601,7 +601,7 @@ var AemDeveloper = (function(window, undefined) {
   /**
    * Compare page to the same page on a given domain.
    *
-   * @param {String} Domain to compare current page to (e.g. 'http://localhost:4503'). 
+   * @param {String} Domain to compare current page to (e.g. 'http://localhost:4503').
    * @param {Number} Index of compare link clicked.
    */
   function comparePage(compareToOrigin, index) {
@@ -648,7 +648,7 @@ var AemDeveloper = (function(window, undefined) {
 
                 if (html) {
                   // difference found
-                  body = document.querySelector('body'),
+                  body = document.querySelector('body');
                   oldContainer = document.getElementById(COMPARE_CONTAINER_NAME);
 
                   if (oldContainer) {
