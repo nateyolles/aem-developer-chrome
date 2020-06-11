@@ -743,7 +743,7 @@ function normalizeLocation(location) {
  */
 function toggleUI(currentUI, location) {
   var pathnameWithoutCF,
-      targetUI = (currentUI === UI_MAP_TOUCH) ? UI_MAP_CLASSIC : UI_MAP_TOUCH,
+      targetUI = (typeof currentUI === 'undefined' || currentUI === UI_MAP_TOUCH) ? UI_MAP_CLASSIC : UI_MAP_TOUCH,
       targetText,
       currentText,
       useHash;
